@@ -16,6 +16,10 @@ public class GameScreen extends JPanel
       
    private PokerApp myApp;
    
+   private String button1;
+   private String button2;
+   private String button3;
+   
    public GameScreen(PokerApp app)
    {
       myApp = app; 
@@ -29,6 +33,9 @@ public class GameScreen extends JPanel
       {
       
       }
+      button1 = "Check";
+      button2 = "Bet";
+      button3 = "End Game";
    }
    
    /**
@@ -54,5 +61,9 @@ public class GameScreen extends JPanel
       g2.draw3DRect(900, 650, 100, 150, true);
       g2.draw3DRect(1000, 650, 100, 150, true);
       g2.draw3DRect(1100, 650, 100, 150, true);
+      g2.setColor(Color.BLACK);
+      g2.drawString(button1, 930, 710);
+      g2.drawString(button2, 1030, 710);
+      g2.drawString(button3, 1130, 710);
    }
 }

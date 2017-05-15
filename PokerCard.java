@@ -1,3 +1,14 @@
+import java.awt.*;
+import java.awt.image.*;
+import java.awt.geom.*;
+import java.awt.event.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.imageio.*;
+import java.io.*;
+import java.util.Timer;
+import java.util.TimerTask;
+
 /**
 class for a poker card
 @author Daniel Kim
@@ -11,12 +22,22 @@ public class PokerCard
    private int number;
    /** the suit and number of the card */
    private String name;
+   private BufferedImage myImage;
    
    public PokerCard()
    {
       suit = "Unmarked";
       number = 0;
       name = suit + " " + name;
+      try
+      {
+         InputStream is = new FileInputStream("./PokerCardImages/12Clover.png");
+         myImage = ImageIO.read(is);
+      }
+      catch(IOException ioe)
+      {
+      
+      }
    }
    
    /**
@@ -28,6 +49,15 @@ public class PokerCard
       suit = mySuit;
       number = myNumber;
       name = mySuit + " " + myNumber;
+      try
+      {
+         InputStream is = new FileInputStream("./PokerCardImages/" + number + suit + ".png");
+         myImage = ImageIO.read(is);
+      }
+      catch(IOException ioe)
+      {
+      
+      }
    }
    
    /**

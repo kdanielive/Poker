@@ -23,19 +23,19 @@ public class Deck
       
       for(int idx = 1; idx <= numPerSuit; idx++)
       {
-         pokerDeck[idx - 1] = new PokerCard("Spades", idx);
+         pokerDeck[idx - 1] = new PokerCard("Spade", idx);
       }
       for(int idx = numPerSuit + 1; idx <= 2 * numPerSuit ; idx++)
       {
-         pokerDeck[idx - 1] = new PokerCard("Hearts", idx - numPerSuit);
+         pokerDeck[idx - 1] = new PokerCard("Heart", idx - numPerSuit);
       }
       for(int idx = 2 * numPerSuit + 1; idx <= 3 * numPerSuit; idx++)
       {
-         pokerDeck[idx - 1] = new PokerCard("Clubs", idx - 2 * numPerSuit);
+         pokerDeck[idx - 1] = new PokerCard("Club", idx - 2 * numPerSuit);
       }
       for(int idx = 3 * numPerSuit + 1; idx <= 4 * numPerSuit; idx++)
       {
-         pokerDeck[idx - 1] = new PokerCard("Diamonds", idx - 3 * numPerSuit);
+         pokerDeck[idx - 1] = new PokerCard("Diamond", idx - 3 * numPerSuit);
       }
       
       mix();
