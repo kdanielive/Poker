@@ -49,5 +49,10 @@ public class GameScreen extends JPanel
       (new Player()).drawMe(g2, 200, 500);
       (new Player()).drawMe(g2, 875, 500);
       PokerGame.user.drawMe(g2, 525, 600);
+      
+      g2.setColor(Color.LIGHT_GRAY);
+      g2.draw3DRect(900, 650, 100, 150, true);
+      g2.draw3DRect(1000, 650, 100, 150, true);
+      g2.draw3DRect(1100, 650, 100, 150, true);
    }
 }
