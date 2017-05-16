@@ -18,7 +18,7 @@ public class Player
    /** the name of a player */
    private String name;
    /** the hole cards of a player */
-   private PokerCard[] holeCards = new PokerCard[5];
+   private PokerCard[] holeCards = new PokerCard[2];
    /** indicator of whether the player is alive or dead */
    private boolean isAlive;
    
@@ -32,7 +32,9 @@ public class Player
       name = "Name";
       icon = "gravestone";
       finance = 0;
-      holeCards = new PokerCard[2];
+      
+      holeCards[0] = new PokerCard();
+      holeCards[1] = new PokerCard();
       
       try
       {

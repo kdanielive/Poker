@@ -26,13 +26,12 @@ public class PokerCard
    
    public PokerCard()
    {
-      suit = "Unmarked";
-      number = 0;
+      suit = "Clover";
+      number = 9;
       name = suit + " " + name;
       try
       {
-         InputStream is = new FileInputStream("./PokerCardImages/12Clover.png");
-         myImage = ImageIO.read(is);
+         myImage = ImageIO.read(new File("./PokerCardImages/" + number + suit + ".png"));
       }
       catch(IOException ioe)
       {
@@ -51,8 +50,8 @@ public class PokerCard
       name = mySuit + " " + myNumber;
       try
       {
-         InputStream is = new FileInputStream("./PokerCardImages/" + number + suit + ".png");
-         myImage = ImageIO.read(is);
+         myImage = ImageIO.read(new File("./PokerCardImages/" + number + suit + ".png"));
+
       }
       catch(IOException ioe)
       {
@@ -87,11 +86,17 @@ public class PokerCard
       return name;
    }
    
+   public BufferedImage getImage()
+   {
+      return myImage;
+   }
+   
    public static void main(String[] args)
    {
       PokerCard card = new PokerCard();
       PokerCard card2 = new PokerCard("Clover", 12);
       System.out.println(card.getName());
       System.out.println(card2.getName());
+      System.out.println(card.getImage().getHeight());
    }
 }

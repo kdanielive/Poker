@@ -6,11 +6,7 @@ plays the poker game
 */
 public class PokerGame
 {
-   /** array of players in the game */
-   public static final Player[] players =  new Player[5];
-   
-   public static final Player user = new Player();
-
+   private Player[] players = new Player[5];
    /** the deck of poker cards being used in game */
    private Deck deck;
    /** the betting money on table */
@@ -147,6 +143,11 @@ public class PokerGame
    public Player[] getBetters()
    {
       return betters;
+   }
+   
+   public Player[] getPlayerList()
+   {
+      return players;
    }
    
    public static void main(String[] args)
