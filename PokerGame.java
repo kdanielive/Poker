@@ -6,24 +6,26 @@ plays the poker game
 */
 public class PokerGame
 {
-   private Player[] players = new Player[5];
+   public static Player[] players = new Player[5];
    /** the deck of poker cards being used in game */
-   private Deck deck;
+   public static Deck deck;
    /** the betting money on table */
-   private int moneyOnTable;
+   public static int moneyOnTable;
    /** the number of turns passed in the game */
-   private int turn;
+   public static int turn;
    /** the communicty cards of the game */
-   private ArrayList<PokerCard> communityCards;
+   public static ArrayList<PokerCard> communityCards;
    
-   private int lastBetAmount;
+   public static boolean[] commCardFlipBool;
+   
+   public static int lastBetAmount;
    
    private CompareHandler comparier = new CompareHandler(communityCards);
    
    public static final int PLAYER_NUM = 5;
    public static final int HAND_VOLUME = 5;
    
-   private Player[] betters;
+   public static Player[] betters;
    
    public PokerGame()
    {
@@ -32,6 +34,19 @@ public class PokerGame
       turn = 0;
       communityCards = new ArrayList<PokerCard>();
       betters = new Player[3];
+      commCardFlipBool = new boolean[5];
+      
+      for(Player player : players)
+      {
+         player = new Player();
+      }
+      
+      for(int idx = 0; idx < 5; idx++)
+      {
+         communityCards.add(new PokerCard());
+         commCardFlipBool[idx] = false;
+      }
+      
    }
    
    /**

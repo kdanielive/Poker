@@ -98,5 +98,5 @@ public class PokerCard
       System.out.println(card.getName());
       System.out.println(card2.getName());
       System.out.println(card.getImage().getHeight());
-   }
+   }  
 }
