@@ -59,9 +59,9 @@ public class GameScreen extends JPanel
       
       g2.drawImage(pokerTableImage, 250, 200, null);
       
-      PokerGame.players[1].drawMe(g2, 200, 100);
-      PokerGame.players[2].drawMe(g2, 875, 100);
-      PokerGame.players[3].drawMe(g2, 200, 500);
+      PokerGame.players[2].drawMe(g2, 200, 100);
+      PokerGame.players[3].drawMe(g2, 875, 100);
+      PokerGame.players[1].drawMe(g2, 200, 500);
       PokerGame.players[4].drawMe(g2, 875, 500);
       PokerGame.players[0].drawMe(g2, 400, 600);
       g2.setFont(new Font("Times New Roman", Font.PLAIN, 20));
@@ -149,14 +149,35 @@ public class GameScreen extends JPanel
          smallBlindButton = ImageIO.read(new File("./SmallBlindButton.png"));
          bigBlindButton = ImageIO.read(new File("./BigBlindButton.png"));
          
-         switch(PokerGame.betters[0])
+         BufferedImage[] buttonImages = {dealerButton, smallBlindButton, bigBlindButton};
+         
+         for(int num : PokerGame.betters)
          {
-            case 1:
-               g2.drawImage(dealerButton, 175, 100, null);
-               break;
-            case 2:
-               g2.drawImage(dealerButton, 850, 100, null);
-               break;
+            System.out.println(num);
+         }
+         for(int idx = 0; idx < 3; idx++)
+         {
+            switch(PokerGame.betters[idx])
+            {
+               case 0:
+                  g2.drawImage(buttonImages[idx], 300, 600, null);
+                  break;
+               case 1:
+                  g2.drawImage(buttonImages[idx], 100, 500, null);
+                  break;
+               case 2:
+                  g2.drawImage(buttonImages[idx], 100, 100, null);
+                  break;
+               case 3:
+                  g2.drawImage(buttonImages[idx], 975, 100, null);
+                  break;
+               case 4:
+                  g2.drawImage(buttonImages[idx], 975, 500, null);
+                  break;
+               default:
+                  System.out.println("Wrong dude");
+                  break;
+            }
          }
       }
       catch(IOException ioe)  {  }
