@@ -80,6 +80,7 @@ public class GameScreen extends JPanel
       drawHoleCards(g);
       drawCommunityCards(g);
       drawMoneyOnTable(g);
+      drawButtons(g);
    }
    
    public void drawHoleCards(Graphics g)
@@ -91,6 +92,7 @@ public class GameScreen extends JPanel
       
       if(PokerGame.receivedHoleCard == false)
       {
+         /*
          try
          {
             BufferedImage backSideImage = ImageIO.read(new File("./PokerCardImages/BackSide.png"));
@@ -98,11 +100,14 @@ public class GameScreen extends JPanel
             g2.drawImage(backSideImage, 600, 570, null);
          }
          catch(IOException ioe)  {  }
+         */
       }
       else
       {
          g2.drawImage(holeCards[0].getImage(), 500, 570, null);
          g2.drawImage(holeCards[1].getImage(), 600, 570, null);
+         System.out.println(holeCards[0].getName());
+         System.out.println(holeCards[1].getName());
       }
    }
    
@@ -118,16 +123,6 @@ public class GameScreen extends JPanel
          {
             g2.drawImage(communityCards.get(idx).getImage(), 350 + idx * 100, 300, null);
          }
-         else
-         {
-            BufferedImage backSideImage;
-            try
-            {
-               backSideImage = ImageIO.read(new File("./PokerCardImages/BackSide.png"));
-               g2.drawImage(backSideImage, 350 + idx * 100, 300, null);
-            }
-            catch(IOException ioe)  {  }
-         }
       }
    }
    
@@ -140,6 +135,39 @@ public class GameScreen extends JPanel
       g2.drawString("Total: " + PokerGame.moneyOnTable, 540, 535);
    }
    
+   public void drawButtons(Graphics g)
+   {
+      Graphics2D g2 = (Graphics2D) g;
+      
+      BufferedImage dealerButton;
+      BufferedImage smallBlindButton;
+      BufferedImage bigBlindButton;
+      
+      try
+      {
+         dealerButton = ImageIO.read(new File("./DealerButton.png"));
+         smallBlindButton = ImageIO.read(new File("./SmallBlindButton.png"));
+         bigBlindButton = ImageIO.read(new File("./BigBlindButton.png"));
+         
+         switch(PokerGame.betters[0])
+         {
+            case 1:
+               g2.drawImage(dealerButton, 175, 100, null);
+               break;
+            case 2:
+               g2.drawImage(dealerButton, 850, 100, null);
+               break;
+         }
+      }
+      catch(IOException ioe)  {  }
+/*
+   PokerGame.players[1].drawMe(g2, 200, 100);
+   PokerGame.players[2].drawMe(g2, 875, 100);
+   PokerGame.players[3].drawMe(g2, 200, 500);
+   PokerGame.players[4].drawMe(g2, 875, 500);
+   PokerGame.players[0].drawMe(g2, 400, 600);      
+*/      
+   }
    
    /**
    handles mouse clicks
@@ -189,7 +217,13 @@ public class GameScreen extends JPanel
    
    public void buttonOnePressed()
    {
-   
+      if(button1.equals("Start Game"))
+      {
+         game.distributeCards();
+         game.setBetter();
+         PokerGame.turn++;
+         repaint();
+      }
    }
    
    public void buttonTwoPressed()

@@ -26,7 +26,7 @@ public class PokerGame
    public static final int PLAYER_NUM = 5;
    public static final int HAND_VOLUME = 5;
    
-   public static Player[] betters;
+   public static int[] betters = new int[3];
    
    public PokerGame()
    {
@@ -34,13 +34,14 @@ public class PokerGame
       moneyOnTable = 0;
       turn = 0;
       communityCards = new ArrayList<PokerCard>();
-      betters = new Player[3];
-      commCardFlipBool = new boolean[5];
       
+      commCardFlipBool = new boolean[5];
       for(Player player : players)
       {
          player = new Player();
       }
+      
+      setBetter();
       
       for(int idx = 0; idx < 5; idx++)
       {
@@ -111,25 +112,18 @@ public class PokerGame
          Random randomer = new Random();
          int randIdx = randomer.nextInt(players.length);
 
-         betters[0] = players[randIdx];
-         betters[1] = players[(randIdx + 1) % 5];
-         betters[2] = players[(randIdx + 2) % 5];
+         betters[0] = randIdx;
+         betters[1] = (randIdx + 1) % 5;
+         betters[2] = (randIdx + 2) % 5;
       }
       else
       {
-         int buttonIdx = 0;
-         for(int idx = 0; idx < players.length; idx++)
-         {
-            if(players[idx] == betters[0])
-            {
-               buttonIdx = idx;
-            }
-         }
+         int buttonIdx = (betters[0] + 1) % 5;
          
-         betters[0] = players[buttonIdx];
-         betters[1] = players[(buttonIdx + 1) % 5];
-         betters[2] = players[(buttonIdx + 2) % 5];
-      }  
+         betters[0] = buttonIdx;
+         betters[1] = (buttonIdx + 1) % 5;
+         betters[2] = (buttonIdx + 2) % 5;
+      }
    }
    
    public void distributeCards()
@@ -144,7 +138,8 @@ public class PokerGame
       {
          players[idx].setHoleCards(tempCardArray.get(idx),
             tempCardArray.get(idx + PLAYER_NUM));
-      }                                            
+      }
+      receivedHoleCard = true;                                            
    }
    
    public void finishRound()
@@ -156,7 +151,7 @@ public class PokerGame
       deck = new Deck();
    }
    
-   public Player[] getBetters()
+   public int[] getBetters()
    {
       return betters;
    }
