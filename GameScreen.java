@@ -38,8 +38,8 @@ public class GameScreen extends JPanel
       {
       
       }
-      button1 = "Check";
-      button2 = "Bet";
+      button1 = "Start Game";
+      button2 = "";
       button3 = "End Game";
       
       game = new PokerGame();
@@ -81,6 +81,7 @@ public class GameScreen extends JPanel
       
       drawHoleCards(g);
       drawCommunityCards(g);
+      drawMoneyOnTable(g);
    }
    
    public void drawHoleCards(Graphics g)
@@ -90,8 +91,21 @@ public class GameScreen extends JPanel
       PokerCard[] holeCards = new PokerCard[2];
       holeCards = PokerGame.players[0].getHoleCards();
       
-      g2.drawImage(holeCards[0].getImage(), 500, 570, null);
-      g2.drawImage(holeCards[1].getImage(), 600, 570, null);
+      if(PokerGame.receivedHoleCard == false)
+      {
+         try
+         {
+            BufferedImage backSideImage = ImageIO.read(new File("./PokerCardImages/BackSide.png"));
+            g2.drawImage(backSideImage, 500, 570, null);
+            g2.drawImage(backSideImage, 600, 570, null);
+         }
+         catch(IOException ioe)  {  }
+      }
+      else
+      {
+         g2.drawImage(holeCards[0].getImage(), 500, 570, null);
+         g2.drawImage(holeCards[1].getImage(), 600, 570, null);
+      }
    }
    
    public void drawCommunityCards(Graphics g)
@@ -117,6 +131,14 @@ public class GameScreen extends JPanel
             catch(IOException ioe)  {  }
          }
       }
-
+   }
+   
+   public void drawMoneyOnTable(Graphics g)
+   {
+      Graphics2D g2 = (Graphics2D) g;
+      
+      g2.setColor(Color.WHITE);
+      g2.setFont(new Font("Times New Roman", Font.PLAIN, 25));
+      g2.drawString("Total: " + PokerGame.moneyOnTable, 540, 535);
    }
 }  

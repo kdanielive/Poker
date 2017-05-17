@@ -44,5 +44,7 @@ public class PokerApp
       myApp.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
       myApp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
       myApp.setVisible(true);
+      
+      
    }
 }

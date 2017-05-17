@@ -17,6 +17,7 @@ public class PokerGame
    public static ArrayList<PokerCard> communityCards;
    
    public static boolean[] commCardFlipBool;
+   public static boolean receivedHoleCard = false;
    
    public static int lastBetAmount;
    
