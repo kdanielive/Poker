@@ -45,10 +45,8 @@ public class GameScreen extends JPanel
       game = new PokerGame();
       game.listPlayers(user, new AIPlayer(), new AIPlayer(), new AIPlayer(), new AIPlayer());
 
-      for(Player player : PokerGame.players)
-      {
-         System.out.println(player.getName());
-      }
+      addMouseListener(new MouseHandler());
+      requestFocusInWindow();
    }
    
    /**
@@ -141,4 +139,67 @@ public class GameScreen extends JPanel
       g2.setFont(new Font("Times New Roman", Font.PLAIN, 25));
       g2.drawString("Total: " + PokerGame.moneyOnTable, 540, 535);
    }
+   
+   
+   /**
+   handles mouse clicks
+   */
+   private class MouseHandler implements MouseListener
+   {
+      /**
+      handles mouse button presses
+      @param e info about the mouse event
+      */
+      public void mousePressed(MouseEvent e)
+      {
+         int clickX = e.getX();
+         int clickY = e.getY();
+         
+         Rectangle2D.Double[] buttons = new Rectangle2D.Double[3];
+         buttons[0] = new Rectangle2D.Double(900, 650, 100, 150);
+         buttons[1] = new Rectangle2D.Double(1000, 650, 100, 150);
+         buttons[2] = new Rectangle2D.Double(1100, 650, 100, 150);
+         
+         for(int idx = 0; idx < 3; idx++)
+         {
+            if(buttons[idx].contains(clickX, clickY) && idx == 0)
+            {
+               buttonOnePressed();
+               System.out.println("yeah");
+            }
+            else if (buttons[idx].contains(clickX, clickY) && idx == 1)
+            {
+               buttonTwoPressed();
+            }
+            else if (buttons[idx].contains(clickX, clickY) && idx == 2)
+            {
+               buttonThreePressed();
+            }
+         }
+      }
+      
+      public void mouseReleased(MouseEvent e) { }
+      
+      public void mouseClicked(MouseEvent e) { }
+      
+      public void mouseEntered(MouseEvent e) { }
+      
+      public void mouseExited(MouseEvent e) { }
+   }
+   
+   public void buttonOnePressed()
+   {
+   
+   }
+   
+   public void buttonTwoPressed()
+   {
+   
+   }
+   
+   public void buttonThreePressed()
+   {
+   
+   }
+
 }  
