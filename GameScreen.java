@@ -350,6 +350,7 @@ public class GameScreen extends JPanel
       {
          PokerGame.turn++;
          boolean allCheck = false;
+         drawLossBool = false;
          int count = 0;
          while(allCheck == false)
          {
