@@ -49,15 +49,29 @@ public class AIPlayer extends Player
       }
       else
       {  
-         for(PokerCard card : holeCards)
+
+         ArrayList<PokerCard> showDownCards = new ArrayList<PokerCard>();
+         for(PokerCard card : this.getHoleCards())
          {
-            int num = card.getNumber();
-            String suit = card.getSuit();
-            for(PokerCard communCard : communityCards)
+            showDownCards.add(card);
+         }
+         for(PokerCard card : PokerGame.communityCards)
+         {
+            showDownCards.add(card);
+         }
+         CompareHandler comparier = new CompareHandler(showDownCards);
+         int compoNum = comparier.checkCompo(this);
+         if(compoNum > 3)
+         {
+            wouldBet = true;
+         }
+         else
+         {
+            if(this.getBettedAmount() > this.getFinance() / 3)
             {
-               if(communCard.getNumber() == num)   {  wouldBet = true; }
-               else if(communCard.getSuit().equals(suit))   {  wouldBet = true; }
+               wouldBet = false;
             }
+            else  {  wouldBet = true;  }
          }
       }
    }

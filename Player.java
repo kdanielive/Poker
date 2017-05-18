@@ -24,6 +24,8 @@ public class Player
    
    ArrayList<PokerCard> showDownHand = new ArrayList<PokerCard>();
    
+   private int bettedAmount = 0;
+   
    private BufferedImage iconImage;
    
    public Player()
@@ -31,7 +33,7 @@ public class Player
       isAlive = true;
       name = "Name";
       icon = "gravestone";
-      finance = 0;
+      finance = 1000;
       
       holeCards[0] = new PokerCard();
       holeCards[1] = new PokerCard();
@@ -45,6 +47,7 @@ public class Player
       {
       
       }
+      showDownHand.add(new PokerCard());
    }
    
    /**
@@ -70,6 +73,7 @@ public class Player
       {
       
       }
+      showDownHand.add(new PokerCard());
    }
    
    public ArrayList<PokerCard> getShowDownHand()
@@ -109,6 +113,11 @@ public class Player
       return name;
    }
    
+   public int getBettedAmount()
+   {
+      return bettedAmount;
+   }
+   
    /**
    sets the icon of the player
    @param myIcon icon of player
@@ -135,6 +144,12 @@ public class Player
    public void modifyFinance(int myFinance)
    {
       finance = myFinance;
+   }
+   
+   public void bet(int amount)
+   {
+      modifyFinance(getFinance() - amount);
+      PokerGame.moneyOnTable = PokerGame.moneyOnTable + amount;
    }
    
    /**
