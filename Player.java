@@ -28,12 +28,14 @@ public class Player
    
    private BufferedImage iconImage;
    
+   private boolean isFirstBetter = false;
+   
    public Player()
    {
       isAlive = true;
       name = "Name";
       icon = "gravestone";
-      finance = 1000;
+      finance = 100000;
       
       holeCards[0] = new PokerCard();
       holeCards[1] = new PokerCard();
@@ -47,7 +49,6 @@ public class Player
       {
       
       }
-      showDownHand.add(new PokerCard());
    }
    
    /**
@@ -73,7 +74,6 @@ public class Player
       {
       
       }
-      showDownHand.add(new PokerCard());
    }
    
    public ArrayList<PokerCard> getShowDownHand()
@@ -84,6 +84,16 @@ public class Player
    public void setShowDownHand(ArrayList<PokerCard> myHand)
    {
       showDownHand = myHand;
+   }
+   
+   public void setFirstBetterBool(boolean condition)
+   {
+      isFirstBetter = condition;
+   }
+   
+   public boolean getFirstBetterBool()
+   {
+      return isFirstBetter;
    }
    
    /**
@@ -118,6 +128,11 @@ public class Player
       return bettedAmount;
    }
    
+   public void setBettedAmount(int amt)
+   {
+      bettedAmount = amt;
+   }
+   
    /**
    sets the icon of the player
    @param myIcon icon of player
@@ -146,10 +161,15 @@ public class Player
       finance = myFinance;
    }
    
-   public void bet(int amount)
+   public void bet(int amount, boolean cond)
    {
       modifyFinance(getFinance() - amount);
       PokerGame.moneyOnTable = PokerGame.moneyOnTable + amount;
+      bettedAmount += amount;
+      if(cond == true)
+      {
+         PokerGame.lastBetAmount += amount;
+      }
    }
    
    /**

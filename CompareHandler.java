@@ -17,8 +17,8 @@ public class CompareHandler
    */
    public Player compareHands(Player player1, Player player2)
    {
-      int p1Point = checkCompo(player1);
-      int p2Point = checkCompo(player2);
+      int p1Point = checkCompo(player1.getShowDownHand());
+      int p2Point = checkCompo(player2.getShowDownHand());
       
       if(p1Point > p2Point)   {  return player1;   }
       else  {  return player2;   }
@@ -26,11 +26,11 @@ public class CompareHandler
 
    public int[] createDictionary(ArrayList<PokerCard> hand)
    {
-      int[] dictionary = new int[hand.size()];
+      int[] dictionary = new int[13];
       
       for(PokerCard card : hand)
       {
-         dictionary[card.getNumber() - 1] = dictionary[card.getNumber() - 1] + 1;
+         dictionary[card.getNumber() - 1] += 1;
       }
       
       return dictionary;
@@ -84,7 +84,7 @@ public class CompareHandler
       while(firstIndex <= hand.size() - PokerGame.HAND_VOLUME)
       {
          isStraight = true;
-         for(int idx = firstIndex; idx < idx + PokerGame.HAND_VOLUME; idx++)
+         for(int idx = firstIndex; idx < firstIndex + PokerGame.HAND_VOLUME - 1; idx++)
          {
             if(hand.get(idx).getNumber() + 1 != hand.get(idx + 1).getNumber())
             {
@@ -148,16 +148,16 @@ public class CompareHandler
       return isStraightFlush;
    }
    
-   public int checkCompo(Player player)
+   public int checkCompo(ArrayList<PokerCard> cards)
    {
-      if(checkForStraightFlush(player.getShowDownHand()))  {  return 8;   }
-      else if(checkForFourOfAKind(player.getShowDownHand()))  {  return 7;   }
-      else if(checkForFullHouse(player.getShowDownHand())) {  return 6;   }
-      else if(checkForFlush(player.getShowDownHand()))  {  return 5;   }
-      else if(checkForStraight(player.getShowDownHand()))  {  return 4;   }
-      else if(checkForThreeOfAKind(player.getShowDownHand())) {  return 3;   }
-      else if(checkForTwoPair(player.getShowDownHand()))   {  return 2;   }
-      else if(checkForOnePair(player.getShowDownHand()))   {  return 1;   }
+      if(checkForStraightFlush(cards))  {  return 8;   }
+      else if(checkForFourOfAKind(cards))  {  return 7;   }
+      else if(checkForFullHouse(cards)) {  return 6;   }
+      else if(checkForFlush(cards))  {  return 5;   }
+      else if(checkForStraight(cards))  {  return 4;   }
+      else if(checkForThreeOfAKind(cards)) {  return 3;   }
+      else if(checkForTwoPair(cards))   {  return 2;   }
+      else if(checkForOnePair(cards))   {  return 1;   }
       else  {  return 0;   }
    }
    
@@ -171,6 +171,23 @@ public class CompareHandler
          PokerCard idxVal = list.get(swapIdx);
          int idxValNum = list.get(swapIdx).getNumber();
          while(idx > 0 && list.get(idx - 1).getNumber() > idxValNum)
+         {
+            list.set(idx, list.get(idx - 1));
+            idx--;
+         }
+         list.set(idx, idxVal);
+      }
+   }
+   
+   public static void intInsertionSort(ArrayList<Integer> list)
+   {
+      int n = list.size();
+      
+      for(int swapIdx = 1; swapIdx < n; swapIdx++)
+      {
+         int idx = swapIdx;
+         int idxVal = list.get(swapIdx);
+         while(idx > 0 && list.get(idx - 1) > idxVal)
          {
             list.set(idx, list.get(idx - 1));
             idx--;

@@ -38,6 +38,9 @@ public class PokerApp
       myAppPanel = new JPanel(new CardLayout());
       myAppPanel.add(myGameScreen, "PokerTable");
       myApp.add(myAppPanel);
+      
+      myGameScreen.setFocusable(true);
+      myGameScreen.requestFocusInWindow();
             
       myApp.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
       myApp.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

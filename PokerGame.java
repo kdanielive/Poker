@@ -20,6 +20,9 @@ public class PokerGame
    public static boolean receivedHoleCard = false;
    
    public static int lastBetAmount;
+   public static int turnId;
+   public static int userDesiredAmt = 0;
+   public static int round = 0;
    
    private CompareHandler comparier = new CompareHandler(communityCards);
    
@@ -27,6 +30,9 @@ public class PokerGame
    public static final int HAND_VOLUME = 5;
    
    public static int[] betters = new int[3];
+   public static boolean[] checkList =  new boolean[5];
+   public static boolean[] foldList = new boolean[5];
+   public static boolean[] turnList = new boolean[5];
    
    public PokerGame()
    {
@@ -77,12 +83,6 @@ public class PokerGame
       return comparier.compareHands(player1, player2);
    }
    */
-   public void bet(Player player, int amount)
-   {
-      moneyOnTable += amount;
-      lastBetAmount = amount;
-      player.modifyFinance(player.getFinance() - amount);
-   }
    
    public void check()
    {
@@ -103,18 +103,27 @@ public class PokerGame
       players[2] = p2;
       players[3] = p3;
       players[4] = p4;
+      p1.setId(1);
+      p2.setId(2);
+      p3.setId(3);
+      p4.setId(4);
    }
    
    public void setBetter()
    {
       if(turn == 0)
       {
+      /*
          Random randomer = new Random();
          int randIdx = randomer.nextInt(players.length);
 
          betters[0] = randIdx;
          betters[1] = (randIdx + 1) % 5;
          betters[2] = (randIdx + 2) % 5;
+      */
+         betters[0] = 4;
+         betters[1] = 0;
+         betters[2] = 1;
       }
       else
       {
@@ -124,6 +133,8 @@ public class PokerGame
          betters[1] = (buttonIdx + 1) % 5;
          betters[2] = (buttonIdx + 2) % 5;
       }
+      turnId = betters[1];
+      System.out.println(turnId);
    }
    
    public void distributeCards()
@@ -138,6 +149,10 @@ public class PokerGame
       {
          players[idx].setHoleCards(tempCardArray.get(idx),
             tempCardArray.get(idx + PLAYER_NUM));
+      }
+      for(int idx = 0; idx < 5; idx++)
+      {
+         communityCards.set(idx, deck.drawCard());
       }
       receivedHoleCard = true;                                            
    }
