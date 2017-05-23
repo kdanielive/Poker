@@ -34,7 +34,7 @@ public class Player
    {
       isAlive = true;
       name = "Name";
-      icon = "gravestone";
+      icon = "death";
       finance = 100000;
       
       holeCards[0] = new PokerCard();
@@ -42,7 +42,7 @@ public class Player
       
       try
       {
-         InputStream is = getClass().getResourceAsStream(icon + ".jpg");
+         InputStream is = getClass().getResourceAsStream("./IconImages/" + icon + ".png");
          iconImage = ImageIO.read(is);
       }
       catch(IOException ioe)
@@ -67,7 +67,7 @@ public class Player
       
       try
       {
-         InputStream is = getClass().getResourceAsStream(icon + ".jpg");
+         InputStream is = getClass().getResourceAsStream(icon + ".png");
          iconImage = ImageIO.read(is);
       }
       catch(IOException ioe)

@@ -25,14 +25,12 @@ public class BugTester extends JPanel
       
       for(int row = 0; row < 4; row++)
       {
-         for(int col = 0; col < 14; col++)
+         for(int col = 0; col < 13; col++)
          {
             PokerCard card = deck.drawCard();
-            g2.drawImage(card.getImage(), col * 100, row * 200, null);
-            col++;
+            g2.drawImage(card.getImage(), col * 100, row * 175, null);
             System.out.println(card.getName());
          }
-         row++;
       }
    }  
    

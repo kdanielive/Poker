@@ -6,8 +6,6 @@ import javax.swing.*;
 import javax.swing.event.*;
 import javax.imageio.*;
 import java.io.*;
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.*;
 
 public class PokerTableScreen
