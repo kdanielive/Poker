@@ -35,7 +35,7 @@ public class PokerCard
       }
       catch(IOException ioe)
       {
-      
+         System.out.println("Default Constructor");
       }
    }
    
@@ -55,7 +55,8 @@ public class PokerCard
       }
       catch(IOException ioe)
       {
-      
+         System.out.print(name + " ");
+         System.out.println("Custom Constructor");
       }
    }
    
@@ -97,6 +98,5 @@ public class PokerCard
       PokerCard card2 = new PokerCard("Clover", 12);
       System.out.println(card.getName());
       System.out.println(card2.getName());
-      System.out.println(card.getImage().getHeight());
    }  
 }
