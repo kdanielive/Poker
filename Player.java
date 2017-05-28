@@ -67,7 +67,7 @@ public class Player
       
       try
       {
-         InputStream is = getClass().getResourceAsStream(icon + ".png");
+         InputStream is = getClass().getResourceAsStream("./IconImages/" + icon + ".png");
          iconImage = ImageIO.read(is);
       }
       catch(IOException ioe)
@@ -143,7 +143,7 @@ public class Player
       
       try
       {
-         InputStream is = getClass().getResourceAsStream(icon);
+         InputStream is = getClass().getResourceAsStream("./IconImages/" + icon + ".png");
          iconImage = ImageIO.read(is);
       }
       catch(IOException ioe)

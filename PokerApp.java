@@ -22,6 +22,7 @@ public class PokerApp
       
    private GameScreen myGameScreen;
    private CharacterCreationScreen myCharacterScreen;
+   private MainScreen myMainScreen;
    
    public static Player user = new Player();
    
@@ -34,11 +35,13 @@ public class PokerApp
    public void run()
    {
       myGameScreen = new GameScreen(this);
-      myCharacterScreen = new CharacterCreationScreen();
+      myCharacterScreen = new CharacterCreationScreen(this);
+      myMainScreen = new MainScreen(this);
 
       myApp = new JFrame();
       myApp.add(myGameScreen);
       myApp.add(myCharacterScreen);
+      myApp.add(myMainScreen);
       
       myGameScreen.setFocusable(true);
       myGameScreen.requestFocusInWindow();
@@ -46,6 +49,7 @@ public class PokerApp
       myAppPanel = new JPanel(new CardLayout());
       myAppPanel.add(myCharacterScreen, "CharacterScreen");
       myAppPanel.add(myGameScreen, "PokerTable");
+      myAppPanel.add(myMainScreen, "Main");
       myApp.add(myAppPanel);
             
       myApp.setSize(WINDOW_WIDTH, WINDOW_HEIGHT);
@@ -65,6 +69,10 @@ public class PokerApp
       else if(whichScreen == "CharacterScreen")
       {
          myCharacterScreen.requestFocusInWindow();
+      }
+      else if(whichScreen == "Main")
+      {
+         myMainScreen.requestFocusInWindow();
       }
    }
 }
