@@ -12,6 +12,8 @@ public class AIPlayer extends Player
    private boolean wouldBet;
    private int Id;
    
+   PokerGame myGame = new PokerGame();
+   
    public AIPlayer()
    {
       super();
@@ -56,7 +58,7 @@ public class AIPlayer extends Player
    */
    public void easyMove()
    {
-
+   
    }
    
    /** 

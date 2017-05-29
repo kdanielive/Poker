@@ -30,6 +30,8 @@ public class Player
    
    private boolean isFirstBetter = false;
    
+   PokerGame myGame = new PokerGame();
+   
    public Player()
    {
       isAlive = true;
@@ -74,6 +76,11 @@ public class Player
       {
       
       }
+   }
+   
+   public void declareGame(PokerGame game)
+   {
+      myGame = game;
    }
    
    public ArrayList<PokerCard> getShowDownHand()

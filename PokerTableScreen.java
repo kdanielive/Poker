@@ -20,6 +20,8 @@ public class PokerTableScreen extends JPanel
    private JButton button3;
    private JButton turnButton;
    
+   private String consoleMessage;
+   
    private PokerGame game = new PokerGame();
    
    public PokerTableScreen(PokerApp app)
@@ -28,9 +30,9 @@ public class PokerTableScreen extends JPanel
       
       this.setLayout(null);
       
-      button1 = new JButton("Welcome");
-      button2 = new JButton("");
-      button3 = new JButton("");
+      button1 = new JButton("Press to");
+      button2 = new JButton("Start");
+      button3 = new JButton("Game");
       JButton[] buttons = {button1, button2, button3};
       turnButton = new JButton("");
       
@@ -64,6 +66,13 @@ public class PokerTableScreen extends JPanel
       
       game.listPlayers(PokerApp.user, PokerApp.player2, PokerApp.player3, 
          PokerApp.player4, PokerApp.player5);
+      for(Player player : game.getPlayerList())
+      {
+         player.declareGame(game);
+      }
+      
+      consoleMessage = "Welcome. Test yourself against these masters in Poker. "
+         + "Win money, get money, or lose all money and die.";
 
       addMouseListener(new MouseHandler());
       addKeyListener(new MyKeyListener());
@@ -87,13 +96,18 @@ public class PokerTableScreen extends JPanel
       game.getPlayerList()[4].drawMe(g2, 875, 500);
       game.getPlayerList()[0].drawMe(g2, 400, 600);
       g2.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+      
+      g2.setColor(Color.WHITE);
+      g2.fillRect(0, 0, 800, 90);
+      g2.setColor(Color.BLACK);
+      g2.drawRect(0, 0, 800, 90);
+      g2.drawString(consoleMessage, 0, 0);
 
       //drawHoleCards(g);
       //drawCommunityCards(g);
       //drawMoneyOnTable(g);
       //drawButtons(g);
       //drawMyFinance(g);
-
    }
    
    public void drawButtons(Graphics g)
