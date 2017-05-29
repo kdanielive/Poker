@@ -20,6 +20,11 @@ public class CharacterCreationScreen extends JPanel
    private BufferedImage backgroundImage;
    private BufferedImage nextCardImage;
    
+   private boolean icon1Selected = false;
+   private boolean icon2Selected = false;
+   private boolean icon3Selected = false;
+   private boolean icon4Selected = false;
+   
    private PokerApp myApp;
      
    public CharacterCreationScreen(PokerApp app)
@@ -67,6 +72,15 @@ public class CharacterCreationScreen extends JPanel
       g2.drawImage(icon3, 450, 300, null);
       g2.drawImage(icon4, 600, 300, null);
       g2.drawImage(nextCardImage, 1070, 590, null);
+      
+      int height = icon1.getHeight();
+      int width = icon1.getWidth();
+      g2.setStroke(new BasicStroke(2));
+      
+      if(icon1Selected == true)  {  g2.drawRect(150, 300, width, height);  }
+      else if(icon2Selected == true)   { g2.drawRect(300, 300, width, height);   }
+      else if(icon3Selected == true)   { g2.drawRect(450, 300, width, height);   }
+      else if(icon4Selected == true)   { g2.drawRect(600, 300, width, height);   }
    }
    
    /**
@@ -112,21 +126,41 @@ public class CharacterCreationScreen extends JPanel
             {
                System.out.println("1");
                PokerApp.user.setIcon("death");
+               icon1Selected = true;
+               icon2Selected = false;
+               icon3Selected = false;
+               icon4Selected = false;
+               repaint();
             }
             else if (icons[idx].contains(clickX, clickY) && idx == 1)
             {
                System.out.println("2");
                PokerApp.user.setIcon("eyeball");
+               icon1Selected = false;
+               icon2Selected = true;
+               icon3Selected = false;
+               icon4Selected = false;
+               repaint();
             }
             else if (icons[idx].contains(clickX, clickY) && idx == 2)
             {
                System.out.println("3");
                PokerApp.user.setIcon("jokerhat");
+               icon1Selected = false;
+               icon2Selected = false;
+               icon3Selected = true;
+               icon4Selected = false;
+               repaint();
             }
             else if (icons[idx].contains(clickX, clickY) && idx == 3)
             {
                System.out.println("4");
                PokerApp.user.setIcon("teardrop");
+               icon1Selected = false;
+               icon2Selected = false;
+               icon3Selected = false;
+               icon4Selected = true;
+               repaint();
             }
          }
       }

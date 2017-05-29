@@ -16,22 +16,41 @@ public class LobbyScreen extends JPanel
    private PokerApp myApp;
    
    BufferedImage woodBackgroundImage;
-   BufferedImage nextCardImage;
+   BufferedImage exitCardImage;
    BufferedImage vintageNoteImage;
    BufferedImage joker1Image;
    BufferedImage joker2Image;
    BufferedImage casinoListImage;
    
+   boolean[] authorizedList = {false, false, false, false, false, false, false};
+   
    public LobbyScreen(PokerApp app)
    {
       myApp = app;
+      
+      authorizedList[0] = true;
+      authorizedList[1] = true;
+      if(PokerApp.user.getFinance() > 10000)
+      {
+         authorizedList[2] = true;
+         authorizedList[3] = true;
+      }
+      if(PokerApp.user.getFinance() > 100000)
+      {
+         authorizedList[4] = true;
+         authorizedList[5] = true;
+      }
+      if(PokerApp.user.getFinance() > 500000)
+      {
+         authorizedList[6] = true;
+      }
       
       try
       {
          InputStream is = getClass().getResourceAsStream("woodBackground.jpg");
          woodBackgroundImage = ImageIO.read(is);
-         is = getClass().getResourceAsStream("nextCard.png");
-         nextCardImage = ImageIO.read(is);
+         is = getClass().getResourceAsStream("exitCard.png");
+         exitCardImage = ImageIO.read(is);
          is = getClass().getResourceAsStream("vintageNote.jpg");
          vintageNoteImage = ImageIO.read(is);
          is = getClass().getResourceAsStream("joker1.jpg");
@@ -55,7 +74,7 @@ public class LobbyScreen extends JPanel
       Graphics2D g2 = (Graphics2D) g;
       
       g2.drawImage(woodBackgroundImage, 0, 0, null);
-      g2.drawImage(nextCardImage, 1070, 590, null);
+      g2.drawImage(exitCardImage, 1070, 590, null);
       g2.drawImage(vintageNoteImage, 100, 60, null);
       g2.drawImage(joker1Image, 650, 500, null);
       g2.drawImage(joker2Image, 850, 500, null);
@@ -79,7 +98,18 @@ public class LobbyScreen extends JPanel
       
       for(int idx = 0; idx < 7; idx++)
       {
-         g2.drawString(as1.getIterator(), 1050, 145 + idx * 45);
+         if(authorizedList[idx] == true)
+         {
+            g2.drawString("Enter", 1050, 145 + idx * 45);
+            g2.drawRect(1045, 125 + idx * 45, 53, 23);
+         }
+         else
+         {
+            g2.setColor(Color.RED);
+            g2.drawString(as1.getIterator(), 1050, 145 + idx * 45);
+            g2.drawRect(1045, 125 + idx * 45, 53, 23);
+            g2.setColor(Color.BLACK);
+         }
       }
       
       g2.setFont(new Font("Times New Roman", Font.PLAIN, 23));
@@ -104,11 +134,13 @@ public class LobbyScreen extends JPanel
          int clickX = e.getX();
          int clickY = e.getY();
          
-         Rectangle2D.Double nextBox = new Rectangle2D.Double(1070, 590, 128, 128);
+         Rectangle2D.Double exitBox = new Rectangle2D.Double(1070, 590, 128, 128);
          
-         if(nextBox.contains(clickX, clickY))
+         if(exitBox.contains(clickX, clickY))
          {
-            myApp.switchScreen("Main");
+            JFrame frame = new JFrame("Message Box");
+            int choice = JOptionPane.showConfirmDialog(frame, "Exit game?");
+            if(choice == 0)   {  myApp.switchScreen("Main");   }
          }
       }
       
