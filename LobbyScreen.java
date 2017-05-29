@@ -30,17 +30,17 @@ public class LobbyScreen extends JPanel
       
       authorizedList[0] = true;
       authorizedList[1] = true;
-      if(PokerApp.user.getFinance() > 10000)
+      if(PokerApp.user.getFinance() > 1000)
       {
          authorizedList[2] = true;
          authorizedList[3] = true;
       }
-      if(PokerApp.user.getFinance() > 100000)
+      if(PokerApp.user.getFinance() > 5000)
       {
          authorizedList[4] = true;
          authorizedList[5] = true;
       }
-      if(PokerApp.user.getFinance() > 500000)
+      if(PokerApp.user.getFinance() > 10000)
       {
          authorizedList[6] = true;
       }

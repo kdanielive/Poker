@@ -30,14 +30,13 @@ public class Player
    
    private boolean isFirstBetter = false;
    
-   PokerGame myGame = new PokerGame();
    
    public Player()
    {
       isAlive = true;
       name = "Name";
       icon = "death";
-      finance = 100000;
+      finance = 1000;
       
       holeCards[0] = new PokerCard();
       holeCards[1] = new PokerCard();
@@ -77,12 +76,12 @@ public class Player
       
       }
    }
-   
+   /*
    public void declareGame(PokerGame game)
    {
       myGame = game;
    }
-   
+   */
    public ArrayList<PokerCard> getShowDownHand()
    {
       return showDownHand;

@@ -21,8 +21,11 @@ public class PokerTableScreen extends JPanel
    private JButton turnButton;
    
    private String consoleMessage;
+   private String consoleOptionalMsg;
    
-   private PokerGame game = new PokerGame();
+   private int freeCounter = 0;
+   
+   public static PokerGame game = new PokerGame();
    
    public PokerTableScreen(PokerApp app)
    {
@@ -30,9 +33,9 @@ public class PokerTableScreen extends JPanel
       
       this.setLayout(null);
       
-      button1 = new JButton("Press to");
-      button2 = new JButton("Start");
-      button3 = new JButton("Game");
+      button1 = new JButton("Press");
+      button2 = new JButton("Card");
+      button3 = new JButton("on Right");
       JButton[] buttons = {button1, button2, button3};
       turnButton = new JButton("");
       
@@ -66,19 +69,19 @@ public class PokerTableScreen extends JPanel
       
       game.listPlayers(PokerApp.user, PokerApp.player2, PokerApp.player3, 
          PokerApp.player4, PokerApp.player5);
-      for(Player player : game.getPlayerList())
+      /*for(Player player : game.getPlayerList())
       {
          player.declareGame(game);
-      }
+      }*/
       
-      consoleMessage = "Welcome. Test yourself against these masters in Poker. "
-         + "Win money, get money, or lose all money and die.";
+      consoleMessage = "Welcome. Test yourself against these masters in Poker. Press the card"
+         + " with arrow to proceed.";
+      consoleOptionalMsg = "You will be playing structured limit Texas Holdem. There will be blind bets.";
 
       addMouseListener(new MouseHandler());
       addKeyListener(new MyKeyListener());
       requestFocusInWindow();
    }
-   
 
    /**
    draws the panel
@@ -101,13 +104,25 @@ public class PokerTableScreen extends JPanel
       g2.fillRect(0, 0, 800, 90);
       g2.setColor(Color.BLACK);
       g2.drawRect(0, 0, 800, 90);
-      g2.drawString(consoleMessage, 0, 0);
-
+      g2.drawString(consoleMessage, 20, 30);
+      g2.drawString(consoleOptionalMsg, 20, 50);
+      
+      g2.drawString(PokerApp.player3.getName(), 150, 200);
+      g2.drawString(PokerApp.player4.getName(), 1025, 200);
+      g2.drawString(PokerApp.player2.getName(), 150, 600);
+      g2.drawString(PokerApp.player5.getName(), 1025, 550);
+      g2.drawString(PokerApp.user.getName(), 350, 750);
       //drawHoleCards(g);
       //drawCommunityCards(g);
       //drawMoneyOnTable(g);
-      //drawButtons(g);
+      drawButtons(g);
+      setButtonStrings();
       //drawMyFinance(g);
+   }
+   
+   public void setButtonStrings()
+   {
+      
    }
    
    public void drawButtons(Graphics g)
@@ -118,7 +133,7 @@ public class PokerTableScreen extends JPanel
       BufferedImage smallBlindButton;
       BufferedImage bigBlindButton;
       
-      if(game.getTurn() != 0)
+      if(game.getPhase() != 0)
       {
          try
          {
@@ -142,10 +157,10 @@ public class PokerTableScreen extends JPanel
                      g2.drawImage(buttonImages[idx], 100, 100, null);
                      break;
                   case 3:
-                     g2.drawImage(buttonImages[idx], 975, 100, null);
+                     g2.drawImage(buttonImages[idx], 975, 75, null);
                      break;
                   case 4:
-                     g2.drawImage(buttonImages[idx], 975, 500, null);
+                     g2.drawImage(buttonImages[idx], 975, 450, null);
                      break;
                   default:
                      System.out.println("Wrong dude");
@@ -298,7 +313,26 @@ public class PokerTableScreen extends JPanel
       */
       public void actionPerformed(ActionEvent e)
       {
-
+         if(game.getPhase() == 0)
+         {
+            game.setButton();
+            game.incrementPhase();
+            game.setSubPhase("Blind");
+            repaint();
+         }
+         else if(game.getPhase() == 1 && game.getSubPhase.equals("Blind"))
+         {
+            if(freeCounter == 2)
+            {
+               game.incrementPhase();
+               game.setSubPhase("firstR");
+               repaint();
+            }
+            else
+            {
+               
+            }
+         }
       }
    }
    

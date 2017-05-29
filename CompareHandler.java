@@ -2,12 +2,9 @@ import java.util.*;
 
 public class CompareHandler
 {
-   /** the communicty cards of the game */
-   private ArrayList<PokerCard> communityCards;
-   
-   public CompareHandler(ArrayList<PokerCard> myCommunityCards)
+   public CompareHandler()
    {
-      communityCards = myCommunityCards;
+   
    }
    
    /**
@@ -80,19 +77,19 @@ public class CompareHandler
       insertionSort(hand);
       
       boolean isStraight = true;
-      int firstIndex = 0;
-      while(firstIndex <= hand.size() - PokerGame.HAND_VOLUME)
+      int straightTracker = 0;
+
+      for(int idx = 1; idx < hand.size(); idx++)
       {
-         isStraight = true;
-         for(int idx = firstIndex; idx < firstIndex + PokerGame.HAND_VOLUME - 1; idx++)
-         {
-            if(hand.get(idx).getNumber() + 1 != hand.get(idx + 1).getNumber())
+         if(hand.get(idx).getNumber() == hand.get(idx - 1).getNumber() + 1)   
+         {  
+            straightTracker++;
+            if(straightTracker == 4)
             {
-               isStraight = false;
+               return true;
             }
          }
-         if(isStraight == true)   {  return true;   }
-         firstIndex++;
+         else  {  straightTracker = 0; }
       }
       
       return false;
@@ -114,14 +111,15 @@ public class CompareHandler
    public boolean checkForFullHouse(ArrayList<PokerCard> hand)
    {
       int[] dictionary = createDictionary(hand);
-      int passCount = 0;
+      int pairCount = 0;
+      int tripleCount = 0;
       for(int count : dictionary)
       {
-         if(count == 2) {  passCount++;   }
-         else if(count == 3)  {  passCount++;   }
+         if(count == 2) {  pairCount++;   }
+         else if(count == 3)  {  tripleCount++;   }
       }
       
-      if(passCount == 2)   {  return true;   }
+      if(pairCount == 1 && tripleCount == 1)   {  return true;   }
       else  {  return false;  }
    }
    
@@ -146,6 +144,16 @@ public class CompareHandler
       }
       
       return isStraightFlush;
+   }
+   
+   public int getHighCard(ArrayList<PokerCard> hand)
+   {
+      int[] dictionary = createDictionary(hand);
+      for(int idx = 12; idx >= 0; idx--)
+      {
+         if(dictionary[idx] != 0)   {  return idx + 1;   }
+      }
+      return 0;
    }
    
    public int checkCompo(ArrayList<PokerCard> cards)
@@ -198,6 +206,6 @@ public class CompareHandler
 
    public static void main(String[] args)
    {      
-
+   
    }
 }

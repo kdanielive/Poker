@@ -11,10 +11,11 @@ public class PokerGame
    private  Deck deck;
    /** the betting money on table */
    private int moneyOnTable;
-   /** the number of turns passed in the game */
-   private int turn;
+   /** the phase of the game */
+   public static int phase;
+   public static String subPhase;
    /** the communicty cards of the game */
-   public ArrayList<PokerCard> communityCards;
+   public static ArrayList<PokerCard> communityCards;
    
    private boolean[] commCardFlipBool;
    private boolean receivedHoleCard = false;
@@ -23,7 +24,7 @@ public class PokerGame
    private int userDesiredAmt = 0;
    private int round = 0;
    
-   private CompareHandler comparier = new CompareHandler(communityCards);
+   private CompareHandler comparier = new CompareHandler();
    
    public static final int PLAYER_NUM = 5;
    public static final int HAND_VOLUME = 5;
@@ -37,7 +38,7 @@ public class PokerGame
    {
       deck = new Deck();
       moneyOnTable = 0;
-      turn = 0;
+      phase = 0;
       communityCards = new ArrayList<PokerCard>();
       
       commCardFlipBool = new boolean[5];
@@ -46,7 +47,7 @@ public class PokerGame
          player = new Player();
       }
       
-      setBetter();
+      setButton();
       
       for(int idx = 0; idx < 5; idx++)
       {
@@ -56,21 +57,17 @@ public class PokerGame
       
    }
    
-   /**
-   plays the poker game
-   */
-   public void playGame()
-   {
+   public int getPhase() {  return phase;   }
    
-   }
+   public void incrementPhase(){  phase++;  }
    
-   /**
-   ends the poker game
-   */
-   public void endGame()
-   {
+   public void setSubPhase(String msg)  {  subPhase = msg;  }
    
-   }
+   public String getSubPhase()  {  return subPhase;   }
+   
+   public void addToPot(int amt) {  moneyOnTable += amt; }
+   
+   public void emptyPot()  {  moneyOnTable = 0; }
    
    /**
    compares the hands of two players and decides the winner
@@ -83,17 +80,6 @@ public class PokerGame
    }
    */
    
-   public void check()
-   {
-      System.out.print("Nothing happens");
-   }
-   
-   public void call(Player player)
-   {
-      moneyOnTable += lastBetAmount;
-      player.modifyFinance(player.getFinance() - lastBetAmount);
-   }
-   
    public void listPlayers(Player player, AIPlayer p1, AIPlayer p2,
        AIPlayer p3, AIPlayer p4)
    {
@@ -102,15 +88,11 @@ public class PokerGame
       players[2] = p2;
       players[3] = p3;
       players[4] = p4;
-      p1.setId(1);
-      p2.setId(2);
-      p3.setId(3);
-      p4.setId(4);
    }
    
-   public void setBetter()
+   public void setButton()
    {
-      if(turn == 0)
+      if(phase == 0)
       {
       
          Random randomer = new Random();
@@ -152,7 +134,7 @@ public class PokerGame
    
    public void finishRound()
    {
-      turn++;
+      phase++;
       lastBetAmount = 0;
       moneyOnTable = 0;
       communityCards = new ArrayList<PokerCard>();
@@ -169,11 +151,6 @@ public class PokerGame
       return players;
    }
    
-   public int getTurn()
-   {
-      return turn;
-   }
-   
    public static void main(String[] args)
    {
       
@@ -184,6 +161,6 @@ public class PokerGame
       }
       
       PokerGame game = new PokerGame();
-      game.setBetter();
+      game.setButton();
    }
 }

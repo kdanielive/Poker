@@ -8,9 +8,8 @@ public class AIPlayer extends Player
 {
    /** string that tells the type of AIPlayer */
    private String type;
-   private int firstBetAmount;
-   private boolean wouldBet;
-   private int Id;
+   private ArrayList<PokerCard> knownCards = new ArrayList<PokerCard>();
+   private int betCount = 0;  //how many times he betted
    
    PokerGame myGame = new PokerGame();
    
@@ -18,26 +17,13 @@ public class AIPlayer extends Player
    {
       super();
       type = "Easy";
-      firstBetAmount = 0;
-      wouldBet = false;
-      Id = 0;
+      knownCards.clear();
+      for(PokerCard card : this.getHoleCards())
+      {
+         knownCards.add(card);
+      }
    }
-   
-   public void setId(int num)
-   {
-      Id = num;
-   }
-   
-   public int getId()
-   {
-      return Id;
-   }
-   
-   public void setMode(String mode)
-   {
-      type = mode;
-   }
-   
+
    /**
    @param myIcon the icon of the player
    @param myName the name of the player
@@ -49,6 +35,26 @@ public class AIPlayer extends Player
    {
       super(myIcon, myName, myFinance);
       type = difficulty;
+      knownCards.clear();
+      for(PokerCard card : this.getHoleCards())
+      {
+         knownCards.add(card);
+      }
+   }
+   
+   public void setMode(String mode)
+   {
+      type = mode;
+   }
+   
+   public int getBetCount()
+   {
+      return betCount;
+   }
+   
+   public void setBetCount(int num)
+   {
+      betCount = num;
    }
    
    /** 
@@ -56,9 +62,41 @@ public class AIPlayer extends Player
    @param communityCards the community cards of the game
    @param holeCards the hole cards of the player
    */
-   public void easyMove()
+   public String easyMove()
    {
+      CompareHandler comparier = new CompareHandler();
+      int compoNum = comparier.checkCompo(knownCards);
+      int highNum = comparier.getHighCard(knownCards);
+      if(PokerGame.phase < 5)
+      {
+         if(compoNum > 2)  {  return "high"; }
+         else if(compoNum > 0 || highNum > 11) {  return "flat"; }
+         else  {  return "low"; }
+      }
+      else
+      {
+         if(compoNum > 3)  {  return "high"; }
+         else if (compoNum > 0)  {  return "flat"; }
+         else  {  return "low";  }
+      }
+   }
    
+   public void setKnownCards(int phase)
+   {
+      knownCards.clear();
+      for(PokerCard card : this.getHoleCards())
+      {
+         knownCards.add(card);
+      }
+      if(phase == 4) 
+      {
+         for(int idx = 0; idx < 3; idx++)
+         {
+            knownCards.add(PokerGame.communityCards.get(idx));  
+         }
+      }
+      if(phase == 5) {  knownCards.add(PokerGame.communityCards.get(3)); };
+      if(phase == 6) {  knownCards.add(PokerGame.communityCards.get(4)); };
    }
    
    /** 
