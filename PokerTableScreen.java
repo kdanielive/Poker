@@ -7,44 +7,63 @@ import javax.swing.event.*;
 import javax.imageio.*;
 import java.io.*;
 import java.util.*;
-
-public class PokerTableScreen
-{   
-  
-   /** array of players in the game */
-   private Player user = new Player();
-   
+import java.lang.Object;
+//limit holdem
+public class PokerTableScreen extends JPanel
+{  
    private BufferedImage pokerTableImage;
       
    private PokerApp myApp;
    
-   private String button1;
-   private String button2;
-   private String button3;
+   private JButton button1;
+   private JButton button2;
+   private JButton button3;
+   private JButton turnButton;
    
-   private PokerGame game;
+   private PokerGame game = new PokerGame();
    
    public PokerTableScreen(PokerApp app)
    {
-      myApp = app; 
+      myApp = app;
+      
+      this.setLayout(null);
+      
+      button1 = new JButton("Welcome");
+      button2 = new JButton("");
+      button3 = new JButton("");
+      JButton[] buttons = {button1, button2, button3};
+      turnButton = new JButton("");
       
       try
       {
          InputStream is = getClass().getResourceAsStream("PokerDesk.jpg");
          pokerTableImage = ImageIO.read(is);
+         Image img = ImageIO.read(getClass().getResource("nextCard.png"));
+         turnButton.setIcon(new ImageIcon(img));
       }
       catch(IOException ioe)
       {
       
       }
-      button1 = "Start Game";
-      button2 = "";
-      button3 = "End Game";
+
+      for(int idx = 0; idx < 3; idx++)
+      {
+         this.add(buttons[idx]);
+         buttons[idx].setSize(150, 40);
+         buttons[idx].setLocation(920, 660 + idx * 40);
+      }
       
-      user.setName("Danny");
+      this.add(turnButton);
+      turnButton.setSize(128, 186);
+      turnButton.setLocation(1070, 590);
       
-      game = new PokerGame();
-      game.listPlayers(user, new AIPlayer(), new AIPlayer(), new AIPlayer(), new AIPlayer());
+      button1.addActionListener(new Button1Listener());
+      button2.addActionListener(new Button2Listener());
+      button3.addActionListener(new Button3Listener());
+      turnButton.addActionListener(new TurnButtonListener());
+      
+      game.listPlayers(PokerApp.user, PokerApp.player2, PokerApp.player3, 
+         PokerApp.player4, PokerApp.player5);
 
       addMouseListener(new MouseHandler());
       addKeyListener(new MyKeyListener());
@@ -62,46 +81,19 @@ public class PokerTableScreen
       
       g2.drawImage(pokerTableImage, 250, 200, null);
       
-      PokerGame.players[2].drawMe(g2, 200, 100);
-      PokerGame.players[3].drawMe(g2, 875, 100);
-      PokerGame.players[1].drawMe(g2, 200, 500);
-      PokerGame.players[4].drawMe(g2, 875, 500);
-      PokerGame.players[0].drawMe(g2, 400, 600);
+      game.getPlayerList()[2].drawMe(g2, 200, 100);
+      game.getPlayerList()[3].drawMe(g2, 875, 100);
+      game.getPlayerList()[1].drawMe(g2, 200, 500);
+      game.getPlayerList()[4].drawMe(g2, 875, 500);
+      game.getPlayerList()[0].drawMe(g2, 400, 600);
       g2.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-      g2.drawString("You", 400, 720);
-      
-      g2.setFont(new Font("Times New Roman", Font.PLAIN, 15));
-      g2.setColor(Color.LIGHT_GRAY);
-      g2.draw3DRect(900, 650, 100, 150, true);
-      g2.draw3DRect(1000, 650, 100, 150, true);
-      g2.draw3DRect(1100, 650, 100, 150, true);
-      g2.setColor(Color.BLACK);
-      g2.drawString(button1, 930, 710);
-      g2.drawString(button2, 1025, 710);
-      g2.drawString(button3, 1120, 710);
-      
-      drawHoleCards(g);
-      drawCommunityCards(g);
-      drawMoneyOnTable(g);
-      drawButtons(g);
-      drawMyFinance(g);
-      if(drawBetInstructBool == true)
-      {
-         drawBetInstruct(g);
-      }
-      if(drawRaiseInstructBool == true)
-      {
-         drawRaiseInstruct(g);
-      }
-      if(drawVictoryBool == true)
-      {
-         drawVictoryInstruct(g);
-      }
-      if(drawLossBool == true)
-      {
-         drawLossInstruct(g);
-      }
-      drawBettingSituation(g);
+
+      //drawHoleCards(g);
+      //drawCommunityCards(g);
+      //drawMoneyOnTable(g);
+      //drawButtons(g);
+      //drawMyFinance(g);
+
    }
    
    public void drawButtons(Graphics g)
@@ -112,19 +104,19 @@ public class PokerTableScreen
       BufferedImage smallBlindButton;
       BufferedImage bigBlindButton;
       
-      if(PokerGame.turn != 0)
+      if(game.getTurn() != 0)
       {
          try
          {
-            dealerButton = ImageIO.read(new File("./DealerButton.png"));
-            smallBlindButton = ImageIO.read(new File("./SmallBlindButton.png"));
-            bigBlindButton = ImageIO.read(new File("./BigBlindButton.png"));
+            dealerButton = ImageIO.read(new File("./DealerIcon.png"));
+            smallBlindButton = ImageIO.read(new File("./SmallBlindIcon.png"));
+            bigBlindButton = ImageIO.read(new File("./BigBlindIcon.png"));
             
             BufferedImage[] buttonImages = {dealerButton, smallBlindButton, bigBlindButton};
             
             for(int idx = 0; idx < 3; idx++)
             {
-               switch(PokerGame.betters[idx])
+               switch(game.getBetters()[idx])
                {
                   case 0:
                      g2.drawImage(buttonImages[idx], 300, 600, null);
@@ -151,13 +143,13 @@ public class PokerTableScreen
       }
    }
 
-   
+   /*
    public void drawMyFinance(Graphics g)
    {
       Graphics2D g2 = (Graphics2D) g;
       g2.setColor(Color.BLACK);
       g2.setFont(new Font("Times New Roman", Font.PLAIN, 25));
-      g2.drawString("Finance: " + PokerGame.players[0].getFinance(), 1000, 50);
+      g2.drawString("Finance: " + game.players[0].getFinance(), 1000, 50);
    }
    
    public void drawMoneyOnTable(Graphics g)
@@ -166,7 +158,7 @@ public class PokerTableScreen
       
       g2.setColor(Color.WHITE);
       g2.setFont(new Font("Times New Roman", Font.PLAIN, 25));
-      g2.drawString("Total: " + PokerGame.moneyOnTable, 540, 535);
+      g2.drawString("Total: " + game.moneyOnTable, 540, 535);
    }
 
    
@@ -174,32 +166,32 @@ public class PokerTableScreen
    {
       Graphics2D g2 = (Graphics2D) g;
       
-      ArrayList<PokerCard> communityCards = PokerGame.communityCards;
+      ArrayList<PokerCard> communityCards = game.communityCards;
       
-      if(PokerGame.round == 1)
+      if(game.round == 1)
       {
          for(int idx = 0; idx < 3; idx++)
          {
-            PokerGame.commCardFlipBool[idx] = true;
+            game.commCardFlipBool[idx] = true;
          }
       }
-      else if(PokerGame.round == 2)
+      else if(game.round == 2)
       {
          for(int idx = 0; idx < 4; idx++)
          {
-            PokerGame.commCardFlipBool[idx] = true;
+            game.commCardFlipBool[idx] = true;
          }
       }
-      else if(PokerGame.round == 3)
+      else if(game.round == 3)
       {
          for(int idx = 0; idx < 5; idx++)
          {
-            PokerGame.commCardFlipBool[idx] = true;
+            game.commCardFlipBool[idx] = true;
          }
       }     
       for(int idx = 0; idx < 5; idx++)
       {
-         if(PokerGame.commCardFlipBool[idx] == true)
+         if(game.commCardFlipBool[idx] == true)
          {
             g2.drawImage(communityCards.get(idx).getImage(), 350 + idx * 100, 300, null);
             g2.setColor(Color.RED);
@@ -213,11 +205,11 @@ public class PokerTableScreen
       Graphics2D g2 = (Graphics2D) g;
       
       PokerCard[] holeCards = new PokerCard[2];
-      holeCards = PokerGame.players[0].getHoleCards();
+      holeCards = game.players[0].getHoleCards();
       
-      if(PokerGame.receivedHoleCard == true)
+      if(game.receivedHoleCard == true)
       {
-         if(PokerGame.turn == 1)
+         if(game.turn == 1)
          {
             try
             {
@@ -236,7 +228,7 @@ public class PokerTableScreen
          }
       }
    }
-
+   */
       
    /**
    handles mouse clicks
@@ -252,26 +244,6 @@ public class PokerTableScreen
          int clickX = e.getX();
          int clickY = e.getY();
          
-         Rectangle2D.Double[] buttons = new Rectangle2D.Double[3];
-         buttons[0] = new Rectangle2D.Double(900, 650, 100, 150);
-         buttons[1] = new Rectangle2D.Double(1000, 650, 100, 150);
-         buttons[2] = new Rectangle2D.Double(1100, 650, 100, 150);
-         
-         for(int idx = 0; idx < 3; idx++)
-         {
-            if(buttons[idx].contains(clickX, clickY) && idx == 0)
-            {
-               buttonOnePressed();
-            }
-            else if (buttons[idx].contains(clickX, clickY) && idx == 1)
-            {
-               buttonTwoPressed();
-            }
-            else if (buttons[idx].contains(clickX, clickY) && idx == 2)
-            {
-               buttonThreePressed();
-            }
-         }
       }
       
       public void mouseReleased(MouseEvent e) { }
@@ -289,63 +261,8 @@ public class PokerTableScreen
       {
          int code = e.getKeyCode();
          
-         if(code == KeyEvent.VK_1)
-         {
-            PokerGame.userDesiredAmt = PokerGame.userDesiredAmt * 10 + 1;
-         }
-         if(code == KeyEvent.VK_2)
-         {            
-            PokerGame.userDesiredAmt = PokerGame.userDesiredAmt * 10 + 2;
-         }
-         if(code == KeyEvent.VK_3)
-         {            
-            PokerGame.userDesiredAmt = PokerGame.userDesiredAmt * 10 + 3;
-         }
-         if(code == KeyEvent.VK_4)
-         {            
-            PokerGame.userDesiredAmt = PokerGame.userDesiredAmt * 10 + 4;
-         }
-         if(code == KeyEvent.VK_5)
-         {            
-            PokerGame.userDesiredAmt = PokerGame.userDesiredAmt * 10 + 5;
-         }
-         if(code == KeyEvent.VK_6)
-         {            
-            PokerGame.userDesiredAmt = PokerGame.userDesiredAmt * 10 + 6;
-         }
-         if(code == KeyEvent.VK_7)
-         {
-            PokerGame.userDesiredAmt = PokerGame.userDesiredAmt * 10 + 7;
-         }
-         if(code == KeyEvent.VK_8)
-         {
-            PokerGame.userDesiredAmt = PokerGame.userDesiredAmt * 10 + 8;
-         }
-         if(code == KeyEvent.VK_9)
-         {
-            PokerGame.userDesiredAmt = PokerGame.userDesiredAmt * 10 + 9;
-         }
-         if(code == KeyEvent.VK_0)
-         {
-            PokerGame.userDesiredAmt = PokerGame.userDesiredAmt * 10;
-         }
-         if(code == KeyEvent.VK_B)
-         {
-            PokerGame.players[0].bet(PokerGame.userDesiredAmt, true);
-            PokerGame.userDesiredAmt = 0;
-            button1 = "Proceed";
-            button2 = "";
-            button3 = "";
-            drawBetInstructBool = false;
-            drawRaiseInstructBool = false;
-            
-            if(PokerGame.round == 0)   
-            {   
-               PokerGame.checkList[0] = true;  
-            }
-            
-            repaint();
-         }
+         if(code == KeyEvent.VK_1) ;
+
       }
       
       public void keyReleased(KeyEvent e)
@@ -359,4 +276,51 @@ public class PokerTableScreen
       } 
    }
    
+   private class TurnButtonListener implements ActionListener
+   {
+      /**
+      what to do when action is recognized
+      @param e an action event
+      */
+      public void actionPerformed(ActionEvent e)
+      {
+
+      }
+   }
+   
+   private class Button1Listener implements ActionListener
+   {
+      /**
+      what to do when action is recognized
+      @param e an action event
+      */
+      public void actionPerformed(ActionEvent e)
+      {
+
+      }
+   }
+
+   private class Button2Listener implements ActionListener
+   {
+      /**
+      what to do when action is recognized
+      @param e an action event
+      */
+      public void actionPerformed(ActionEvent e)
+      {
+
+      }
+   }
+
+   private class Button3Listener implements ActionListener
+   {
+      /**
+      what to do when action is recognized
+      @param e an action event
+      */
+      public void actionPerformed(ActionEvent e)
+      {
+
+      }
+   }
 }

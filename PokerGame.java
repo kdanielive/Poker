@@ -6,33 +6,32 @@ plays the poker game
 */
 public class PokerGame
 {
-   public static Player[] players = new Player[5];
+   private Player[] players = new Player[5];
    /** the deck of poker cards being used in game */
-   public static Deck deck;
+   private  Deck deck;
    /** the betting money on table */
-   public static int moneyOnTable;
+   private int moneyOnTable;
    /** the number of turns passed in the game */
-   public static int turn;
+   private int turn;
    /** the communicty cards of the game */
-   public static ArrayList<PokerCard> communityCards;
+   public ArrayList<PokerCard> communityCards;
    
-   public static boolean[] commCardFlipBool;
-   public static boolean receivedHoleCard = false;
+   private boolean[] commCardFlipBool;
+   private boolean receivedHoleCard = false;
    
-   public static int lastBetAmount;
-   public static int turnId;
-   public static int userDesiredAmt = 0;
-   public static int round = 0;
+   private int lastBetAmount;
+   private int userDesiredAmt = 0;
+   private int round = 0;
    
    private CompareHandler comparier = new CompareHandler(communityCards);
    
    public static final int PLAYER_NUM = 5;
    public static final int HAND_VOLUME = 5;
    
-   public static int[] betters = new int[3];
-   public static boolean[] checkList =  new boolean[5];
-   public static boolean[] foldList = new boolean[5];
-   public static boolean[] turnList = new boolean[5];
+   private int[] betters = new int[3];
+   private boolean[] checkList =  new boolean[5];
+   private boolean[] foldList = new boolean[5];
+   private boolean[] turnList = new boolean[5];
    
    public PokerGame()
    {
@@ -113,17 +112,13 @@ public class PokerGame
    {
       if(turn == 0)
       {
-      /*
+      
          Random randomer = new Random();
          int randIdx = randomer.nextInt(players.length);
 
          betters[0] = randIdx;
          betters[1] = (randIdx + 1) % 5;
          betters[2] = (randIdx + 2) % 5;
-      */
-         betters[0] = 4;
-         betters[1] = 0;
-         betters[2] = 1;
       }
       else
       {
@@ -133,8 +128,6 @@ public class PokerGame
          betters[1] = (buttonIdx + 1) % 5;
          betters[2] = (buttonIdx + 2) % 5;
       }
-      turnId = betters[1];
-      System.out.println(turnId);
    }
    
    public void distributeCards()
@@ -174,6 +167,11 @@ public class PokerGame
    public Player[] getPlayerList()
    {
       return players;
+   }
+   
+   public int getTurn()
+   {
+      return turn;
    }
    
    public static void main(String[] args)

@@ -163,13 +163,7 @@ public class Player
    
    public void bet(int amount, boolean cond)
    {
-      modifyFinance(getFinance() - amount);
-      PokerGame.moneyOnTable = PokerGame.moneyOnTable + amount;
-      bettedAmount += amount;
-      if(cond == true)
-      {
-         PokerGame.lastBetAmount += amount;
-      }
+
    }
    
    /**

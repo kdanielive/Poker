@@ -20,12 +20,16 @@ public class PokerApp
    /** JPanel for the PokerApp */
    private JPanel myAppPanel;
       
-   private GameScreen myGameScreen;
+   private PokerTableScreen myTableScreen;
    private CharacterCreationScreen myCharacterScreen;
    private MainScreen myMainScreen;
    private LobbyScreen myLobbyScreen;
    
    public static Player user = new Player();
+   public static AIPlayer player2 = new AIPlayer("teardrop", "Bill", 10000, "Easy");
+   public static AIPlayer player3 = new AIPlayer("eyeball", "Jack", 10000, "Easy");
+   public static AIPlayer player4 = new AIPlayer("jokerhat", "Jason", 10000, "Easy");
+   public static AIPlayer player5 = new AIPlayer("death", "Lohan", 10000, "Easy");
    
    public static void main(String[] args)
    {
@@ -33,26 +37,25 @@ public class PokerApp
       theApp.run();
    }
    
+   
    public void run()
    {
-      myGameScreen = new GameScreen(this);
+      myApp = new JFrame();
+      
+      myTableScreen = new PokerTableScreen(this);
       myCharacterScreen = new CharacterCreationScreen(this);
       myMainScreen = new MainScreen(this);
       myLobbyScreen = new LobbyScreen(this);
 
-      myApp = new JFrame();
-      myApp.add(myGameScreen);
+      myApp.add(myTableScreen);
       myApp.add(myCharacterScreen);
       myApp.add(myMainScreen);
       myApp.add(myLobbyScreen);
       
-      myGameScreen.setFocusable(true);
-      myGameScreen.requestFocusInWindow();
-      
       myAppPanel = new JPanel(new CardLayout());
       myAppPanel.add(myMainScreen, "Main");
       myAppPanel.add(myCharacterScreen, "CharacterScreen");
-      myAppPanel.add(myGameScreen, "PokerTable");
+      myAppPanel.add(myTableScreen, "PokerTable");
       myAppPanel.add(myLobbyScreen, "Lobby");
       myApp.add(myAppPanel);
             
@@ -68,7 +71,7 @@ public class PokerApp
       
       if(whichScreen == "PokerTable")
       {
-         myGameScreen.requestFocusInWindow();
+         myTableScreen.requestFocusInWindow();
       }
       else if(whichScreen == "CharacterScreen")
       {

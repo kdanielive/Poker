@@ -136,11 +136,53 @@ public class LobbyScreen extends JPanel
          
          Rectangle2D.Double exitBox = new Rectangle2D.Double(1070, 590, 128, 128);
          
+         Rectangle2D.Double[] entryBoxes = new Rectangle2D.Double[7];
+         for(int idx = 0; idx < 7; idx++)
+         {
+            Rectangle2D.Double tempBox = new Rectangle2D.Double(1045, 125 + idx * 45, 53, 23);
+            entryBoxes[idx] = (tempBox);
+         }
+         
          if(exitBox.contains(clickX, clickY))
          {
             JFrame frame = new JFrame("Message Box");
             int choice = JOptionPane.showConfirmDialog(frame, "Exit game?");
             if(choice == 0)   {  myApp.switchScreen("Main");   }
+         }
+         
+         for(int idx = 0; idx < 7; idx++)
+         {
+            if(entryBoxes[idx].contains(clickX, clickY) && idx < 2 
+               && authorizedList[idx] == true)
+            {
+               myApp.switchScreen("PokerTable");
+            }
+            else if (entryBoxes[idx].contains(clickX, clickY) && idx < 4
+               && authorizedList[idx] == true)
+            {
+               myApp.player2.setMode("Medium");
+               myApp.player3.setMode("Hard");
+               myApp.player4.setMode("Medium");
+               myApp.switchScreen("PokerTable");
+            }
+            else if (entryBoxes[idx].contains(clickX, clickY) && idx < 6
+               && authorizedList[idx] == true)
+            {
+               myApp.player2.setMode("Medium");
+               myApp.player3.setMode("Medium");
+               myApp.player4.setMode("Hard");
+               myApp.player5.setMode("Hard");
+               myApp.switchScreen("PokerTable");
+            }
+            else if (entryBoxes[idx].contains(clickX, clickY) && idx == 7
+               && authorizedList[idx] == true)
+            {
+               myApp.player2.setMode("Hard");
+               myApp.player3.setMode("Hard");
+               myApp.player4.setMode("Hard");
+               myApp.player5.setMode("Hard");
+               myApp.switchScreen("PokerTable");
+            }
          }
       }
       

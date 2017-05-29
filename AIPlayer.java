@@ -31,6 +31,11 @@ public class AIPlayer extends Player
       return Id;
    }
    
+   public void setMode(String mode)
+   {
+      type = mode;
+   }
+   
    /**
    @param myIcon the icon of the player
    @param myName the name of the player
@@ -51,76 +56,7 @@ public class AIPlayer extends Player
    */
    public void easyMove()
    {
-      Random randomer = new Random();
-      int mindState = randomer.nextInt(5);
-      if (mindState == 4)
-      {
-         firstBetAmount = 50;
-         wouldBet = true;
-      }
-      else
-      {  
-         /*
-         ArrayList<PokerCard> showDownCards = new ArrayList<PokerCard>();
-         for(PokerCard card : this.getHoleCards())
-         {
-            showDownCards.add(card);
-         }
-         for(PokerCard card : PokerGame.communityCards)
-         {
-            showDownCards.add(card);
-         }
-         CompareHandler comparier = new CompareHandler(showDownCards);
-         int compoNum = comparier.checkCompo(showDownCards);
-         */
-         int compoNum = 1;
-         if(compoNum > 0)
-         {
-            wouldBet = true;
-            firstBetAmount = 30;
-         }
-         
-         else
-         {
-            if(this.getBettedAmount() > this.getFinance() / 3)
-            {
-               wouldBet = false;
-            }
-            else  
-            {  
-               wouldBet = true;  
-               firstBetAmount = 20;
-            }
-         }
-      }
-      
-      if(PokerGame.lastBetAmount - this.getBettedAmount() == 0 && getFirstBetterBool() == false)
-      {
-         PokerGame.checkList[Id] = true;
-         wouldBet = false;
-      }
-      
-      if(wouldBet == true && this.getFirstBetterBool() == false) 
-      {  
-         System.out.print("" + Id + "normal bet : " + PokerGame.lastBetAmount + ", " + this.getBettedAmount());
-         bet(PokerGame.lastBetAmount - this.getBettedAmount(), false);
-         System.out.println(", " + getBettedAmount());
-      }
-      else if(wouldBet == true)
-      {
-         System.out.println("" + Id + "first bet : " + firstBetAmount + ", " + PokerGame.lastBetAmount + ", " + getBettedAmount());
-         bet(firstBetAmount, true);
-         setFirstBetterBool(false);
-      }
-      else
-      {
-         PokerGame.checkList[Id] = true;
-         System.out.println("lmao");
-         for(boolean la : PokerGame.checkList)
-         {
-            System.out.print(la);
-         }
-      }
+
    }
    
    /** 
