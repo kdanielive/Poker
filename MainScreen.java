@@ -10,9 +10,9 @@ import java.util.*;
 
 public class MainScreen extends JPanel
 {
-   BufferedImage backgroundImage;
-   BufferedImage nextCardImage;
-   PokerApp myApp;
+   private BufferedImage backgroundImage;
+   private BufferedImage nextCardImage;
+   private PokerApp myApp;
    
    public MainScreen(PokerApp app)
    {
@@ -38,7 +38,16 @@ public class MainScreen extends JPanel
       Graphics2D g2 = (Graphics2D) g;
       
       g2.drawImage(backgroundImage, 0, 0, null);
-      g2.drawImage(nextCardImage, 1070, 590, null);
+      
+      Stroke oldStroke = g2.getStroke();
+      g2.setStroke(new BasicStroke(2));      
+      g2.drawRect(570, 300, 350, 50);
+      g2.drawRect(570, 380, 350, 50);
+      
+      g2.setFont(new Font("Times New Roman", Font.PLAIN, 35));
+      g2.setColor(Color.WHITE);
+      g2.drawString("Start Game", 630, 340);
+      g2.drawString("Instructions", 630, 420);
    }
    
    /**
@@ -55,9 +64,10 @@ public class MainScreen extends JPanel
          int clickX = e.getX();
          int clickY = e.getY();
          
-         Rectangle2D.Double nextBox = new Rectangle2D.Double(1070, 590, 128, 128);
+         Rectangle2D.Double button1 = new Rectangle2D.Double(570, 300, 350, 50);
+         Rectangle2D.Double button2 = new Rectangle2D.Double(570, 380, 350, 50);
          
-         if(nextBox.contains(clickX, clickY))
+         if(button1.contains(clickX, clickY))
          {
             myApp.switchScreen("CharacterScreen");
          }

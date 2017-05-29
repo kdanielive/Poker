@@ -10,17 +10,17 @@ import java.util.*;
 
 public class CharacterCreationScreen extends JPanel
 {
-   BufferedImage icon1;
-   BufferedImage icon2;
-   BufferedImage icon3;
-   BufferedImage icon4;
+   private BufferedImage icon1;
+   private BufferedImage icon2;
+   private BufferedImage icon3;
+   private BufferedImage icon4;
    
-   String nameButton;
+   private String nameButton;
    
-   BufferedImage backgroundImage;
-   BufferedImage nextCardImage;
+   private BufferedImage backgroundImage;
+   private BufferedImage nextCardImage;
    
-   PokerApp myApp;
+   private PokerApp myApp;
      
    public CharacterCreationScreen(PokerApp app)
    {   
@@ -103,7 +103,7 @@ public class CharacterCreationScreen extends JPanel
          
          if(nextBox.contains(clickX, clickY))
          {
-            myApp.switchScreen("Main");
+            myApp.switchScreen("Lobby");
          }
          
          for(int idx = 0; idx < 4; idx++)
