@@ -129,15 +129,15 @@ public class PokerTableScreen extends JPanel
    public void bet(int raiseAmt)
    {
       minBetAmt += raiseAmt;
-      System.out.println(betAmtArray);
       game.getPlayerList().get(turnIndex).minusFinance(minBetAmt - betAmtArray.get(turnIndex));
       game.addToPot(minBetAmt - betAmtArray.get(turnIndex));
       betAmtArray.set(turnIndex, minBetAmt);
+      System.out.println(betAmtArray);
    }
    
    public boolean checkRoundFinished()
    {
-      if(foldedIndex.size() == 0)   {  return false;  }
+      if(freeCounter < 5)   {  return false;  }
    
       ArrayList<Integer> tempSubject = new ArrayList<Integer>();
       for(int num : betAmtArray)
@@ -154,6 +154,7 @@ public class PokerTableScreen extends JPanel
          if(num != -1)  {  compareSubject.add(num);   }
       }
       if(compareSubject.size() == 1)   { return true; }  //IT MEANS ROUND FINISHED DO SOMETHING LATER
+      
       for(int idx = 1; idx < compareSubject.size(); idx++)
       {
          if(compareSubject.get(idx) != compareSubject.get(idx - 1))
@@ -394,14 +395,16 @@ public class PokerTableScreen extends JPanel
       */
       public void actionPerformed(ActionEvent e)
       {
-         //000000
          if(game.getPhase() == 3 && game.getSubPhase().equals("CommunCards"))
          {
             initializeTurnIndex();
             turnIndex = (turnIndex + 2) % 5;
             for(int idx = 0; idx < 5; idx++) {  betAmtArray.set(idx, 0);  }
+            minBetAmt = 20;
+            System.out.println(betAmtArray);
             game.setSubPhase("SecondR");
          }
+         //00000000
          else if(game.getPhase() == 0)
          {
             game.setButton();
@@ -451,7 +454,16 @@ public class PokerTableScreen extends JPanel
          //222222222222
          else if(game.getPhase() == 2 && game.getSubPhase().equals("firstR"))
          {
-            if(turnIndex == 0 && freeCounter == 0)
+            if(checkRoundFinished())
+            {
+               game.incrementPhase();
+               game.setSubPhase("CommunCards");
+               consoleMessage = "Flop";
+               freeCounter = 0;
+               setAIKnownCards();
+               repaint();
+            }
+            else if(turnIndex == 0 && freeCounter == 0)
             {
                setButtonStrings("Check", "Call", "Fold");
                consoleMessage = "Your turn";
@@ -470,7 +482,6 @@ public class PokerTableScreen extends JPanel
             else if(freeCounter == 0)
             {
                AIPlayer subject = (AIPlayer) game.getPlayerList().get(turnIndex);
-               System.out.println(subject.getName());
                if( subject.easyMove().equals("high"))
                {
                   bet(0);
@@ -500,18 +511,11 @@ public class PokerTableScreen extends JPanel
                AIPlayer subject = (AIPlayer) game.getPlayerList().get(turnIndex);
                if( subject.easyMove().equals("high"))
                {
-                  if(freeCounter != -1)
-                  {
-                     bet(20);
-                     consoleMessage = subject.getName() + " raised by 20";
-                     freeCounter = -1;
-                  }
-                  else  
-                  {
-                     bet(0);
-                     consoleMessage = subject.getName() + " called.";
-                  }
+                  if(freeCounter < 5)  { bet(20);  }
+                  else  {  bet(0);  }
+                  consoleMessage = subject.getName() + " raised by 20";
                   turnIndex = (turnIndex + 1) % 5;
+                  freeCounter++;
                   repaint();
                }
                else if( subject.easyMove().equals("flat"))
@@ -519,6 +523,7 @@ public class PokerTableScreen extends JPanel
                   consoleMessage = subject.getName() + " called";
                   bet(0);
                   turnIndex = (turnIndex + 1) % 5;
+                  freeCounter++;
                   repaint();
                }
                else
@@ -526,17 +531,9 @@ public class PokerTableScreen extends JPanel
                   consoleMessage = subject.getName() + " folded";
                   foldedIndex.add(turnIndex);
                   turnIndex = (turnIndex + 1) % 5;
+                  freeCounter++;
                   repaint();
                }
-            }
-            if(checkRoundFinished())
-            {
-               game.incrementPhase();
-               game.setSubPhase("CommunCards");
-               consoleMessage = "Flop";
-               freeCounter = 0;
-               setAIKnownCards();
-               repaint();
             }
          }
          //333333333333333333
@@ -603,6 +600,7 @@ public class PokerTableScreen extends JPanel
                   bet(20);
                   consoleMessage = subject.getName() + " raised by 20";
                   turnIndex = (turnIndex + 1) % 5;
+                  freeCounter++;
                   repaint();
                }
                else if( subject.easyMove().equals("flat"))
@@ -610,6 +608,7 @@ public class PokerTableScreen extends JPanel
                   consoleMessage = subject.getName() + " called";
                   bet(0);
                   turnIndex = (turnIndex + 1) % 5;
+                  freeCounter++;
                   repaint();
                }
                else
@@ -617,6 +616,7 @@ public class PokerTableScreen extends JPanel
                   consoleMessage = subject.getName() + " folded";
                   foldedIndex.add(turnIndex);
                   turnIndex = (turnIndex + 1) % 5;
+                  freeCounter++;
                   repaint();
                }
             }
@@ -643,6 +643,7 @@ public class PokerTableScreen extends JPanel
             bet(0);
             turnIndex = (turnIndex + 1) % 5;
             game.setSubPhase(freeString);
+            freeCounter++;
             repaint();
          }
          else if(button1.getText().equals("Check"))
@@ -650,6 +651,7 @@ public class PokerTableScreen extends JPanel
             consoleMessage = "You checked";
             turnIndex = (turnIndex + 1) % 5;
             game.setSubPhase(freeString);
+            freeCounter++;
             repaint();
          }
       }
