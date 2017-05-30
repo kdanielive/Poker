@@ -60,6 +60,8 @@ public class PokerGame
    
    public int getPhase() {  return phase;   }
    
+   public void setPhase(int num) {  phase = num;   }
+   
    public void incrementPhase(){  phase++;  }
    
    public void setSubPhase(String msg)  {  subPhase = msg;  }

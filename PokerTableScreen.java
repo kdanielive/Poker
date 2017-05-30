@@ -137,7 +137,7 @@ public class PokerTableScreen extends JPanel
    
    public boolean checkRoundFinished()
    {
-      if(freeCounter < 5)   {  return false;  }
+      if(freeCounter < (6 - foldedIndex.size()))   {  return false;  }
    
       ArrayList<Integer> tempSubject = new ArrayList<Integer>();
       for(int num : betAmtArray)
@@ -153,7 +153,11 @@ public class PokerTableScreen extends JPanel
       {
          if(num != -1)  {  compareSubject.add(num);   }
       }
-      if(compareSubject.size() == 1)   { return true; }  //IT MEANS ROUND FINISHED DO SOMETHING LATER
+      
+      if(compareSubject.size() == 1)   {
+         game.setPhase(-2);
+         return true; 
+      }
       
       for(int idx = 1; idx < compareSubject.size(); idx++)
       {
@@ -393,6 +397,14 @@ public class PokerTableScreen extends JPanel
       } 
    }
    
+   public void endGame()
+   {
+      freeCounter = 0;
+      turnIndex = 0;
+      for(int idx = 0; idx < 5; idx++) {  betAmtArray.set(idx, 0);  }
+      minBetAmt = 20;
+   }
+   
    private class TurnButtonListener implements ActionListener
    {
       /**
@@ -401,13 +413,18 @@ public class PokerTableScreen extends JPanel
       */
       public void actionPerformed(ActionEvent e)
       {
-         if(game.getPhase() == 3 && game.getSubPhase().equals("CommunCards"))
+         if(game.getPhase() == 2 && game.getSubPhase().equals("CommunCards"))
+         {
+            consoleMessage = "Everyone Folded. You won!";
+         }
+         else if(game.getPhase() == 3 && game.getSubPhase().equals("CommunCards"))
          {
             initializeTurnIndex();
             turnIndex = (turnIndex + 2) % 5;
             for(int idx = 0; idx < 5; idx++) {  betAmtArray.set(idx, 0);  }
             minBetAmt = 20;
             game.setSubPhase("SecondR");
+            repaint();
          }
          else if(game.getPhase() == 4 && game.getSubPhase().equals("CommunCards"))
          {
@@ -416,6 +433,16 @@ public class PokerTableScreen extends JPanel
             for(int idx = 0; idx < 5; idx++) {  betAmtArray.set(idx, 0);   }
             minBetAmt = 40;
             game.setSubPhase("ThirdR");
+            repaint();
+         }
+         else if(game.getPhase() == 5 && game.getSubPhase().equals("CommunCards"))
+         {
+            initializeTurnIndex();
+            turnIndex = (turnIndex + 3) % 5;
+            for(int idx = 0; idx < 5; idx++) {  betAmtArray.set(idx, 0);   }
+            minBetAmt = 40;
+            game.setSubPhase("FourthR");
+            repaint();
          }
          //00000000
          else if(game.getPhase() == 0)
@@ -635,13 +662,97 @@ public class PokerTableScreen extends JPanel
             }
          }
          //44444444444
-         else if(game.getPhase() == 4 && game.getSubPhase().equals("thirdR"))
+         else if(game.getPhase() == 4 && game.getSubPhase().equals("ThirdR"))
          {
             if(checkRoundFinished())
             {
                game.incrementPhase();
                game.setSubPhase("CommunCards");
                consoleMessage = "River";
+               freeCounter = 0;
+               setAIKnownCards();
+               repaint();
+            }
+            else if(turnIndex == 0 && freeCounter == 0)
+            {
+               setButtonStrings("Check", "Call", "Fold");
+               consoleMessage = "Your turn";
+               freeString = game.getSubPhase();
+               game.setSubPhase("user");
+               repaint();
+            }
+            else if(turnIndex == 0)
+            {
+               setButtonStrings("Call", "Raise", "Fold");
+               consoleMessage = "Your turn";
+               freeString = game.getSubPhase();
+               game.setSubPhase("user");
+               repaint();
+            }
+            else if(freeCounter == 0)
+            {
+               AIPlayer subject = (AIPlayer) game.getPlayerList().get(turnIndex);
+               if( subject.easyMove().equals("high"))
+               {
+                  bet(0);
+                  consoleMessage = subject.getName() + " called";
+                  turnIndex = (turnIndex + 1) % 5;
+                  freeCounter++;
+                  repaint();
+               }
+               else if( subject.easyMove().equals("flat"))
+               {
+                  consoleMessage = subject.getName() + " checked";
+                  turnIndex = (turnIndex + 1) % 5;
+                  freeCounter++;
+                  repaint();
+               }
+               else
+               {
+                  consoleMessage = subject.getName() + " folded";
+                  foldedIndex.add(turnIndex);
+                  turnIndex = (turnIndex + 1) % 5;
+                  freeCounter++;
+                  repaint();
+               }
+            }
+            else
+            {
+               AIPlayer subject = (AIPlayer) game.getPlayerList().get(turnIndex);
+               if( subject.easyMove().equals("high"))
+               {
+                  if(freeCounter < 5)  { bet(20);  }
+                  else  {  bet(0);  }
+                  consoleMessage = subject.getName() + " raised by 20";
+                  turnIndex = (turnIndex + 1) % 5;
+                  freeCounter++;
+                  repaint();
+               }
+               else if( subject.easyMove().equals("flat"))
+               {
+                  consoleMessage = subject.getName() + " called";
+                  bet(0);
+                  turnIndex = (turnIndex + 1) % 5;
+                  freeCounter++;
+                  repaint();
+               }
+               else
+               {
+                  consoleMessage = subject.getName() + " folded";
+                  foldedIndex.add(turnIndex);
+                  turnIndex = (turnIndex + 1) % 5;
+                  freeCounter++;
+                  repaint();
+               }
+            }
+         }
+         else if(game.getPhase() == 5 && game.getSubPhase().equals("FourthR"))
+         {
+            if(checkRoundFinished())
+            {
+               game.incrementPhase();
+               game.setSubPhase("Final");
+               consoleMessage = "ShowDown!";
                freeCounter = 0;
                setAIKnownCards();
                repaint();
@@ -730,21 +841,16 @@ public class PokerTableScreen extends JPanel
       */
       public void actionPerformed(ActionEvent e)
       {
-         if(button1.getText().equals("Call"))
+         if(button1.getText().equals("Call") && game.getSubPhase().equals("user"))
          {
             consoleMessage = "You called";
-            /*
-            PokerApp.user.minusFinance(minBetAmt - betAmtArray.get(0));
-            game.addToPot(minBetAmt - betAmtArray.get(0));
-            betAmtArray.set(0, minBetAmt);
-            */
             bet(0);
             turnIndex = (turnIndex + 1) % 5;
             game.setSubPhase(freeString);
             freeCounter++;
             repaint();
          }
-         else if(button1.getText().equals("Check"))
+         else if(button1.getText().equals("Check") && game.getSubPhase().equals("user"))
          {
             consoleMessage = "You checked";
             turnIndex = (turnIndex + 1) % 5;
