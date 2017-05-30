@@ -216,6 +216,12 @@ public class PokerTableScreen extends JPanel
       PokerApp.player3.setKnownCards(game.getPhase());
       PokerApp.player4.setKnownCards(game.getPhase());
       PokerApp.player5.setKnownCards(game.getPhase());
+      
+      for(int idx : foldedIndex)
+      {
+         AIPlayer temp = (AIPlayer)(game.getPlayerList().get(idx));
+         temp.setKnownCards(0);
+      }
    }
    
    public void drawButtons(Graphics g)
@@ -401,8 +407,15 @@ public class PokerTableScreen extends JPanel
             turnIndex = (turnIndex + 2) % 5;
             for(int idx = 0; idx < 5; idx++) {  betAmtArray.set(idx, 0);  }
             minBetAmt = 20;
-            System.out.println(betAmtArray);
             game.setSubPhase("SecondR");
+         }
+         else if(game.getPhase() == 4 && game.getSubPhase().equals("CommunCards"))
+         {
+            initializeTurnIndex();
+            turnIndex = (turnIndex + 3) % 5;
+            for(int idx = 0; idx < 5; idx++) {  betAmtArray.set(idx, 0);   }
+            minBetAmt = 40;
+            game.setSubPhase("ThirdR");
          }
          //00000000
          else if(game.getPhase() == 0)
@@ -598,6 +611,91 @@ public class PokerTableScreen extends JPanel
                if( subject.easyMove().equals("high"))
                {
                   bet(20);
+                  consoleMessage = subject.getName() + " raised by 20";
+                  turnIndex = (turnIndex + 1) % 5;
+                  freeCounter++;
+                  repaint();
+               }
+               else if( subject.easyMove().equals("flat"))
+               {
+                  consoleMessage = subject.getName() + " called";
+                  bet(0);
+                  turnIndex = (turnIndex + 1) % 5;
+                  freeCounter++;
+                  repaint();
+               }
+               else
+               {
+                  consoleMessage = subject.getName() + " folded";
+                  foldedIndex.add(turnIndex);
+                  turnIndex = (turnIndex + 1) % 5;
+                  freeCounter++;
+                  repaint();
+               }
+            }
+         }
+         //44444444444
+         else if(game.getPhase() == 4 && game.getSubPhase().equals("thirdR"))
+         {
+            if(checkRoundFinished())
+            {
+               game.incrementPhase();
+               game.setSubPhase("CommunCards");
+               consoleMessage = "River";
+               freeCounter = 0;
+               setAIKnownCards();
+               repaint();
+            }
+            else if(turnIndex == 0 && freeCounter == 0)
+            {
+               setButtonStrings("Check", "Call", "Fold");
+               consoleMessage = "Your turn";
+               freeString = game.getSubPhase();
+               game.setSubPhase("user");
+               repaint();
+            }
+            else if(turnIndex == 0)
+            {
+               setButtonStrings("Call", "Raise", "Fold");
+               consoleMessage = "Your turn";
+               freeString = game.getSubPhase();
+               game.setSubPhase("user");
+               repaint();
+            }
+            else if(freeCounter == 0)
+            {
+               AIPlayer subject = (AIPlayer) game.getPlayerList().get(turnIndex);
+               if( subject.easyMove().equals("high"))
+               {
+                  bet(0);
+                  consoleMessage = subject.getName() + " called";
+                  turnIndex = (turnIndex + 1) % 5;
+                  freeCounter++;
+                  repaint();
+               }
+               else if( subject.easyMove().equals("flat"))
+               {
+                  consoleMessage = subject.getName() + " checked";
+                  turnIndex = (turnIndex + 1) % 5;
+                  freeCounter++;
+                  repaint();
+               }
+               else
+               {
+                  consoleMessage = subject.getName() + " folded";
+                  foldedIndex.add(turnIndex);
+                  turnIndex = (turnIndex + 1) % 5;
+                  freeCounter++;
+                  repaint();
+               }
+            }
+            else
+            {
+               AIPlayer subject = (AIPlayer) game.getPlayerList().get(turnIndex);
+               if( subject.easyMove().equals("high"))
+               {
+                  if(freeCounter < 5)  { bet(20);  }
+                  else  {  bet(0);  }
                   consoleMessage = subject.getName() + " raised by 20";
                   turnIndex = (turnIndex + 1) % 5;
                   freeCounter++;
