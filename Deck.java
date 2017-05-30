@@ -46,6 +46,7 @@ public class Deck
    */
    public void mix()
    {
+      lastCardIdx = cardNum - 1;
       int length = pokerDeck.length;
       PokerCard[] newDeck = new PokerCard[length];
       int count = 0;

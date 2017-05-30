@@ -73,15 +73,11 @@ public class AIPlayer extends Player
          else if(compoNum > 0 || highNum > 7) {  return "flat"; }
          else  {  return "low"; }
       }
-      else if(PokerGame.phase < 5)
+      else
       {
          if(compoNum > 3)  {  return "high"; }
          else if (compoNum > 0)  {  return "flat"; }
          else  {  return "low";  }
-      }
-      else
-      {
-         return "high";
       }
    }
    

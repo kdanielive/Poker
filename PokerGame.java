@@ -78,6 +78,8 @@ public class PokerGame
    
    public ArrayList<PokerCard> getCommunCards() {  return communityCards;  }
    
+   public void shuffleDeck()  {  deck.mix(); }
+   
    public ArrayList<Player> getPlayerList()
    {
       return players;

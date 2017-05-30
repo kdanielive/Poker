@@ -6,20 +6,6 @@ public class CompareHandler
    {
    
    }
-   
-   /**
-   compares the hands of two players and decides the winner
-   @param player1 the first player of hand comparison
-   @param player2 the second player of hand comparison
-   */
-   public Player compareHands(Player player1, Player player2)
-   {
-      int p1Point = checkCompo(player1.getShowDownHand());
-      int p2Point = checkCompo(player2.getShowDownHand());
-      
-      if(p1Point > p2Point)   {  return player1;   }
-      else  {  return player2;   }
-   }
 
    public int[] createDictionary(ArrayList<PokerCard> hand)
    {
@@ -202,6 +188,22 @@ public class CompareHandler
          }
          list.set(idx, idxVal);
       }
+   }
+   
+   /**
+   compares the hands of two players and decides the winner
+   @param player1 the first player of hand comparison
+   @param player2 the second player of hand comparison
+   */
+   public Player compareHands(Player player1, Player player2)
+   {
+      player1.setShowDownHand();
+      player2.setShowDownHand();
+      int p1Point = checkCompo(player1.getShowDownHand());
+      int p2Point = checkCompo(player2.getShowDownHand());
+      
+      if(p1Point > p2Point)   {  return player1;   }
+      else  {  return player2;   }
    }
 
    public static void main(String[] args)

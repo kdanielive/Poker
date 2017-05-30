@@ -15,6 +15,8 @@ public class PokerTableScreen extends JPanel
       
    private PokerApp myApp;
    
+   private int round = 0;
+   
    private JButton button1;
    private JButton button2;
    private JButton button3;
@@ -22,6 +24,8 @@ public class PokerTableScreen extends JPanel
    
    private String consoleMessage;
    private String consoleOptionalMsg;
+   
+   private int expCounter = 0;
    
    private int freeCounter = 0;
    private String freeString;
@@ -137,7 +141,7 @@ public class PokerTableScreen extends JPanel
    
    public boolean checkRoundFinished()
    {
-      if(freeCounter < (6 - foldedIndex.size()))   {  return false;  }
+      if(expCounter < 5)   {  return false;  }
    
       ArrayList<Integer> tempSubject = new ArrayList<Integer>();
       for(int num : betAmtArray)
@@ -220,6 +224,9 @@ public class PokerTableScreen extends JPanel
       PokerApp.player3.setKnownCards(game.getPhase());
       PokerApp.player4.setKnownCards(game.getPhase());
       PokerApp.player5.setKnownCards(game.getPhase());
+      
+      System.out.print("asdf: " + foldedIndex);
+
       
       for(int idx : foldedIndex)
       {
@@ -400,9 +407,45 @@ public class PokerTableScreen extends JPanel
    public void endGame()
    {
       freeCounter = 0;
+      expCounter = 0;
       turnIndex = 0;
       for(int idx = 0; idx < 5; idx++) {  betAmtArray.set(idx, 0);  }
       minBetAmt = 20;
+      game.setPhase(-10);
+      game.setSubPhase("End is beginning");
+      if(foldedIndex.size() == 4)  
+      {  
+         PokerApp.user.plusFinance(game.getPot());
+         repaint();  
+      }
+      else
+      {
+         CompareHandler comparier = new CompareHandler();
+         Player victor = new Player();
+         /*
+         ArrayList<Player> losers = new ArrayList<Player>();
+         for(int idx : foldedIndex) {  losers.add(game.getPlayerList().get(idx));   }*/
+         int length = foldedIndex.size();
+         int adder = 0;
+         ArrayList<Player> contenders = new ArrayList<Player>();
+         for(Player player : game.getPlayerList()) {  contenders.add(player); }
+         while(length > 0)
+         {
+            contenders.remove(foldedIndex.remove(0) - adder);
+            adder++;
+            length--;
+         } 
+         for(int idx = 1; idx < contenders.size(); idx++)
+         {
+            victor = comparier.compareHands(contenders.get(idx), contenders.get(idx - 1));
+         }
+         
+         consoleMessage = victor.getName() + " wins! Congratulations, " + victor.getName() + " !";
+         if(victor.equals(PokerApp.user)) {  PokerApp.user.plusFinance(game.getPot()); }
+         repaint();
+      }
+      foldedIndex.clear();
+      game.emptyPot();
    }
    
    private class TurnButtonListener implements ActionListener
@@ -413,14 +456,31 @@ public class PokerTableScreen extends JPanel
       */
       public void actionPerformed(ActionEvent e)
       {
-         if(game.getPhase() == 2 && game.getSubPhase().equals("CommunCards"))
+         if(game.getPhase() == -10 && game.getSubPhase().equals("End is beginning") && round == 5)
+         {
+            game.setPhase(0);
+            myApp.switchScreen("Lobby");
+         }
+         else if(game.getPhase() == -10 && game.getSubPhase().equals("End is beginning") && round != 5)
+         {
+            game.setPhase(0);
+            round++;
+         }
+         else if(game.getPhase() == 6 && game.getSubPhase().equals("Final"))
+         {
+            endGame();
+         }
+         else if(game.getPhase() == -1 && game.getSubPhase().equals("CommunCards"))
          {
             consoleMessage = "Everyone Folded. You won!";
+            endGame();
          }
          else if(game.getPhase() == 3 && game.getSubPhase().equals("CommunCards"))
          {
+            setAIKnownCards();
+            foldedIndex.clear();
             initializeTurnIndex();
-            turnIndex = (turnIndex + 2) % 5;
+            turnIndex = (turnIndex + 1) % 5;
             for(int idx = 0; idx < 5; idx++) {  betAmtArray.set(idx, 0);  }
             minBetAmt = 20;
             game.setSubPhase("SecondR");
@@ -428,8 +488,10 @@ public class PokerTableScreen extends JPanel
          }
          else if(game.getPhase() == 4 && game.getSubPhase().equals("CommunCards"))
          {
+            setAIKnownCards();
+            foldedIndex.clear();
             initializeTurnIndex();
-            turnIndex = (turnIndex + 3) % 5;
+            turnIndex = (turnIndex + 2) % 5;
             for(int idx = 0; idx < 5; idx++) {  betAmtArray.set(idx, 0);   }
             minBetAmt = 40;
             game.setSubPhase("ThirdR");
@@ -437,6 +499,8 @@ public class PokerTableScreen extends JPanel
          }
          else if(game.getPhase() == 5 && game.getSubPhase().equals("CommunCards"))
          {
+            setAIKnownCards();
+            foldedIndex.clear();
             initializeTurnIndex();
             turnIndex = (turnIndex + 3) % 5;
             for(int idx = 0; idx < 5; idx++) {  betAmtArray.set(idx, 0);   }
@@ -448,6 +512,7 @@ public class PokerTableScreen extends JPanel
          else if(game.getPhase() == 0)
          {
             game.setButton();
+            game.shuffleDeck();
             initializeTurnIndex();
             turnIndex = (turnIndex + 1) % 5;
             game.incrementPhase();
@@ -477,6 +542,7 @@ public class PokerTableScreen extends JPanel
                freeCounter++;
                betAmtArray.set(turnIndex, PokerGame.MINBET / 2);
                turnIndex = (turnIndex + 1) % 5;
+               expCounter++;
                repaint();
             }
             else if(freeCounter == 1)
@@ -488,6 +554,7 @@ public class PokerTableScreen extends JPanel
                betAmtArray.set(turnIndex, PokerGame.MINBET);
                minBetAmt = PokerGame.MINBET;
                turnIndex = (turnIndex + 1) % 5;
+               expCounter++;
                repaint();
             }
          }
@@ -500,7 +567,7 @@ public class PokerTableScreen extends JPanel
                game.setSubPhase("CommunCards");
                consoleMessage = "Flop";
                freeCounter = 0;
-               setAIKnownCards();
+               expCounter = 0;
                repaint();
             }
             else if(turnIndex == 0 && freeCounter == 0)
@@ -528,6 +595,7 @@ public class PokerTableScreen extends JPanel
                   consoleMessage = subject.getName() + " called";
                   turnIndex = (turnIndex + 1) % 5;
                   freeCounter++;
+                  expCounter++;
                   repaint();
                }
                else if( subject.easyMove().equals("flat"))
@@ -535,6 +603,7 @@ public class PokerTableScreen extends JPanel
                   consoleMessage = subject.getName() + " checked";
                   turnIndex = (turnIndex + 1) % 5;
                   freeCounter++;
+                  expCounter++;
                   repaint();
                }
                else
@@ -543,6 +612,7 @@ public class PokerTableScreen extends JPanel
                   foldedIndex.add(turnIndex);
                   turnIndex = (turnIndex + 1) % 5;
                   freeCounter++;
+                  expCounter++;
                   repaint();
                }
             }
@@ -551,11 +621,19 @@ public class PokerTableScreen extends JPanel
                AIPlayer subject = (AIPlayer) game.getPlayerList().get(turnIndex);
                if( subject.easyMove().equals("high"))
                {
-                  if(freeCounter < 5)  { bet(20);  }
-                  else  {  bet(0);  }
-                  consoleMessage = subject.getName() + " raised by 20";
+                  if(freeCounter < 5)  
+                  { 
+                     bet(20);
+                     consoleMessage = subject.getName() + " raised by 20";
+                  }
+                  else  
+                  {  
+                     bet(0);
+                     consoleMessage = subject.getName() + " called.";
+                  }
                   turnIndex = (turnIndex + 1) % 5;
                   freeCounter++;
+                  expCounter++;
                   repaint();
                }
                else if( subject.easyMove().equals("flat"))
@@ -564,6 +642,7 @@ public class PokerTableScreen extends JPanel
                   bet(0);
                   turnIndex = (turnIndex + 1) % 5;
                   freeCounter++;
+                  expCounter++;
                   repaint();
                }
                else
@@ -572,6 +651,7 @@ public class PokerTableScreen extends JPanel
                   foldedIndex.add(turnIndex);
                   turnIndex = (turnIndex + 1) % 5;
                   freeCounter++;
+                  expCounter++;
                   repaint();
                }
             }
@@ -585,7 +665,7 @@ public class PokerTableScreen extends JPanel
                game.setSubPhase("CommunCards");
                consoleMessage = "Turn";
                freeCounter = 0;
-               setAIKnownCards();
+               expCounter = 0;
                repaint();
             }
             else if(turnIndex == 0 && freeCounter == 0)
@@ -614,6 +694,7 @@ public class PokerTableScreen extends JPanel
                   consoleMessage = subject.getName() + " called";
                   turnIndex = (turnIndex + 1) % 5;
                   freeCounter++;
+                  expCounter++;
                   repaint();
                }
                else if( subject.easyMove().equals("flat"))
@@ -621,6 +702,7 @@ public class PokerTableScreen extends JPanel
                   consoleMessage = subject.getName() + " checked";
                   turnIndex = (turnIndex + 1) % 5;
                   freeCounter++;
+                  expCounter++;
                   repaint();
                }
                else
@@ -629,6 +711,7 @@ public class PokerTableScreen extends JPanel
                   foldedIndex.add(turnIndex);
                   turnIndex = (turnIndex + 1) % 5;
                   freeCounter++;
+                  expCounter++;
                   repaint();
                }
             }
@@ -637,10 +720,19 @@ public class PokerTableScreen extends JPanel
                AIPlayer subject = (AIPlayer) game.getPlayerList().get(turnIndex);
                if( subject.easyMove().equals("high"))
                {
-                  bet(20);
-                  consoleMessage = subject.getName() + " raised by 20";
+                 if(freeCounter < 5)  
+                 { 
+                    bet(20);
+                    consoleMessage = subject.getName() + " raised by 20";
+                 }
+                 else  
+                 {  
+                    bet(0);
+                    consoleMessage = subject.getName() + " called.";
+                 }
                   turnIndex = (turnIndex + 1) % 5;
                   freeCounter++;
+                  expCounter++;
                   repaint();
                }
                else if( subject.easyMove().equals("flat"))
@@ -649,6 +741,7 @@ public class PokerTableScreen extends JPanel
                   bet(0);
                   turnIndex = (turnIndex + 1) % 5;
                   freeCounter++;
+                  expCounter++;
                   repaint();
                }
                else
@@ -657,6 +750,7 @@ public class PokerTableScreen extends JPanel
                   foldedIndex.add(turnIndex);
                   turnIndex = (turnIndex + 1) % 5;
                   freeCounter++;
+                  expCounter++;
                   repaint();
                }
             }
@@ -670,7 +764,7 @@ public class PokerTableScreen extends JPanel
                game.setSubPhase("CommunCards");
                consoleMessage = "River";
                freeCounter = 0;
-               setAIKnownCards();
+               expCounter = 0;
                repaint();
             }
             else if(turnIndex == 0 && freeCounter == 0)
@@ -698,6 +792,7 @@ public class PokerTableScreen extends JPanel
                   consoleMessage = subject.getName() + " called";
                   turnIndex = (turnIndex + 1) % 5;
                   freeCounter++;
+                  expCounter++;
                   repaint();
                }
                else if( subject.easyMove().equals("flat"))
@@ -705,6 +800,7 @@ public class PokerTableScreen extends JPanel
                   consoleMessage = subject.getName() + " checked";
                   turnIndex = (turnIndex + 1) % 5;
                   freeCounter++;
+                  expCounter++;
                   repaint();
                }
                else
@@ -713,6 +809,7 @@ public class PokerTableScreen extends JPanel
                   foldedIndex.add(turnIndex);
                   turnIndex = (turnIndex + 1) % 5;
                   freeCounter++;
+                  expCounter++;
                   repaint();
                }
             }
@@ -720,12 +817,20 @@ public class PokerTableScreen extends JPanel
             {
                AIPlayer subject = (AIPlayer) game.getPlayerList().get(turnIndex);
                if( subject.easyMove().equals("high"))
-               {
-                  if(freeCounter < 5)  { bet(20);  }
-                  else  {  bet(0);  }
-                  consoleMessage = subject.getName() + " raised by 20";
+               {  
+                  if(freeCounter < 5)  
+                  { 
+                     bet(20);
+                     consoleMessage = subject.getName() + " raised by 20";
+                  }
+                  else  
+                  {  
+                     bet(0);
+                     consoleMessage = subject.getName() + " called.";
+                  }
                   turnIndex = (turnIndex + 1) % 5;
                   freeCounter++;
+                  expCounter++;
                   repaint();
                }
                else if( subject.easyMove().equals("flat"))
@@ -734,6 +839,7 @@ public class PokerTableScreen extends JPanel
                   bet(0);
                   turnIndex = (turnIndex + 1) % 5;
                   freeCounter++;
+                  expCounter++;
                   repaint();
                }
                else
@@ -742,10 +848,12 @@ public class PokerTableScreen extends JPanel
                   foldedIndex.add(turnIndex);
                   turnIndex = (turnIndex + 1) % 5;
                   freeCounter++;
+                  expCounter++;
                   repaint();
                }
             }
          }
+         //55555555555
          else if(game.getPhase() == 5 && game.getSubPhase().equals("FourthR"))
          {
             if(checkRoundFinished())
@@ -754,7 +862,7 @@ public class PokerTableScreen extends JPanel
                game.setSubPhase("Final");
                consoleMessage = "ShowDown!";
                freeCounter = 0;
-               setAIKnownCards();
+               expCounter = 0;
                repaint();
             }
             else if(turnIndex == 0 && freeCounter == 0)
@@ -782,6 +890,7 @@ public class PokerTableScreen extends JPanel
                   consoleMessage = subject.getName() + " called";
                   turnIndex = (turnIndex + 1) % 5;
                   freeCounter++;
+                  expCounter++;
                   repaint();
                }
                else if( subject.easyMove().equals("flat"))
@@ -789,6 +898,7 @@ public class PokerTableScreen extends JPanel
                   consoleMessage = subject.getName() + " checked";
                   turnIndex = (turnIndex + 1) % 5;
                   freeCounter++;
+                  expCounter++;
                   repaint();
                }
                else
@@ -797,19 +907,33 @@ public class PokerTableScreen extends JPanel
                   foldedIndex.add(turnIndex);
                   turnIndex = (turnIndex + 1) % 5;
                   freeCounter++;
+                  expCounter++;
                   repaint();
                }
             }
             else
             {
                AIPlayer subject = (AIPlayer) game.getPlayerList().get(turnIndex);
+               //blahblah
+               subject.setShowDownHand();
+               CompareHandler comparier = new CompareHandler();
+               System.out.println(comparier.checkCompo(subject.getShowDownHand()));
+               
                if( subject.easyMove().equals("high"))
                {
-                  if(freeCounter < 5)  { bet(20);  }
-                  else  {  bet(0);  }
-                  consoleMessage = subject.getName() + " raised by 20";
+                  if(freeCounter < 5)  
+                  { 
+                     bet(20);
+                     consoleMessage = subject.getName() + " raised by 20";
+                  }
+                  else  
+                  {  
+                     bet(0);
+                     consoleMessage = subject.getName() + " called.";
+                  }
                   turnIndex = (turnIndex + 1) % 5;
                   freeCounter++;
+                  expCounter++;
                   repaint();
                }
                else if( subject.easyMove().equals("flat"))
@@ -818,6 +942,7 @@ public class PokerTableScreen extends JPanel
                   bet(0);
                   turnIndex = (turnIndex + 1) % 5;
                   freeCounter++;
+                  expCounter++;
                   repaint();
                }
                else
@@ -826,6 +951,7 @@ public class PokerTableScreen extends JPanel
                   foldedIndex.add(turnIndex);
                   turnIndex = (turnIndex + 1) % 5;
                   freeCounter++;
+                  expCounter++;
                   repaint();
                }
             }
@@ -848,6 +974,7 @@ public class PokerTableScreen extends JPanel
             turnIndex = (turnIndex + 1) % 5;
             game.setSubPhase(freeString);
             freeCounter++;
+            expCounter++;
             repaint();
          }
          else if(button1.getText().equals("Check") && game.getSubPhase().equals("user"))
@@ -856,6 +983,7 @@ public class PokerTableScreen extends JPanel
             turnIndex = (turnIndex + 1) % 5;
             game.setSubPhase(freeString);
             freeCounter++;
+            expCounter++;
             repaint();
          }
       }

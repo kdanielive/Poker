@@ -65,7 +65,7 @@ public class Player
       name = myName;
       finance = myFinance;
       holeCards = new PokerCard[2];
-      
+
       try
       {
          InputStream is = getClass().getResourceAsStream("./IconImages/" + icon + ".png");
@@ -82,14 +82,23 @@ public class Player
       finance = finance - amt;
    }
    
+   public void plusFinance(int amt)
+   {
+      finance = finance + amt;
+   }
+   
    public ArrayList<PokerCard> getShowDownHand()
    {
       return showDownHand;
    }
    
-   public void setShowDownHand(ArrayList<PokerCard> myHand)
+   public void setShowDownHand()
    {
-      showDownHand = myHand;
+      for(PokerCard card : holeCards)   {  showDownHand.add(card); }
+      for(PokerCard card : PokerGame.communityCards)
+      {
+         showDownHand.add(card);
+      }
    }
    
    public void setFirstBetterBool(boolean condition)
