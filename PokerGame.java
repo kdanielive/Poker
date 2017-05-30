@@ -6,7 +6,7 @@ plays the poker game
 */
 public class PokerGame
 {
-   private Player[] players = new Player[5];
+   private ArrayList<Player> players = new ArrayList<Player>();
    /** the deck of poker cards being used in game */
    private  Deck deck;
    /** the betting money on table */
@@ -16,6 +16,8 @@ public class PokerGame
    public static String subPhase;
    /** the communicty cards of the game */
    public static ArrayList<PokerCard> communityCards;
+   public static final int MINBET = 20;
+   private int[] betters = new int[3];
    
    private boolean[] commCardFlipBool;
    private boolean receivedHoleCard = false;
@@ -29,7 +31,6 @@ public class PokerGame
    public static final int PLAYER_NUM = 5;
    public static final int HAND_VOLUME = 5;
    
-   private int[] betters = new int[3];
    private boolean[] checkList =  new boolean[5];
    private boolean[] foldList = new boolean[5];
    private boolean[] turnList = new boolean[5];
@@ -42,9 +43,9 @@ public class PokerGame
       communityCards = new ArrayList<PokerCard>();
       
       commCardFlipBool = new boolean[5];
-      for(Player player : players)
+      for(int idx = 0; idx < 5; idx++)
       {
-         player = new Player();
+         players.add(new Player());
       }
       
       setButton();
@@ -69,6 +70,38 @@ public class PokerGame
    
    public void emptyPot()  {  moneyOnTable = 0; }
    
+   public int getPot()  {  return moneyOnTable; }
+   
+   public int[] getBetters()  {  return betters;   }
+   
+   public ArrayList<Player> getPlayerList()
+   {
+      return players;
+   }
+   
+   public void distributeCards()
+   {
+      ArrayList<PokerCard> tempCardArray = new ArrayList<PokerCard>();
+      
+      for(int idx = 0; idx < PLAYER_NUM * 2; idx++)
+      {
+         tempCardArray.add(deck.drawCard());
+      }
+      for(int idx = 0; idx < PLAYER_NUM; idx++)
+      {
+         players.get(idx).setHoleCards(tempCardArray.get(idx),
+            tempCardArray.get(idx + PLAYER_NUM));
+      }
+      for(int idx = 0; idx < 5; idx++)
+      {
+         communityCards.set(idx, deck.drawCard());
+      }                                         
+   }
+   
+   
+   
+   
+   
    /**
    compares the hands of two players and decides the winner
    @param player1 the first player of hand comparison
@@ -83,11 +116,11 @@ public class PokerGame
    public void listPlayers(Player player, AIPlayer p1, AIPlayer p2,
        AIPlayer p3, AIPlayer p4)
    {
-      players[0] = player;
-      players[1] = p1;
-      players[2] = p2;
-      players[3] = p3;
-      players[4] = p4;
+      players.set(0, player);
+      players.set(1, p1);
+      players.set(2, p2);
+      players.set(3, p3);
+      players.set(4, p4);
    }
    
    public void setButton()
@@ -96,7 +129,7 @@ public class PokerGame
       {
       
          Random randomer = new Random();
-         int randIdx = randomer.nextInt(players.length);
+         int randIdx = randomer.nextInt(players.size());
 
          betters[0] = randIdx;
          betters[1] = (randIdx + 1) % 5;
@@ -112,26 +145,6 @@ public class PokerGame
       }
    }
    
-   public void distributeCards()
-   {
-      ArrayList<PokerCard> tempCardArray = new ArrayList<PokerCard>();
-      
-      for(int idx = 0; idx < PLAYER_NUM * 2; idx++)
-      {
-         tempCardArray.add(deck.drawCard());
-      }
-      for(int idx = 0; idx < PLAYER_NUM; idx++)
-      {
-         players[idx].setHoleCards(tempCardArray.get(idx),
-            tempCardArray.get(idx + PLAYER_NUM));
-      }
-      for(int idx = 0; idx < 5; idx++)
-      {
-         communityCards.set(idx, deck.drawCard());
-      }
-      receivedHoleCard = true;                                            
-   }
-   
    public void finishRound()
    {
       phase++;
@@ -139,16 +152,6 @@ public class PokerGame
       moneyOnTable = 0;
       communityCards = new ArrayList<PokerCard>();
       deck = new Deck();
-   }
-   
-   public int[] getBetters()
-   {
-      return betters;
-   }
-   
-   public Player[] getPlayerList()
-   {
-      return players;
    }
    
    public static void main(String[] args)

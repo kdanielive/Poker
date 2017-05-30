@@ -76,12 +76,12 @@ public class Player
       
       }
    }
-   /*
-   public void declareGame(PokerGame game)
+   
+   public void minusFinance(int amt)
    {
-      myGame = game;
+      finance = finance - amt;
    }
-   */
+   
    public ArrayList<PokerCard> getShowDownHand()
    {
       return showDownHand;
