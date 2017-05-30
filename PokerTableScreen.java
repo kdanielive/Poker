@@ -25,9 +25,8 @@ public class PokerTableScreen extends JPanel
    
    private int freeCounter = 0;
    private int turnIndex = 0;
-   private int checkCount = 5;
-   private int maxCheckCount = 5;
-   private ArrayList<Integer> betAmtArray;
+   private ArrayList<Integer> foldedIndex = new ArrayList<Integer>();
+   private ArrayList<Integer> betAmtArray= new ArrayList<Integer>();
    private int minBetAmt;
    
    public static PokerGame game = new PokerGame();
@@ -120,10 +119,47 @@ public class PokerTableScreen extends JPanel
       g2.drawString(PokerApp.player5.getName(), 1025, 550);
       g2.drawString(PokerApp.user.getName(), 350, 750);
       drawHoleCards(g);
-      //drawCommunityCards(g);
+      drawCommunityCards(g);
       drawMoneyOnTable(g);
       drawButtons(g);
       //drawMyFinance(g);
+   }
+   
+   public void bet(int raiseAmt)
+   {
+      minBetAmt += raiseAmt;
+      game.getPlayerList().get(turnIndex).minusFinance(minBetAmt - betAmtArray.get(turnIndex));
+      game.addToPot(minBetAmt - betAmtArray.get(turnIndex));
+      betAmtArray.set(turnIndex, minBetAmt);
+   }
+   
+   public boolean checkRoundFinished()
+   {
+      if(foldedIndex.size() == 0)   {  return false;  }
+   
+      ArrayList<Integer> tempSubject = new ArrayList<Integer>();
+      for(int num : betAmtArray)
+      {
+         tempSubject.add(num);
+      }
+      for(int num : foldedIndex)
+      {
+         tempSubject.set(num, -1);
+      }
+      ArrayList<Integer> compareSubject = new ArrayList<Integer>();
+      for(int num: tempSubject)
+      {
+         if(num != -1)  {  compareSubject.add(num);   }
+      }
+      if(compareSubject.size() == 1)   { return true; }  //IT MEANS ROUND FINISHED DO SOMETHING LATER
+      for(int idx = 1; idx < compareSubject.size(); idx++)
+      {
+         if(compareSubject.get(idx) != compareSubject.get(idx - 1))
+         {
+            return false;
+         }
+      }
+      return true;
    }
    
    public void initializeTurnIndex()
@@ -167,6 +203,14 @@ public class PokerTableScreen extends JPanel
          g2.setFont(new Font("Times New Roman", Font.PLAIN, 20));
          g2.drawString("Amount in Pot: " + game.getPot(), 20, 70);
       }
+   }
+   
+   public void setAIKnownCards()
+   {
+      PokerApp.player2.setKnownCards(game.getPhase());
+      PokerApp.player3.setKnownCards(game.getPhase());
+      PokerApp.player4.setKnownCards(game.getPhase());
+      PokerApp.player5.setKnownCards(game.getPhase());
    }
    
    public void drawButtons(Graphics g)
@@ -243,6 +287,45 @@ public class PokerTableScreen extends JPanel
          }
       }
    }
+   
+   public void drawCommunityCards(Graphics g)
+   {
+      Graphics2D g2 = (Graphics2D) g;
+      
+      ArrayList<PokerCard> communityCards = game.getCommunCards();
+      Boolean[] commCardFlipBool = new Boolean[5];
+      
+      if(game.phase == 3)
+      {
+         for(int idx = 0; idx < 3; idx++)
+         {
+            commCardFlipBool[idx] = true;
+         }
+      }
+      else if(game.phase == 4)
+      {
+         for(int idx = 0; idx < 4; idx++)
+         {
+            commCardFlipBool[idx] = true;
+         }
+      }
+      else if(game.phase == 5)
+      {
+         for(int idx = 0; idx < 5; idx++)
+         {
+            commCardFlipBool[idx] = true;
+         }
+      }     
+      for(int idx = 0; idx < 5; idx++)
+      {
+         if(commCardFlipBool[idx] == true)
+         {
+            g2.drawImage(communityCards.get(idx).getImage(), 350 + idx * 100, 300, null);
+            g2.setColor(Color.RED);
+            g2.drawString(communityCards.get(idx).getName(), 350 + idx * 100, 460);
+         }
+      }
+   }
    /*
    public void drawMyFinance(Graphics g)
    {
@@ -250,44 +333,6 @@ public class PokerTableScreen extends JPanel
       g2.setColor(Color.BLACK);
       g2.setFont(new Font("Times New Roman", Font.PLAIN, 25));
       g2.drawString("Finance: " + game.players[0].getFinance(), 1000, 50);
-   }
-   
-   public void drawCommunityCards(Graphics g)
-   {
-      Graphics2D g2 = (Graphics2D) g;
-      
-      ArrayList<PokerCard> communityCards = game.communityCards;
-      
-      if(game.round == 1)
-      {
-         for(int idx = 0; idx < 3; idx++)
-         {
-            game.commCardFlipBool[idx] = true;
-         }
-      }
-      else if(game.round == 2)
-      {
-         for(int idx = 0; idx < 4; idx++)
-         {
-            game.commCardFlipBool[idx] = true;
-         }
-      }
-      else if(game.round == 3)
-      {
-         for(int idx = 0; idx < 5; idx++)
-         {
-            game.commCardFlipBool[idx] = true;
-         }
-      }     
-      for(int idx = 0; idx < 5; idx++)
-      {
-         if(game.commCardFlipBool[idx] == true)
-         {
-            g2.drawImage(communityCards.get(idx).getImage(), 350 + idx * 100, 300, null);
-            g2.setColor(Color.RED);
-            g2.drawString(communityCards.get(idx).getName(), 350 + idx * 100, 460);
-         }
-      }
    }
    */
       
@@ -364,6 +409,7 @@ public class PokerTableScreen extends JPanel
                freeCounter = 0;
                turnIndex = (turnIndex + 1) % 5;
                game.distributeCards();
+               setAIKnownCards();
                consoleMessage = "Hole Cards received.";
                repaint();
             }
@@ -391,17 +437,76 @@ public class PokerTableScreen extends JPanel
          }
          else if(game.getPhase() == 2 && game.getSubPhase().equals("firstR"))
          {
-            if(freeCounter == 0 && turnIndex == 0)
+            if(checkRoundFinished())
+            {
+               game.incrementPhase();
+               game.setSubPhase("CommunCards");
+               consoleMessage = "Flop";
+               setAIKnownCards();
+               repaint();
+            }
+            else if(turnIndex == 0 && freeCounter == 0)
+            {
+               setButtonStrings("Check", "Call", "Fold");
+               consoleMessage = "Your turn";
+               repaint();
+            }
+            else if(turnIndex == 0)
             {
                setButtonStrings("Call", "Raise", "Fold");
+               consoleMessage = "Your turn";
+               repaint();
             }
             else if(freeCounter == 0)
             {
                AIPlayer subject = (AIPlayer) game.getPlayerList().get(turnIndex);
-               if( subject.easyMove().equals("High") )
+               if( subject.easyMove().equals("high"))
                {
-                  game.getPlayerList().get(turnIndex).minusFinance(minBetAmt - betAmtArray.get(turnIndex));
-                  game.addToPot(minBetAmt - betAmtArray.get(turnIndex));
+                  bet(0);
+                  consoleMessage = subject.getName() + " bet " + (minBetAmt - betAmtArray.get(turnIndex));
+                  turnIndex = (turnIndex + 1) % 5;
+                  freeCounter++;
+                  repaint();
+               }
+               else if( subject.easyMove().equals("flat"))
+               {
+                  consoleMessage = subject.getName() + " checked";
+                  turnIndex = (turnIndex + 1) % 5;
+                  freeCounter++;
+                  repaint();
+               }
+               else
+               {
+                  consoleMessage = subject.getName() + " folded";
+                  foldedIndex.add(turnIndex);
+                  turnIndex = (turnIndex + 1) % 5;
+                  freeCounter++;
+                  repaint();
+               }
+            }
+            else
+            {
+               AIPlayer subject = (AIPlayer) game.getPlayerList().get(turnIndex);
+               if( subject.easyMove().equals("high"))
+               {
+                  bet(20);
+                  consoleMessage = subject.getName() + " raised by 20";
+                  turnIndex = (turnIndex + 1) % 5;
+                  repaint();
+               }
+               else if( subject.easyMove().equals("flat"))
+               {
+                  consoleMessage = subject.getName() + " called";
+                  bet(0);
+                  turnIndex = (turnIndex + 1) % 5;
+                  repaint();
+               }
+               else
+               {
+                  consoleMessage = subject.getName() + " folded";
+                  foldedIndex.add(turnIndex);
+                  turnIndex = (turnIndex + 1) % 5;
+                  repaint();
                }
             }
          }
@@ -418,9 +523,17 @@ public class PokerTableScreen extends JPanel
       {
          if(button1.getText().equals("Call"))
          {
+            consoleMessage = "You called";
             PokerApp.user.minusFinance(minBetAmt - betAmtArray.get(0));
             game.addToPot(minBetAmt - betAmtArray.get(0));
             betAmtArray.set(0, minBetAmt);
+            turnIndex = (turnIndex + 1) % 5;
+            repaint();
+         }
+         else if(button1.getText().equals("Check"))
+         {
+            consoleMessage = "You checked";
+            
          }
       }
    }

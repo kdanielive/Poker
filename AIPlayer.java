@@ -67,10 +67,10 @@ public class AIPlayer extends Player
       CompareHandler comparier = new CompareHandler();
       int compoNum = comparier.checkCompo(knownCards);
       int highNum = comparier.getHighCard(knownCards);
-      if(PokerGame.phase < 5)
+      if(PokerGame.phase < 4)
       {
          if(compoNum > 2)  {  return "high"; }
-         else if(compoNum > 0 || highNum > 11) {  return "flat"; }
+         else if(compoNum > 0 || highNum > 7) {  return "flat"; }
          else  {  return "low"; }
       }
       else
@@ -88,15 +88,15 @@ public class AIPlayer extends Player
       {
          knownCards.add(card);
       }
-      if(phase == 4) 
+      if(phase == 3) 
       {
          for(int idx = 0; idx < 3; idx++)
          {
             knownCards.add(PokerGame.communityCards.get(idx));  
          }
       }
-      if(phase == 5) {  knownCards.add(PokerGame.communityCards.get(3)); };
-      if(phase == 6) {  knownCards.add(PokerGame.communityCards.get(4)); };
+      if(phase == 4) {  knownCards.add(PokerGame.communityCards.get(3)); };
+      if(phase == 5) {  knownCards.add(PokerGame.communityCards.get(4)); };
    }
    
    /** 

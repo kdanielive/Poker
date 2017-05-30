@@ -74,6 +74,8 @@ public class PokerGame
    
    public int[] getBetters()  {  return betters;   }
    
+   public ArrayList<PokerCard> getCommunCards() {  return communityCards;  }
+   
    public ArrayList<Player> getPlayerList()
    {
       return players;
@@ -97,21 +99,6 @@ public class PokerGame
          communityCards.set(idx, deck.drawCard());
       }                                         
    }
-   
-   
-   
-   
-   
-   /**
-   compares the hands of two players and decides the winner
-   @param player1 the first player of hand comparison
-   @param player2 the second player of hand comparison
-   
-   public Player compareHands(Player player1, Player player2)
-   {
-      return comparier.compareHands(player1, player2);
-   }
-   */
    
    public void listPlayers(Player player, AIPlayer p1, AIPlayer p2,
        AIPlayer p3, AIPlayer p4)
@@ -144,6 +131,11 @@ public class PokerGame
          betters[2] = (buttonIdx + 2) % 5;
       }
    }
+   
+   
+   
+   
+   
    
    public void finishRound()
    {
