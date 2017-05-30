@@ -10,6 +10,7 @@ public class AIPlayer extends Player
    private String type;
    private ArrayList<PokerCard> knownCards = new ArrayList<PokerCard>();
    private int betCount = 0;  //how many times he betted
+   private ArrayList<Integer> stackCount;
    
    PokerGame myGame = new PokerGame();
    
@@ -67,17 +68,18 @@ public class AIPlayer extends Player
       CompareHandler comparier = new CompareHandler();
       int compoNum = comparier.checkCompo(knownCards);
       int highNum = comparier.getHighCard(knownCards);
-      if(PokerGame.phase < 3)
+      System.out.println(this.getName() + " : " + compoNum);
+      if(PokerGame.phase < 4)
       {
-         if(compoNum > 2)  {  return "high"; }
-         else if(compoNum > 0 || highNum > 7) {  return "flat"; }
-         else  {  return "low"; }
+         if(compoNum == 5) {  return "low"; }
+         else if(compoNum > 0 || highNum > 5) {  return "high"; }
+         else  {  return "flat"; }
       }
       else
       {
-         if(compoNum > 3)  {  return "high"; }
-         else if (compoNum > 0)  {  return "flat"; }
-         else  {  return "low";  }
+         if(compoNum == 5) {  return "low"; }
+         else if (compoNum > 1)  {  return "high"; }
+         else  {  return "flat";  }
       }
    }
    
@@ -104,10 +106,38 @@ public class AIPlayer extends Player
    @param communityCards the community cards of the game
    @param holeCards the hole cards of the player
    */
-   public void mediumMove(ArrayList<PokerCard> communityCards, 
+   public String mediumMove(ArrayList<PokerCard> communityCards, 
       PokerCard[] holeCards)
    {
+      CompareHandler comparier = new CompareHandler();
+      int compoNum = comparier.checkCompo(knownCards);
+      int highNum = comparier.getHighCard(knownCards);
+      System.out.println(this.getName() + " : " + compoNum);
       
+      if(PokerGame.phase < 2)
+      {
+         if(compoNum == 5) {  return "low"; }
+         else if(compoNum > 0 || highNum > 5) {  return "high"; }
+         else  {  return "flat"; }
+      }
+      else if(PokerGame.phase <4)
+      {
+         if(highNum + compoNum > 3)
+         {
+            return "flat";
+         }
+         else if(stackCount.size() < 3)
+         {
+            return "low";
+         }
+         else  {  return "high"; }
+      }
+      else
+      {
+         if(compoNum == 5) {  return "low"; }
+         else if (compoNum > 1)  {  return "high"; }
+         else  {  return "flat";  }
+      }  
    }
    
    /** 
@@ -115,30 +145,28 @@ public class AIPlayer extends Player
    @param communityCards the community cards of the game
    @param holeCards the hole cards of the player
    */
-   public void hardMove(ArrayList<PokerCard> communityCards, 
+   public String hardMove(ArrayList<PokerCard> communityCards, 
       PokerCard[] holeCards)
    {
+      CompareHandler comparier = new CompareHandler();
+      int compoNum = comparier.checkCompo(knownCards);
+      int highNum = comparier.getHighCard(knownCards);
+      int myStackCount = 0;
+      for(int num : stackCount)
+      {
+         if(num > 2) {  myStackCount++;   }
+      }
+      System.out.println(this.getName() + " : " + compoNum);
+      if(myStackCount > 7) {  return "low";  }
+      else if(myStackCount > 3)  {  return "sky";  }
+      else if(compoNum == 5 && highNum == 4) {  return "flat"; }
+      else if(compoNum > 0 || highNum > 5) {  return "high"; }
+      else
+      {
+         if(compoNum == 5) {  return "low"; }
+         else if (compoNum > 1)  {  return "high"; }
+         else  {  return "flat";  }
+      }
       
-   }
-
-   /** 
-   the gameplay of a boss AI
-   @param communityCards the community cards of the game
-   @param holeCards the hole cards of the player
-   */
-   public void bossMove(ArrayList<PokerCard> communityCards, 
-      PokerCard[] holeCards)
-   {
-      
-   }
-   
-   /**
-   the gameplay of the AI depending on its type 
-   @param communityCards the community cards of the game
-   @param holeCards the hole cards of the player
-   */
-   public void playMove()
-   {
-      if(type.equals("Easy"))   {  easyMove();   }
    }
 }

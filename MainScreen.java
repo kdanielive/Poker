@@ -39,15 +39,16 @@ public class MainScreen extends JPanel
       
       g2.drawImage(backgroundImage, 0, 0, null);
       
+      g2.setColor(Color.RED);
       Stroke oldStroke = g2.getStroke();
       g2.setStroke(new BasicStroke(2));      
-      g2.drawRect(570, 300, 350, 50);
-      g2.drawRect(570, 380, 350, 50);
+      g2.drawRect(570, 340, 330, 60);
+      //g2.drawRect(570, 380, 350, 50);
       
       g2.setFont(new Font("Times New Roman", Font.PLAIN, 35));
       g2.setColor(Color.WHITE);
-      g2.drawString("Start Game", 630, 340);
-      g2.drawString("Instructions", 630, 420);
+      g2.drawString("Start Game", 630, 380);
+      //g2.drawString("Instructions", 630, 420);
    }
    
    /**
@@ -64,7 +65,7 @@ public class MainScreen extends JPanel
          int clickX = e.getX();
          int clickY = e.getY();
          
-         Rectangle2D.Double button1 = new Rectangle2D.Double(570, 300, 350, 50);
+         Rectangle2D.Double button1 = new Rectangle2D.Double(570, 340, 350, 50);
          Rectangle2D.Double button2 = new Rectangle2D.Double(570, 380, 350, 50);
          
          if(button1.contains(clickX, clickY))

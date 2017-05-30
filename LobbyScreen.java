@@ -80,6 +80,9 @@ public class LobbyScreen extends JPanel
       g2.drawImage(joker2Image, 850, 500, null);
       g2.drawImage(casinoListImage, 630, 70, null);
       
+      g2.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+      g2.drawString("Finance: ", 950, 100);
+      g2.drawString("" + PokerApp.user.getFinance(), 1030, 100);
       g2.setFont(new Font("Times New Roman", Font.PLAIN, 23));
       g2.drawString("Itinerary", 800, 115);
       g2.setFont(new Font("Times New Roman", Font.PLAIN, 20));
@@ -90,6 +93,14 @@ public class LobbyScreen extends JPanel
       g2.drawString("Low Casino", 650, 325);
       g2.drawString("Royale Casino", 650, 370);
       g2.drawString("The Casino", 650, 415);
+      
+      PokerApp.user.drawMe(g2, 0, 0);
+      g2.setFont(new Font("Times New Roman", Font.BOLD, 35));
+      g2.setColor(Color.RED);
+      g2.drawString(PokerApp.user.getName(),125, 30);
+      
+      g2.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+      g2.setColor(Color.BLACK);
       
       AttributedString as1 = new AttributedString("Enter");
       as1.addAttribute(TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON, 0, 4);
@@ -114,10 +125,25 @@ public class LobbyScreen extends JPanel
       
       g2.setFont(new Font("Times New Roman", Font.PLAIN, 23));
       g2.setColor(Color.WHITE);
-      g2.drawString("Transactions", 260, 100);
+      g2.drawString("Instructions", 260, 100);
       g2.setFont(new Font("Times New Roman", Font.PLAIN, 20));
 
-      g2.drawString("Blah", 150, 130);
+      g2.drawString("So this is the story.", 150, 130);
+      g2.drawString("We hold your son in ransom. ", 150, 160);
+      g2.drawString("And we require money.", 150, 190);
+      g2.drawString("Like, a lot of money.", 150, 220);
+      g2.drawString("We know that you're a miserable loser", 150, 250);
+      g2.drawString("but luckily, see the casinos nearby?", 150, 280);
+      g2.drawString("They all play limit Texas Holdem,", 150, 310);
+      g2.drawString(" as is the rule in this area.", 150, 340);
+      g2.drawString("Minimum bet for pre-flop and flop are 20,", 150, 370);
+      g2.drawString("while it's 40 for turn and river rounds.", 150, 400);
+      g2.drawString("You'll find some casinos very selective...", 150, 430);
+      g2.drawString("You'll need more money to go into such casinos.", 150, 460);
+      g2.drawString("Oh, and you know what the custom is. ", 150, 490);
+      g2.drawString("Run out of money, you get killed.", 150, 520);
+      g2.drawString("See you at THE CASINO then...", 150, 550);
+      g2.drawString("if you can make if that far.", 150, 580); 
    }
    
    /**
