@@ -27,6 +27,8 @@ public class PokerTableScreen extends JPanel
    private int turnIndex = 0;
    private int checkCount = 5;
    private int maxCheckCount = 5;
+   private ArrayList<Integer> betAmtArray;
+   private int minBetAmt;
    
    public static PokerGame game = new PokerGame();
    
@@ -35,6 +37,8 @@ public class PokerTableScreen extends JPanel
       myApp = app;
       
       this.setLayout(null);
+      
+      for(int idx = 0; idx < 5; idx++) {  betAmtArray.add(0);  }
       
       button1 = new JButton("Press");
       button2 = new JButton("Card");
@@ -369,6 +373,7 @@ public class PokerTableScreen extends JPanel
                if(turnIndex == 0)   {  PokerApp.user.minusFinance(PokerGame.MINBET / 2);   }
                consoleMessage = game.getPlayerList().get(game.getBetters()[1]).getName() + " paid the small blind.";
                freeCounter++;
+               betAmtArray.set(turnIndex, PokerGame.MINBET / 2);
                turnIndex = (turnIndex + 1) % 5;
                repaint();
             }
@@ -377,7 +382,9 @@ public class PokerTableScreen extends JPanel
                game.addToPot(PokerGame.MINBET);
                consoleMessage = game.getPlayerList().get(game.getBetters()[2]).getName() + " paid the big blind.";
                freeCounter++;
-               if(turnIndex == 0)   {  PokerApp.user.minusFinance(PokerGame.MINBET / 2);   }
+               if(turnIndex == 0)   {  PokerApp.user.minusFinance(PokerGame.MINBET);   }
+               betAmtArray.set(turnIndex, PokerGame.MINBET);
+               minBetAmt = PokerGame.MINBET;
                turnIndex = (turnIndex + 1) % 5;
                repaint();
             }
@@ -387,6 +394,15 @@ public class PokerTableScreen extends JPanel
             if(freeCounter == 0 && turnIndex == 0)
             {
                setButtonStrings("Call", "Raise", "Fold");
+            }
+            else if(freeCounter == 0)
+            {
+               AIPlayer subject = (AIPlayer) game.getPlayerList().get(turnIndex);
+               if( subject.easyMove().equals("High") )
+               {
+                  game.getPlayerList().get(turnIndex).minusFinance(minBetAmt - betAmtArray.get(turnIndex));
+                  game.addToPot(minBetAmt - betAmtArray.get(turnIndex));
+               }
             }
          }
       }
@@ -402,7 +418,9 @@ public class PokerTableScreen extends JPanel
       {
          if(button1.getText().equals("Call"))
          {
-         
+            PokerApp.user.minusFinance(minBetAmt - betAmtArray.get(0));
+            game.addToPot(minBetAmt - betAmtArray.get(0));
+            betAmtArray.set(0, minBetAmt);
          }
       }
    }
