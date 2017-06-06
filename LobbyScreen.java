@@ -173,7 +173,11 @@ public class LobbyScreen extends JPanel
          {
             JFrame frame = new JFrame("Message Box");
             int choice = JOptionPane.showConfirmDialog(frame, "Exit game?");
-            if(choice == 0)   {  myApp.switchScreen("Main");   }
+            if(choice == 0)   
+            {  
+               myApp.switchScreen("Main");
+               PokerTableScreen.game = new PokerGame();
+            }
          }
          
          for(int idx = 0; idx < 7; idx++)

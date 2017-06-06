@@ -155,7 +155,7 @@ public class CompareHandler
       else  {  return 0;   }
    }
    
-   public static void insertionSort(ArrayList<PokerCard> list)
+   public void insertionSort(ArrayList<PokerCard> list)
    {
       int n = list.size();
       
@@ -173,7 +173,24 @@ public class CompareHandler
       }
    }
    
-   public static void intInsertionSort(ArrayList<Integer> list)
+   public String compoName(ArrayList<PokerCard> hand)
+   {
+      int index = checkCompo(hand);
+      switch(index)
+      {
+         case 1: return "One Pair";
+         case 2: return "Two Pair";
+         case 3: return "Three of a Kind";
+         case 4: return "Straight";
+         case 5: return "Flush";
+         case 6: return "Full House";
+         case 7: return "Four of a Kind";
+         case 8: return "Straight Flush";
+         default : return "Full House";
+      }
+   }
+   
+   public void intInsertionSort(ArrayList<Integer> list)
    {
       int n = list.size();
       

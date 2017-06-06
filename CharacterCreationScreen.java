@@ -124,53 +124,33 @@ public class CharacterCreationScreen extends JPanel
          {
             if(icons[idx].contains(clickX, clickY) && idx == 0)
             {
-               System.out.println("1");
                PokerApp.user.setIcon("death");
                icon1Selected = true;
-               icon2Selected = false;
-               icon3Selected = false;
-               icon4Selected = false;
                repaint();
             }
             else if (icons[idx].contains(clickX, clickY) && idx == 1)
             {
-               System.out.println("2");
                PokerApp.user.setIcon("eyeball");
-               icon1Selected = false;
                icon2Selected = true;
-               icon3Selected = false;
-               icon4Selected = false;
                repaint();
             }
             else if (icons[idx].contains(clickX, clickY) && idx == 2)
             {
-               System.out.println("3");
                PokerApp.user.setIcon("jokerhat");
-               icon1Selected = false;
-               icon2Selected = false;
                icon3Selected = true;
-               icon4Selected = false;
                repaint();
             }
             else if (icons[idx].contains(clickX, clickY) && idx == 3)
             {
-               System.out.println("4");
                PokerApp.user.setIcon("teardrop");
-               icon1Selected = false;
-               icon2Selected = false;
-               icon3Selected = false;
                icon4Selected = true;
                repaint();
             }
          }
       }
-      
       public void mouseReleased(MouseEvent e) { }
-      
       public void mouseClicked(MouseEvent e) { }
-      
       public void mouseEntered(MouseEvent e) { }
-      
       public void mouseExited(MouseEvent e) { }
    }
    

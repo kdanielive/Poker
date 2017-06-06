@@ -122,14 +122,8 @@ public class AIPlayer extends Player
       }
       else if(PokerGame.phase <4)
       {
-         if(highNum + compoNum > 3)
-         {
-            return "flat";
-         }
-         else if(stackCount.size() < 3)
-         {
-            return "low";
-         }
+         if(highNum + compoNum > 3) {  return "flat"; }
+         else if(stackCount.size() < 3)   {  return "low";  }
          else  {  return "high"; }
       }
       else
