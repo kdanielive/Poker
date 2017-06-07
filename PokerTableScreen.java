@@ -344,7 +344,8 @@ public class PokerTableScreen extends JPanel
       game.emptyPot();
       consoleMessage = "Here goes another round.";
       consoleOptionalMsg = "";
-      myTimer.cancel();
+      startButton.setVisible(true);
+      if(myTimer != null)  {  myTimer.cancel(); }
    }
    
    public void endGame()
@@ -397,7 +398,8 @@ public class PokerTableScreen extends JPanel
    {
       clearData();
       round = 0;
-      consoleMessage = "Your time's done here. Be gone, fool.";
+      JFrame frame = new JFrame("Message Box");
+      JOptionPane.showConfirmDialog(frame, "Your time's up. Come back later.", "Time Out", -1);
       myApp.switchScreen("Lobby");
    }
    

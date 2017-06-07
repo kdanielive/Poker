@@ -27,21 +27,7 @@ public class LobbyScreen extends JPanel
    public LobbyScreen(PokerApp app)
    {
       myApp = app;
-      
-      authorizedList[0] = true;
-      authorizedList[1] = true;
-      if(PokerApp.user.getFinance() > 1000)
-      {
-         authorizedList[2] = true;
-         authorizedList[3] = true;
-      }
-      if(PokerApp.user.getFinance() > 5000)
-      {
-         authorizedList[4] = true;
-         authorizedList[5] = true;
-      }
-      if(PokerApp.user.getFinance() > 10000) {  authorizedList[6] = true;  }
-      
+      setAuthorizedList();
       try
       {
          InputStream is = getClass().getResourceAsStream("woodBackground.jpg");
@@ -62,18 +48,47 @@ public class LobbyScreen extends JPanel
       requestFocusInWindow();
    }
    
+   public void screenInitCheck()
+   {
+      setAuthorizedList();
+      checkDeadOrAlive();
+   }
+   
+   public void setAuthorizedList()
+   {
+      authorizedList[0] = true;
+      authorizedList[1] = true;
+      if(PokerApp.user.getFinance() > 1000)
+      {
+         authorizedList[2] = true;
+         authorizedList[3] = true;
+      }
+      if(PokerApp.user.getFinance() > 5000)
+      {
+         authorizedList[4] = true;
+         authorizedList[5] = true;
+      }
+      if(PokerApp.user.getFinance() > 10000) {  authorizedList[6] = true;  }
+   }
+   
+   public void checkDeadOrAlive()
+   {
+      if(PokerApp.user.getFinance() < 0)
+      {
+         JFrame frame = new JFrame("Message Box");
+         JOptionPane.showConfirmDialog(frame, "No more money, that means you're dead.",
+             "You're DEAD", -1);
+         PokerApp.user = new Player();
+         myApp.switchScreen("Main");
+      }
+   }
+   
    public void paintComponent(Graphics g)
    {
       Graphics2D g2 = (Graphics2D) g;
       
       drawImages(g2);
       drawComponents(g2);
-      
-      AttributedString as1 = new AttributedString("Enter");
-      as1.addAttribute(TextAttribute.STRIKETHROUGH, 
-         TextAttribute.STRIKETHROUGH_ON, 0, 4);
-      Font font = new Font("Times New Roman", Font.PLAIN, 20);
-      as1.addAttribute(TextAttribute.FONT, font);
       
       for(int idx = 0; idx < 7; idx++)
       {
@@ -85,7 +100,7 @@ public class LobbyScreen extends JPanel
          else
          {
             g2.setColor(Color.RED);
-            g2.drawString(as1.getIterator(), 1050, 145 + idx * 45);
+            g2.drawString("Enter", 1050, 145 + idx * 45);
             g2.drawRect(1045, 125 + idx * 45, 53, 23);
             g2.setColor(Color.BLACK);
          }
@@ -134,22 +149,34 @@ public class LobbyScreen extends JPanel
       g2.setColor(Color.WHITE);
       g2.drawString("Instructions", 260, 100);
       g2.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-      g2.drawString("So this is the story.", 150, 130);
-      g2.drawString("We hold your son in ransom. ", 150, 160);
-      g2.drawString("And we require money.", 150, 190);
-      g2.drawString("Like, a lot of money.", 150, 220);
-      g2.drawString("We know that you're a miserable loser", 150, 250);
-      g2.drawString("but luckily, see the casinos nearby?", 150, 280);
-      g2.drawString("They all play limit Texas Holdem,", 150, 310);
-      g2.drawString(" as is the rule in this area.", 150, 340);
-      g2.drawString("Minimum bet for pre-flop and flop are 20,", 150, 370);
-      g2.drawString("while it's 40 for turn and river rounds.", 150, 400);
-      g2.drawString("You'll find some casinos very selective...", 150, 430);
-      g2.drawString("You'll need more money to go into such casinos.", 150, 460);
-      g2.drawString("Oh, and you know what the custom is. ", 150, 490);
-      g2.drawString("Run out of money, you get killed.", 150, 520);
-      g2.drawString("See you at THE CASINO then...", 150, 550);
-      g2.drawString("if you can make if that far.", 150, 580); 
+      g2.drawString("Never forget.", 150, 130);
+      g2.drawString("Your father died at THE CASINO", 150, 160);
+      g2.drawString("Retrace his steps", 150, 190);
+      g2.drawString("Earn money in these casinos.", 150, 220);
+      g2.drawString("They all play limit Texas Holdem,", 150, 250);
+      g2.drawString(" as is the rule in this area.", 150, 280);
+      g2.drawString("Minimum bet for pre-flop and flop are 20,", 150, 310);
+      g2.drawString("while it's 40 for turn and river rounds.", 150, 340);
+      g2.drawString("You'll find some casinos very selective...", 150, 370);
+      g2.drawString("You'll need more money for such casinos.", 150, 400);
+      g2.drawString("Oh, and you know what the custom is. ", 150, 430);
+      g2.drawString("Run out of money, you get killed.", 150, 460);
+      g2.drawString("", 150, 490);
+      g2.drawString("", 150, 520);
+      g2.drawString("", 150, 550);
+      g2.drawString("To THE CASINO then...", 150, 580); 
+   }
+   
+   public void exitBoxHelper()
+   {
+      JFrame frame = new JFrame("Message Box");
+      int choice = JOptionPane.showConfirmDialog(frame, "Exit game?");
+      if(choice == 0)   
+      {  
+         myApp.switchScreen("Main");
+         PokerTableScreen.game = new PokerGame();
+         PokerApp.user = new Player();
+      }
    }
    
    /**
@@ -167,57 +194,27 @@ public class LobbyScreen extends JPanel
          int clickY = e.getY();
          
          Rectangle2D.Double exitBox = new Rectangle2D.Double(1070, 540, 130, 260);
-         
          Rectangle2D.Double[] entryBoxes = new Rectangle2D.Double[7];
          for(int idx = 0; idx < 7; idx++)
          {
             Rectangle2D.Double tempBox = new Rectangle2D.Double(1045, 125 + idx * 45, 53, 23);
             entryBoxes[idx] = (tempBox);
          }
-         
          if(exitBox.contains(clickX, clickY))
          {
-            JFrame frame = new JFrame("Message Box");
-            int choice = JOptionPane.showConfirmDialog(frame, "Exit game?");
-            if(choice == 0)   
-            {  
-               myApp.switchScreen("Main");
-               PokerTableScreen.game = new PokerGame();
-            }
+            exitBoxHelper();
          }
-         
          for(int idx = 0; idx < 7; idx++)
          {
-            if(entryBoxes[idx].contains(clickX, clickY) && idx < 2 
+            if(entryBoxes[idx].contains(clickX, clickY) 
                && authorizedList[idx] == true)
             {
                myApp.switchScreen("PokerTable");
             }
-            else if (entryBoxes[idx].contains(clickX, clickY) && idx < 4
-               && authorizedList[idx] == true)
+            else if(entryBoxes[idx].contains(clickX, clickY))
             {
-               myApp.player2.setMode("Medium");
-               myApp.player3.setMode("Hard");
-               myApp.player4.setMode("Medium");
-               myApp.switchScreen("PokerTable");
-            }
-            else if (entryBoxes[idx].contains(clickX, clickY) && idx < 6
-               && authorizedList[idx] == true)
-            {
-               myApp.player2.setMode("Medium");
-               myApp.player3.setMode("Medium");
-               myApp.player4.setMode("Hard");
-               myApp.player5.setMode("Hard");
-               myApp.switchScreen("PokerTable");
-            }
-            else if (entryBoxes[idx].contains(clickX, clickY) && idx == 7
-               && authorizedList[idx] == true)
-            {
-               myApp.player2.setMode("Hard");
-               myApp.player3.setMode("Hard");
-               myApp.player4.setMode("Hard");
-               myApp.player5.setMode("Hard");
-               myApp.switchScreen("PokerTable");
+               JFrame frame = new JFrame("Message Box");
+               JOptionPane.showConfirmDialog(frame, "Not enough money", "Lacking Finance", -1);
             }
          }
       }

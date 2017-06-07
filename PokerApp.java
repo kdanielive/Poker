@@ -83,6 +83,7 @@ public class PokerApp
       }
       else if(whichScreen == "Lobby")
       {
+         myLobbyScreen.screenInitCheck();
          myLobbyScreen.requestFocusInWindow();
       }
    }
