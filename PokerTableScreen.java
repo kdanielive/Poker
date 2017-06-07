@@ -102,6 +102,49 @@ public class PokerTableScreen extends JPanel
       game.getPlayerList().get(4).drawMe(g2, 875, 500);
       game.getPlayerList().get(0).drawMe(g2, 375, 600);
    }
+   
+   public void drawConsole(Graphics2D g2)
+   {
+      g2.setColor(Color.WHITE);
+      g2.fillRect(0, 0, 800, 90);
+      g2.setColor(Color.BLACK);
+      g2.drawRect(0, 0, 800, 90);
+      g2.drawString(consoleMessage, 20, 30);
+      g2.drawString(consoleOptionalMsg, 20, 70);
+   }
+   
+   public void drawNames(Graphics2D g2)
+   {
+      g2.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+      g2.drawString(PokerApp.player3.getName(), 150, 200);
+      g2.drawString(PokerApp.player4.getName(), 1025, 200);
+      g2.drawString(PokerApp.player2.getName(), 150, 600);
+      g2.drawString(PokerApp.player5.getName(), 975, 525);
+      g2.drawString(PokerApp.user.getName(), 300, 710);
+   }
+   
+   public void drawFinance(Graphics2D g2)
+   {
+      g2.drawString("My Finance: ", 950, 30);
+      g2.drawString("" + PokerApp.user.getFinance(), 1070, 30);
+   }
+   
+   public void drawAI1Status(Graphics2D g2)
+   {
+      AIPlayer subject = (AIPlayer) (game.getPlayerList().get(1));
+      if(subject.getMoveDescript() != null)
+      {
+         g2.drawString(subject.getMoveDescript(), 200, 600);
+      }
+      if(subject.getJustBetAmt() != 0)
+      {
+         g2.drawString("" + subject.getJustBetAmt(), 200, 620);
+      }
+      if(subject.getJustRaisedAmt() != 0)
+      {
+         g2.drawString("" + subject.getJustRaisedAmt(), 200, 640);
+      }
+   }
 
    /**
    draws the panel
@@ -113,33 +156,29 @@ public class PokerTableScreen extends JPanel
       
       g2.drawImage(pokerTableImage, 250, 200, null);
       drawPlayers(g2);
-      g2.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-      
-      g2.setColor(Color.WHITE);
-      g2.fillRect(0, 0, 800, 90);
-      g2.setColor(Color.BLACK);
-      g2.drawRect(0, 0, 800, 90);
-      g2.drawString(consoleMessage, 20, 30);
-      g2.drawString(consoleOptionalMsg, 20, 70);
-      
-      g2.drawString(PokerApp.player3.getName(), 150, 200);
-      g2.drawString(PokerApp.player4.getName(), 1025, 200);
-      g2.drawString(PokerApp.player2.getName(), 150, 600);
-      g2.drawString(PokerApp.player5.getName(), 975, 525);
-      g2.drawString(PokerApp.user.getName(), 300, 710);
+      drawConsole(g2);
+      drawNames(g2);
       drawHoleCards(g);
       drawCommunityCards(g);
       drawMoneyOnTable(g);
       drawButtons(g);
-      
-      g2.setColor(Color.RED);
-      g2.drawString("Finance: ", 1000, 30);
-      g2.drawString("" + PokerApp.user.getFinance(), 1070, 30);
-      //drawMyFinance(g);
+      drawFinance(g2);
    }
    
    public void bet(int raiseAmt)
    {
+      if(turnIndex != 0)
+      {
+         AIPlayer subject = (AIPlayer) game.getPlayerList().get(turnIndex);
+         if(raiseAmt == 0)
+         {
+            subject.setTrinity("Call", minBetAmt - betAmtArray.get(turnIndex), 0);
+         }
+         else
+         {
+            subject.setTrinity("Raise", minBetAmt - betAmtArray.get(turnIndex), raiseAmt);
+         }
+      }
       minBetAmt += raiseAmt;
       game.getPlayerList().get(turnIndex).minusFinance(minBetAmt - betAmtArray.get(turnIndex));
       game.addToPot(minBetAmt - betAmtArray.get(turnIndex));
@@ -165,7 +204,7 @@ public class PokerTableScreen extends JPanel
       }
       if(compareSubject.size() == 1)   {
          game.setPhase(-2);
-         return true; 
+         return true;
       }
       for(int idx = 1; idx < compareSubject.size(); idx++)
       {
@@ -214,9 +253,9 @@ public class PokerTableScreen extends JPanel
       
       if(game.getPhase() > 0)
       {
-         g2.setColor(Color.BLACK);
+         g2.setColor(Color.GREEN);
          g2.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-         g2.drawString("Amount in Pot: " + game.getPot(), 20, 70);
+         g2.drawString("Amount in Pot: " + game.getPot(), 520, 535);
       }
    }
    
@@ -326,7 +365,7 @@ public class PokerTableScreen extends JPanel
          if(commCardFlipBool[idx] == true)
          {
             g2.drawImage(communityCards.get(idx).getImage(), 350 + idx * 100, 300, null);
-            g2.setColor(Color.RED);
+            g2.setColor(Color.GREEN);
          }
       }
    }
@@ -688,11 +727,13 @@ public class PokerTableScreen extends JPanel
       else if( subject.easyMove().equals("flat"))
       {
          consoleMessage = subject.getName() + " checked";
+         subject.setTrinity("Check", 0, 0);
          incrementCounters();
       }
       else
       {
          consoleMessage = subject.getName() + " folded";
+         subject.setTrinity("Fold", 0, 0);
          foldedIndex.add(turnIndex);
          System.out.println(foldedIndex);
          incrementCounters();
@@ -725,6 +766,7 @@ public class PokerTableScreen extends JPanel
       else
       {
          consoleMessage = subject.getName() + " folded";
+         subject.setTrinity("Fold", 0, 0);
          foldedIndex.add(turnIndex);
          System.out.println(foldedIndex);
          incrementCounters();

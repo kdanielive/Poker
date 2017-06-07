@@ -47,6 +47,25 @@ public class AIPlayer extends Player
       }
    }
    
+   public void setMoveDescript(String move)  {  moveDescript = move; }
+   
+   public String getMoveDescript()  {  return moveDescript; }
+   
+   public void setJustBetAmt(int amt)   {  justBetAmt = amt;   }
+   
+   public int getJustBetAmt() {  return justBetAmt;   }
+   
+   public void setJustRaisedAmt(int amt)   { justRaisedAmt = amt; }
+   
+   public int getJustRaisedAmt() {  return justRaisedAmt;  }
+   
+   public void setTrinity(String descript, int amt1, int amt2)
+   {
+      moveDescript = descript;
+      justBetAmt = amt1;
+      justRaisedAmt = amt2;
+   }
+   
    public void setMode(String mode)
    {
       type = mode;
