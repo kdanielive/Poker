@@ -2,7 +2,7 @@ import java.util.*;
 /**
 a child class of Player that contains behaviors of AIPlayers
 @author Daniel Kim
-@version 04/11/2017
+@version 06/01/2017
 */
 public class AIPlayer extends Player
 {

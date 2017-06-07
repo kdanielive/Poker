@@ -14,40 +14,69 @@ the screen where the user's character is created
 */
 public class CharacterCreationScreen extends JPanel
 {
+   /** the x-coordinate of two labels  */
    private final int LABEL_X = 100;
+   /** the y-coorindate of name label  */
    private final int NAME_Y = 100;
+   /** the x-coordinate of name button */
    private final int NAME_BUTTON_X = 240;
+   /** the x-coordinate of name text box */
    private final int NAME_RECT_X = 300;
+   /** the y-coordinate of name text box */
    private final int NAME_RECT_Y = 38;
+   /** the y-coordinate of icon label */
    private final int ICON_LABEL_Y = 250;
+   /** the initial x-coordinate of icons */
    private final int ICON_X = 150;
+   /** the initial y-coordinate of icons */
    private final int ICON_Y = 300;
+   /** the length of the icons */
    private final int ICON_LENGTH = 150;
+   /** the stroke thickness for graphics */
    private final int THICK_STROKE = 2;
+   /** the y-coordinate of the turning card */
    private final int CARD_Y = 540;
+   /** the x-coordinate of the turning card */
    private final int CARD_X = 1070;
+   /** the length and width of the icons */
    private final int ICON_DIM = 128;
    
+   /** the first icon */
    private BufferedImage icon1;
+   /** the second icon */
    private BufferedImage icon2;
+   /** the third icon */
    private BufferedImage icon3;
+   /** the fourth icon */
    private BufferedImage icon4;
    
+   /** the text that appears in name text box */
    private String nameButton;
    
+   /** the background image */
    private BufferedImage backgroundImage;
+   /** the image for turning card */
    private BufferedImage nextCardImage;
 
-   
+   /** indicates whether icon1 is selected */
    private boolean icon1Selected = false;
+   /** indicates whether icon2 is selected */
    private boolean icon2Selected = false;
+   /** indicates whether icon3 is selected */
    private boolean icon3Selected = false;
+   /** indicates whether icon4 is selected */
    private boolean icon4Selected = false;
    
+   /** indicates whether the name is correctly filled in */
    private boolean nameBool = false;
    
+   /** PokerApp object that controls the screens and part of the program */
    private PokerApp myApp;
      
+   /**
+   default constructor of CharacterCreationScreen
+   @param app the PokerApp object using the screen
+   */
    public CharacterCreationScreen(PokerApp app)
    {   
       myApp = app;
@@ -78,6 +107,9 @@ public class CharacterCreationScreen extends JPanel
       requestFocusInWindow();
    }
    
+   /**
+   method to initialize the screen when entered
+   */
    public void screenInitCheck()
    {
       nameBool = false;
@@ -88,6 +120,10 @@ public class CharacterCreationScreen extends JPanel
       icon4Selected = false;
    }
    
+   /**
+   method that draws all the icons 
+   @param g2 the graphics object
+   */
    public void drawIcons(Graphics2D g2)
    {
       int height = icon1.getHeight();
@@ -111,6 +147,10 @@ public class CharacterCreationScreen extends JPanel
       }
    }
    
+   /**
+   paints the major components of the screen
+   @param g graphics object
+   */
    public void paintComponent(Graphics g)
    {
       Graphics2D g2 = (Graphics2D) g;
@@ -135,6 +175,10 @@ public class CharacterCreationScreen extends JPanel
       drawIcons(g2);
    }
    
+   /**
+   draws regions that holds the icons
+   @return array holding all the regions that hold the icons
+   */
    public Rectangle2D.Double[] setIcons()
    {
       Rectangle2D.Double[] icons = new Rectangle2D.Double[4];
@@ -149,12 +193,19 @@ public class CharacterCreationScreen extends JPanel
       return icons;
    }
    
+   /**
+   helper method for mousehandler to set the user's icon
+   @param string user's new icon
+   */
    public void mousePressedHelper(String string)
    {
       myApp.getUser().setIcon(string);
       repaint();
    }
    
+   /**
+   helper method that handles the JOptionPane for entering name
+   */
    public void nameBoxHelper()
    {
       JFrame frame = new JFrame("Message Box");
@@ -165,6 +216,10 @@ public class CharacterCreationScreen extends JPanel
       if(nameButton != null)  {  nameBool = true;  }
    }
    
+   /**
+   helper method that helps set the right boolean for iconSelected variables
+   @param num index of icon to select
+   */
    public void iconSelectedHelper(int num)
    {
       if(num == 0)
@@ -197,6 +252,9 @@ public class CharacterCreationScreen extends JPanel
       }
    }
    
+   /**
+   helper method that handles switching screens
+   */
    public void nextBoxHelper()
    {
       if(nameBool)   {  myApp.switchScreen("Lobby");  }
@@ -252,9 +310,29 @@ public class CharacterCreationScreen extends JPanel
             mousePressedHelper("teardrop");
          }
       }
+      
+      /**
+      handles mouse button releases
+      @param e info about the mouse event
+      */
       public void mouseReleased(MouseEvent e) { }
+      
+      /**
+      handles mouse button clicks
+      @param e info about the mouse event
+      */
       public void mouseClicked(MouseEvent e) { }
+      
+      /**
+      handles when mouse button enters
+      @param e info about the mouse event
+      */
       public void mouseEntered(MouseEvent e) { }
+      
+      /**
+      handles when mouse button exits
+      @param e info about the mouse event
+      */
       public void mouseExited(MouseEvent e) { }
    }
 }

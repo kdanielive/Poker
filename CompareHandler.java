@@ -1,7 +1,17 @@
 import java.util.*;
 
+/**
+class that handles all comparisons between cards and hand ranks
+@author Daniel Kim
+@version 06/01/2017
+*/
 public class CompareHandler
-{
+{  
+   /**
+   creates a dictionary of cards in hand
+   @param hand the cards used
+   @return returns an organized dictionary of all cards in hand
+   */
    public int[] createDictionary(ArrayList<PokerCard> hand)
    {
       int[] dictionary = new int[13];
@@ -13,7 +23,12 @@ public class CompareHandler
       
       return dictionary;
    }
-         
+   
+   /**
+   checks for one pair
+   @param hand the used cards
+   @return returns whether or not the hand has one pair
+   */
    public boolean checkForOnePair(ArrayList<PokerCard> hand)
    {
       int[] dictionary = createDictionary(hand);
@@ -26,6 +41,11 @@ public class CompareHandler
       return false;
    }
    
+   /**
+   checks for two pair
+   @param hand the used cards
+   @return returns whether of not the hand has two pair
+   */
    public boolean checkForTwoPair(ArrayList<PokerCard> hand)
    {
       int[] dictionary = createDictionary(hand);
@@ -42,6 +62,11 @@ public class CompareHandler
       return false;
    }
    
+   /**
+   checks for three of a kind
+   @param hand the used cards
+   @return returns whether of not the hand has three of a kind
+   */
    public boolean checkForThreeOfAKind(ArrayList<PokerCard> hand)
    {
       int[] dictionary = createDictionary(hand);
@@ -53,6 +78,11 @@ public class CompareHandler
       return false;
    }
    
+   /**
+   checks for straight
+   @param hand the used cards
+   @return returns whether of not the hand has a straight
+   */
    public boolean checkForStraight(ArrayList<PokerCard> hand)
    {
       insertionSort(hand);
@@ -76,6 +106,11 @@ public class CompareHandler
       return false;
    }
    
+   /**
+   checks for flush
+   @param hand the used cards
+   @return returns whether of not the hand has flush
+   */
    public boolean checkForFlush(ArrayList<PokerCard> hand)
    {
       boolean isFlush = true;
@@ -89,6 +124,11 @@ public class CompareHandler
       return isFlush;
    }
    
+   /**
+   checks for full house
+   @param hand the used cards
+   @return returns whether of not the hand has full house
+   */
    public boolean checkForFullHouse(ArrayList<PokerCard> hand)
    {
       int[] dictionary = createDictionary(hand);
@@ -104,6 +144,11 @@ public class CompareHandler
       else  {  return false;  }
    }
    
+   /**
+   checks for four of a kind
+   @param hand the used cards
+   @return returns whether of not the hand has four of a kind
+   */
    public boolean checkForFourOfAKind(ArrayList<PokerCard> hand)
    { 
       int[] dictionary = createDictionary(hand);
@@ -115,7 +160,11 @@ public class CompareHandler
       return false;
    }
    
-   //ask about this
+   /**
+   checks for straight flush
+   @param hand the used cards
+   @return returns whether of not the hand has straight flush
+   */
    public boolean checkForStraightFlush(ArrayList<PokerCard> hand)
    {
       boolean isStraightFlush = false;
@@ -127,6 +176,11 @@ public class CompareHandler
       return isStraightFlush;
    }
    
+   /**
+   gets the highest card in hand
+   @param the used cards
+   @return the number of highest card in hand
+   */
    public int getHighCard(ArrayList<PokerCard> hand)
    {
       int[] dictionary = createDictionary(hand);
@@ -137,6 +191,11 @@ public class CompareHandler
       return 0;
    }
    
+   /**
+   gets the highest compo of given cards
+   @param cards given cards
+   @return returns the int signifying the most valuable compo
+   */
    public int checkCompo(ArrayList<PokerCard> cards)
    {
       if(checkForStraightFlush(cards))  {  return 8;   }
@@ -150,6 +209,10 @@ public class CompareHandler
       else  {  return 0;   }
    }
    
+   /**
+   sorts the hand by card number
+   @param list the used cards
+   */
    public void insertionSort(ArrayList<PokerCard> list)
    {
       int n = list.size();
@@ -168,6 +231,11 @@ public class CompareHandler
       }
    }
    
+   /**
+   gets the name of the biggest compo
+   @param hand the used cards
+   @return name of the biggest compo
+   */
    public String compoName(ArrayList<PokerCard> hand)
    {
       int index = checkCompo(hand);
@@ -185,6 +253,10 @@ public class CompareHandler
       }
    }
    
+   /**
+   insertion sort of integers
+   @param list list of integers
+   */
    public void intInsertionSort(ArrayList<Integer> list)
    {
       int n = list.size();
@@ -206,6 +278,7 @@ public class CompareHandler
    compares the hands of two players and decides the winner
    @param player1 the first player of hand comparison
    @param player2 the second player of hand comparison
+   @param game the PokerGame object used for storing data
    */
    public Player compareHands(Player player1, Player player2, PokerGame game)
    {
