@@ -178,7 +178,7 @@ public class CompareHandler
    
    /**
    gets the highest card in hand
-   @param the used cards
+   @param hand the used cards
    @return the number of highest card in hand
    */
    public int getHighCard(ArrayList<PokerCard> hand)
@@ -279,6 +279,7 @@ public class CompareHandler
    @param player1 the first player of hand comparison
    @param player2 the second player of hand comparison
    @param game the PokerGame object used for storing data
+   @return the winning player
    */
    public Player compareHands(Player player1, Player player2, PokerGame game)
    {

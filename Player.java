@@ -220,7 +220,8 @@ public class Player
    
    /**
    sets the hole cards of the player
-   @return the hole cards of player
+   @param card1 first hole card
+   @param card2 second hole card
    */
    public void setHoleCards(PokerCard card1, PokerCard card2)
    {
@@ -239,6 +240,8 @@ public class Player
    /**
    draws the player icon on the screen
    @param g2 the graphics handler
+   @param myXval x-coordinate of icon
+   @param myYval y-coordinate of icon
    */
    public void drawMe(Graphics2D g2, int myXval, int myYval)
    {

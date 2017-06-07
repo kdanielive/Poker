@@ -141,6 +141,7 @@ public class AIPlayer extends Player
    /** 
    the gameplay of an easy AI
    @param game the PokerGame object storing all game data
+   @return decision of AI
    */
    public String easyMove(PokerGame game)
    {
@@ -190,6 +191,7 @@ public class AIPlayer extends Player
    @param communityCards the community cards of the game
    @param holeCards the hole cards of the player
    @param game the PokerGame object storing all game data
+   @return decision of AI
    */
    public String mediumMove(ArrayList<PokerCard> communityCards, 
       PokerCard[] holeCards, PokerGame game)
@@ -224,6 +226,7 @@ public class AIPlayer extends Player
    @param communityCards the community cards of the game
    @param holeCards the hole cards of the player
    @param game the PokerGame object storing all game data
+   @return decision of AI
    */
    public String hardMove(ArrayList<PokerCard> communityCards, 
       PokerCard[] holeCards, PokerGame game)
