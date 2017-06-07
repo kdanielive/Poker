@@ -89,13 +89,5 @@ public class PokerCard
    public BufferedImage getImage()
    {
       return myImage;
-   }
-   
-   public static void main(String[] args)
-   {
-      PokerCard card = new PokerCard();
-      PokerCard card2 = new PokerCard("Clover", 12);
-      System.out.println(card.getName());
-      System.out.println(card2.getName());
-   }  
+   } 
 }

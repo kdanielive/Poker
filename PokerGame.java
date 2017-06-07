@@ -137,17 +137,4 @@ public class PokerGame
          betters[2] = (buttonIdx + 2) % 5;
       }
    }
-   
-   public static void main(String[] args)
-   {
-      
-      Deck deck1 = new Deck();
-      for(int idx = 0; idx < Deck.cardNum; idx++)
-      {
-         System.out.println(deck1.drawCard().getName());
-      }
-      
-      PokerGame game = new PokerGame();
-      game.setButton();
-   }
 }

@@ -219,7 +219,7 @@ public class PokerTableScreen extends JPanel
    public void paintComponent(Graphics g)
    {
       Graphics2D g2 = (Graphics2D) g;
-      
+      g2.setFont(new Font("Times New Roman", Font.BOLD, 20));
       g2.drawImage(pokerTableImage, 250, 200, null);
       drawPlayers(g2);
       drawConsole(g2);
@@ -488,6 +488,7 @@ public class PokerTableScreen extends JPanel
          {
             victor = comparier.compareHands(contenders.get(idx), contenders.get(idx - 1));
          }
+         if(victor == null)   {  consoleMessage = "It's a draw!"; }
          consoleMessage = victor.getName() + " wins! Congratulations, " + victor.getName() + " !";
          if(victor.equals(PokerApp.user)) {  PokerApp.user.plusFinance(game.getPot()); }
          repaint();

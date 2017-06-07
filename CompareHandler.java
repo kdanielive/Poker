@@ -220,11 +220,17 @@ public class CompareHandler
       int p2Point = checkCompo(player2.getShowDownHand());
       
       if(p1Point > p2Point)   {  return player1;   }
+      else if(p1Point == p2Point)
+      {
+         if(p1Point == 5)  {  return null;   }
+         else
+         {
+            int p1Num = getHighCard(player1.getShowDownHand());
+            int p2Num = getHighCard(player2.getShowDownHand());
+            if(p1Num > p2Num) {  return player1;   }
+            else  {  return player2;   }
+         }
+      }
       else  {  return player2;   }
-   }
-
-   public static void main(String[] args)
-   {      
-   
    }
 }
