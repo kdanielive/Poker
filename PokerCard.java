@@ -22,8 +22,12 @@ public class PokerCard
    private int number;
    /** the suit and number of the card */
    private String name;
+   /** image of the card */
    private BufferedImage myImage;
    
+   /**
+   default constructor of PokerCard class
+   */
    public PokerCard()
    {
       suit = "Clover";
@@ -40,6 +44,7 @@ public class PokerCard
    }
    
    /**
+   constructor of PokerCard class specifying suit and number
    @param mySuit the suit of the card
    @param myNumber the number of the card
    */
@@ -86,6 +91,10 @@ public class PokerCard
       return name;
    }
    
+   /**
+   gets the image of the card
+   @return image of card
+   */
    public BufferedImage getImage()
    {
       return myImage;

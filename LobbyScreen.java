@@ -11,6 +11,11 @@ import java.text.AttributedString;
 import java.awt.font.TextAttribute;
 import java.awt.Font;
 
+/**
+class for the lobby screen of the game
+@author Daniel Kim
+@version 04/11/2017
+*/
 public class LobbyScreen extends JPanel
 {
    /** PokerApp object that controls the screens and part of the program */

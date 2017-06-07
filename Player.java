@@ -28,11 +28,9 @@ public class Player
    private int bettedAmount = 0;
    /** image of player icon */
    private BufferedImage iconImage;
-   /** indicates whether the player is the first better */
-   private boolean isFirstBetter = false;
    
    /**
-   
+   default constructor for Player class
    */
    public Player()
    {
@@ -56,6 +54,7 @@ public class Player
    }
    
    /**
+   constructor for Player class specifying icon, name, and finance
    @param myIcon the icon of player
    @param myName the name of player
    @param myFinance the finance of player
@@ -80,21 +79,37 @@ public class Player
       }
    }
    
+   /**
+   deducts money from finance
+   @param amt deducted amount of money
+   */
    public void minusFinance(int amt)
    {
       finance = finance - amt;
    }
    
+   /**
+   adds money to finance
+   @param amt incremented amount of money
+   */
    public void plusFinance(int amt)
    {
       finance = finance + amt;
    }
    
+   /**
+   gets the show down hand
+   @return arraylist of show down hand of the player
+   */
    public ArrayList<PokerCard> getShowDownHand()
    {
       return showDownHand;
    }
    
+   /**
+   sets the show down hand
+   @param game PokerGame object containing the necessary community cards
+   */
    public void setShowDownHand(PokerGame game)
    {
       for(PokerCard card : holeCards)   {  showDownHand.add(card); }
@@ -102,16 +117,6 @@ public class Player
       {
          showDownHand.add(card);
       }
-   }
-   
-   public void setFirstBetterBool(boolean condition)
-   {
-      isFirstBetter = condition;
-   }
-   
-   public boolean getFirstBetterBool()
-   {
-      return isFirstBetter;
    }
    
    /**
@@ -141,11 +146,19 @@ public class Player
       return name;
    }
    
+   /**
+   gets the betted amount of money
+   @return betted amount of money
+   */
    public int getBettedAmount()
    {
       return bettedAmount;
    }
    
+   /**
+   sets the betted amount of money
+   @param amt betted amount of money
+   */
    public void setBettedAmount(int amt)
    {
       bettedAmount = amt;
@@ -177,11 +190,6 @@ public class Player
    public void modifyFinance(int myFinance)
    {
       finance = myFinance;
-   }
-   
-   public void bet(int amount, boolean cond)
-   {
-
    }
    
    /**
@@ -234,9 +242,6 @@ public class Player
    */
    public void drawMe(Graphics2D g2, int myXval, int myYval)
    {
-      /*g2.setColor(Color.blue);
-      Ellipse2D.Double temp = new Ellipse2D.Double(myXval, myYval, SIZE, SIZE);
-      g2.fill(temp);*/
       g2.drawImage(iconImage, myXval, myYval, null);
    }
 }
