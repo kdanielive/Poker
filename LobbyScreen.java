@@ -50,30 +50,53 @@ public class LobbyScreen extends JPanel
    private final int FINANCE_X2 = 1030;
    /** font size 2 */
    private final int FONT_SIZE2 = 23;
+   /** initial x-coord of casino list */
    private final int CASINO_X = 650;
+   /** initial y-coord of casino list */
    private final int CASINO_Y = 145;
+   /** height of each casino name */
    private final int CASINO_H = 45;
+   /** x-coord of itinerary text */
    private final int ITINERARY_X = 800;
+   /** y-coord of itinerary text */
    private final int ITINERARY_Y = 115;
    /** font size 3 */
    private final int FONT_SIZE3 = 35;
+   /** x-coord of name */
    private final int NAME_X = 125;
+   /** y-coord of name */
    private final int NAME_Y = 30;
+   /** x-coord of exit card */
    private final int CARD_X = 1070;
+   /** y-coord of exit card */
    private final int CARD_Y = 540;
+   /** width of exit card */
    private final int CARD_W = 130;
+   /** height of exit card */
    private final int CARD_H = 260;
+   /** x-coord of note */
    private final int NOTE_X = 100;
+   /** y-coord of note */
    private final int NOTE_Y = 60;
+   /** y-coord of joker card */
    private final int JKCARD_Y = 500;
+   /** first x-coord of joker card */
    private final int JKCARD_X1 = 650;
+   /** second x-coord of joker card */
    private final int JKCARD_X2 = 850;
+   /** x-coord of message list */
    private final int LIST_X = 630;
+   /** y-coord of message list */
    private final int LIST_Y = 70;
+   /** x-coord of instruction text */
    private final int INSTRUCTION_X = 260;
+   /** y-coord of instruction text */
    private final int INSTRUCTION_Y = 100;
+   /** initial x-coord of messages */
    private final int MSG_X = 150;
+   /** initial y-coord of messages */
    private final int MSG_Y = 130;
+   /** height of messages */
    private final int MSG_H = 30;
    
    /** PokerApp object that controls the screens and part of the program */
