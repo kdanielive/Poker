@@ -40,10 +40,7 @@ public class LobbyScreen extends JPanel
          authorizedList[4] = true;
          authorizedList[5] = true;
       }
-      if(PokerApp.user.getFinance() > 10000)
-      {
-         authorizedList[6] = true;
-      }
+      if(PokerApp.user.getFinance() > 10000) {  authorizedList[6] = true;  }
       
       try
       {
@@ -60,11 +57,7 @@ public class LobbyScreen extends JPanel
          is = getClass().getResourceAsStream("casinoList.jpg");
          casinoListImage = ImageIO.read(is);
       }
-      catch(IOException ioe)
-      {
-      
-      }
-      
+      catch(IOException ioe)  {  }
       addMouseListener(new MouseHandler());
       requestFocusInWindow();
    }
@@ -173,7 +166,7 @@ public class LobbyScreen extends JPanel
          int clickX = e.getX();
          int clickY = e.getY();
          
-         Rectangle2D.Double exitBox = new Rectangle2D.Double(1070, 540, 128, 128);
+         Rectangle2D.Double exitBox = new Rectangle2D.Double(1070, 540, 130, 260);
          
          Rectangle2D.Double[] entryBoxes = new Rectangle2D.Double[7];
          for(int idx = 0; idx < 7; idx++)

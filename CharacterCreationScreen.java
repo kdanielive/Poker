@@ -83,6 +83,63 @@ public class CharacterCreationScreen extends JPanel
       else if(icon4Selected == true)   { g2.drawRect(600, 300, width, height);   }
    }
    
+   public Rectangle2D.Double[] setIcons()
+   {
+      Rectangle2D.Double[] icons = new Rectangle2D.Double[4];
+      icons[0] = new Rectangle2D.Double(150, 300, 128, 128);
+      icons[1] = new Rectangle2D.Double(300, 300, 128, 128);
+      icons[2] = new Rectangle2D.Double(450, 300, 128, 128);
+      icons[3] = new Rectangle2D.Double(600, 300, 128, 128);
+      return icons;
+   }
+   
+   public void mousePressedHelper(String string)
+   {
+      PokerApp.user.setIcon(string);
+      repaint();
+   }
+   
+   public void nameBoxHelper()
+   {
+      JFrame frame = new JFrame("Message Box");
+      nameButton = JOptionPane.showInputDialog(frame, 
+         "Enter you name", "Your Name?", JOptionPane.WARNING_MESSAGE);
+      repaint();
+      PokerApp.user.setName(nameButton);
+   }
+   
+   public void iconSelectedHelper(int num)
+   {
+      if(num == 0)
+      {
+         icon1Selected = true;
+         icon2Selected = false;
+         icon3Selected = false;
+         icon4Selected = false;
+      }
+      else if(num == 1)
+      {
+         icon1Selected = false;
+         icon2Selected = true;
+         icon3Selected = false;
+         icon4Selected = false;
+      }
+      else if(num == 2)
+      {
+         icon1Selected = false;
+         icon2Selected = false;
+         icon3Selected = true;
+         icon4Selected = false;
+      }
+      else if(num == 3)
+      {
+         icon1Selected = false;
+         icon2Selected = false;
+         icon3Selected = false;
+         icon4Selected = true;
+      }
+   }
+   
    /**
    handles mouse clicks
    */
@@ -96,56 +153,36 @@ public class CharacterCreationScreen extends JPanel
       {
          int clickX = e.getX();
          int clickY = e.getY();
-         
-         Rectangle2D.Double[] icons = new Rectangle2D.Double[4];
-         icons[0] = new Rectangle2D.Double(150, 300, 128, 128);
-         icons[1] = new Rectangle2D.Double(300, 300, 128, 128);
-         icons[2] = new Rectangle2D.Double(450, 300, 128, 128);
-         icons[3] = new Rectangle2D.Double(600, 300, 128, 128);
-                 
+         Rectangle2D.Double[] icons = setIcons();  
          Rectangle2D.Double nameBox = new Rectangle2D.Double(220, 80, 300, 35);
-         Rectangle2D.Double nextBox = new Rectangle2D.Double(1070, 540, 128, 128);
-         
+         Rectangle2D.Double nextBox = new Rectangle2D.Double(1070, 540, 130, 260);
          if(nameBox.contains(clickX, clickY))
          {
-            JFrame frame = new JFrame("Message Box");
-            nameButton = JOptionPane.showInputDialog(frame, 
-               "Enter you name", "Your Name?", JOptionPane.WARNING_MESSAGE);
-            repaint();
-            PokerApp.user.setName(nameButton);
+            nameBoxHelper();
          }
-         
          if(nextBox.contains(clickX, clickY))
          {
             myApp.switchScreen("Lobby");
          }
-         
-         for(int idx = 0; idx < 4; idx++)
+         if(icons[0].contains(clickX, clickY))
          {
-            if(icons[idx].contains(clickX, clickY) && idx == 0)
-            {
-               PokerApp.user.setIcon("death");
-               icon1Selected = true;
-               repaint();
-            }
-            else if (icons[idx].contains(clickX, clickY) && idx == 1)
-            {
-               PokerApp.user.setIcon("eyeball");
-               icon2Selected = true;
-               repaint();
-            }
-            else if (icons[idx].contains(clickX, clickY) && idx == 2)
-            {
-               PokerApp.user.setIcon("jokerhat");
-               icon3Selected = true;
-               repaint();
-            }
-            else if (icons[idx].contains(clickX, clickY) && idx == 3)
-            {
-               PokerApp.user.setIcon("teardrop");
-               icon4Selected = true;
-               repaint();
-            }
+            iconSelectedHelper(0);
+            mousePressedHelper("death");
+         }
+         else if (icons[1].contains(clickX, clickY))
+         {
+            iconSelectedHelper(1);
+            mousePressedHelper("eyeball");
+         }
+         else if (icons[2].contains(clickX, clickY))
+         {
+            iconSelectedHelper(2);
+            mousePressedHelper("jokerhat");
+         }
+         else if (icons[3].contains(clickX, clickY))
+         {
+            iconSelectedHelper(3);
+            mousePressedHelper("teardrop");
          }
       }
       public void mouseReleased(MouseEvent e) { }
@@ -153,6 +190,4 @@ public class CharacterCreationScreen extends JPanel
       public void mouseEntered(MouseEvent e) { }
       public void mouseExited(MouseEvent e) { }
    }
-   
-
 }
