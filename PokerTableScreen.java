@@ -450,6 +450,7 @@ public class PokerTableScreen extends JPanel
       freeCounter = 0;
       expCounter = 0;
       turnIndex = 0;
+      round++;
       for(int idx = 0; idx < 5; idx++) {  betAmtArray.set(idx, 0);  }
       minBetAmt = 20;
       game.setPhase(-10);
@@ -612,7 +613,6 @@ public class PokerTableScreen extends JPanel
       else if(game.getPhase() == -10 && game.getSubPhase().equals("End is beginning") && round != 5)
       {
          game.setPhase(0);
-         round++;
       }
       else if(game.getPhase() == 6)
       {
@@ -752,10 +752,10 @@ public class PokerTableScreen extends JPanel
    {
       game.incrementPhase();
       game.setSubPhase("CommunCards");
-      if(game.getPhase() == 2)  {  consoleMessage = "Flop";   }
-      else if(game.getPhase() == 3)  {  consoleMessage = "Turn";   }
-      else if(game.getPhase() == 4)   {  consoleMessage = "River";  }
-      else if(game.getPhase() == 5)
+      if(game.getPhase() == 3)  {  consoleMessage = "Flop";   }
+      else if(game.getPhase() == 4)  {  consoleMessage = "Turn";   }
+      else if(game.getPhase() == 5)   {  consoleMessage = "River";  }
+      else if(game.getPhase() == 6)
       {  
          consoleMessage = "Showdown!";
          game.setSubPhase("Final");
