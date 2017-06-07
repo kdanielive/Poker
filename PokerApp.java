@@ -25,11 +25,11 @@ public class PokerApp
    private MainScreen myMainScreen;
    private LobbyScreen myLobbyScreen;
    
-   public static Player user = new Player();
-   public static AIPlayer player2 = new AIPlayer("teardrop", "Bill", 10000, "Easy");
-   public static AIPlayer player3 = new AIPlayer("eyeball", "Jack", 10000, "Easy");
-   public static AIPlayer player4 = new AIPlayer("jokerhat", "Jason", 10000, "Easy");
-   public static AIPlayer player5 = new AIPlayer("death", "Lohan", 10000, "Easy");
+   private Player user = new Player();
+   private AIPlayer player2 = new AIPlayer("teardrop", "Bill", 100000, "Easy");
+   private AIPlayer player3 = new AIPlayer("eyeball", "Jack", 100000, "Easy");
+   private AIPlayer player4 = new AIPlayer("jokerhat", "Jason", 100000, "Easy");
+   private AIPlayer player5 = new AIPlayer("death", "Lohan", 100000, "Easy");
    
    public static void main(String[] args)
    {
@@ -37,6 +37,11 @@ public class PokerApp
       theApp.run();
    }
    
+   public Player getUser() {  return user;   }
+   public AIPlayer getAI1()   {  return player2;   }
+   public AIPlayer getAI2()   {  return player3;   }
+   public AIPlayer getAI3()   {  return player4;   }
+   public AIPlayer getAI4()   {  return player5;   }
    
    public void run()
    {
@@ -71,10 +76,12 @@ public class PokerApp
       
       if(whichScreen == "PokerTable")
       {
+         myTableScreen.screenInitCheck();
          myTableScreen.requestFocusInWindow();
       }
       else if(whichScreen == "CharacterScreen")
       {
+         myCharacterScreen.screenInitCheck();
          myCharacterScreen.requestFocusInWindow();
       }
       else if(whichScreen == "Main")

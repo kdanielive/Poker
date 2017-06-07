@@ -56,7 +56,6 @@ public class PokerGame
          communityCards.add(new PokerCard());
          commCardFlipBool[idx] = false;
       }
-      
    }
    
    public int getPhase() {  return phase;   }

@@ -59,10 +59,22 @@ public class PokerTableScreen extends JPanel
       {
       
       }
-      game.listPlayers(PokerApp.user, PokerApp.player2, PokerApp.player3, 
-         PokerApp.player4, PokerApp.player5);
+      game.listPlayers(myApp.getUser(), myApp.getAI1(), myApp.getAI2(), 
+         myApp.getAI3(), myApp.getAI4());
       
       requestFocusInWindow();
+   }
+   
+   public void screenInitCheck()
+   {
+      game = new PokerGame();
+      button1.setText("Read");
+      button2.setText("The");
+      button3.setText("Console");
+      game.listPlayers(myApp.getUser(), myApp.getAI1(), myApp.getAI2(), 
+         myApp.getAI3(), myApp.getAI4());
+      consoleMessage = "Welcome. You will be playing structured limit Texas Holdem.";
+      consoleOptionalMsg = "There will be blind bets.";
    }
    
    public void addComponents()
@@ -116,11 +128,11 @@ public class PokerTableScreen extends JPanel
    public void drawNames(Graphics2D g2)
    {
       g2.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-      g2.drawString(PokerApp.player3.getName(), 150, 200);
-      g2.drawString(PokerApp.player4.getName(), 1025, 200);
-      g2.drawString(PokerApp.player2.getName(), 150, 600);
-      g2.drawString(PokerApp.player5.getName(), 975, 525);
-      g2.drawString(PokerApp.user.getName(), 300, 710);
+      g2.drawString(myApp.getAI2().getName(), 150, 200);
+      g2.drawString(myApp.getAI3().getName(), 1025, 200);
+      g2.drawString(myApp.getAI1().getName(), 150, 600);
+      g2.drawString(myApp.getAI4().getName(), 975, 525);
+      g2.drawString(myApp.getUser().getName(), 300, 710);
    }
    
    public void drawFinance(Graphics2D g2)
@@ -293,19 +305,19 @@ public class PokerTableScreen extends JPanel
    
    public void initializeTurnIndex()
    {
-      if(game.getPlayerList().get(game.getBetters()[0]).equals(PokerApp.player2))
+      if(game.getPlayerList().get(game.getBetters()[0]).equals(myApp.getAI1()))
       {
          turnIndex = 1;
       }
-      else if(game.getPlayerList().get(game.getBetters()[0]).equals(PokerApp.player3))
+      else if(game.getPlayerList().get(game.getBetters()[0]).equals(myApp.getAI2()))
       {
          turnIndex = 2;
       }
-      else if(game.getPlayerList().get(game.getBetters()[0]).equals(PokerApp.player4))
+      else if(game.getPlayerList().get(game.getBetters()[0]).equals(myApp.getAI3()))
       {
          turnIndex = 3;
       }
-      else if(game.getPlayerList().get(game.getBetters()[0]).equals(PokerApp.player5))
+      else if(game.getPlayerList().get(game.getBetters()[0]).equals(myApp.getAI4()))
       {
          turnIndex = 4;
       }
@@ -336,10 +348,10 @@ public class PokerTableScreen extends JPanel
    
    public void setAIKnownCards()
    {
-      PokerApp.player2.setKnownCards(game.getPhase());
-      PokerApp.player3.setKnownCards(game.getPhase());
-      PokerApp.player4.setKnownCards(game.getPhase());
-      PokerApp.player5.setKnownCards(game.getPhase());
+      myApp.getAI1().setKnownCards(game.getPhase());
+      myApp.getAI2().setKnownCards(game.getPhase());
+      myApp.getAI3().setKnownCards(game.getPhase());
+      myApp.getAI4().setKnownCards(game.getPhase());
       
       for(int idx : foldedIndex)
       {
@@ -467,7 +479,7 @@ public class PokerTableScreen extends JPanel
    {
       if(foldedIndex.size() == 4)  
       {  
-         PokerApp.user.plusFinance(game.getPot());
+         myApp.getUser().plusFinance(game.getPot());
          repaint();  
       }
       else
@@ -490,7 +502,7 @@ public class PokerTableScreen extends JPanel
          }
          if(victor == null)   {  consoleMessage = "It's a draw!"; }
          consoleMessage = victor.getName() + " wins! Congratulations, " + victor.getName() + " !";
-         if(victor.equals(PokerApp.user)) {  PokerApp.user.plusFinance(game.getPot()); }
+         if(victor.equals(myApp.getUser())) {  myApp.getUser().plusFinance(game.getPot()); }
          repaint();
       }
       clearData();
@@ -583,7 +595,7 @@ public class PokerTableScreen extends JPanel
    public void smallBlindHelper()
    {
       game.addToPot(PokerGame.MINBET / 2);
-      if(turnIndex == 0)   {  PokerApp.user.minusFinance(PokerGame.MINBET / 2);   }
+      if(turnIndex == 0)   {  myApp.getUser().minusFinance(PokerGame.MINBET / 2);   }
       consoleMessage = game.getPlayerList().get(turnIndex).getName() + " paid the small blind.";
       freeCounter++;
       betAmtArray.set(turnIndex, PokerGame.MINBET / 2);
@@ -597,7 +609,7 @@ public class PokerTableScreen extends JPanel
       game.addToPot(PokerGame.MINBET);
       consoleMessage = game.getPlayerList().get(turnIndex).getName() + " paid the big blind.";
       freeCounter++;
-      if(turnIndex == 0)   {  PokerApp.user.minusFinance(PokerGame.MINBET);   }
+      if(turnIndex == 0)   {  myApp.getUser().minusFinance(PokerGame.MINBET);   }
       betAmtArray.set(turnIndex, PokerGame.MINBET);
       minBetAmt = PokerGame.MINBET;
       turnIndex = (turnIndex + 1) % 5;

@@ -59,6 +59,15 @@ public class CharacterCreationScreen extends JPanel
       requestFocusInWindow();
    }
    
+   public void screenInitCheck()
+   {
+      nameButton = "Click!";
+      icon1Selected = false;
+      icon2Selected = false;
+      icon3Selected = false;
+      icon4Selected = false;
+   }
+   
    public void paintComponent(Graphics g)
    {
       Graphics2D g2 = (Graphics2D) g;
