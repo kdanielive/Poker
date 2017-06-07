@@ -13,6 +13,7 @@ public class PokerGame
    private int moneyOnTable;
    /** the phase of the game */
    public static int phase;
+   /** the sub-phase of the game */
    public static String subPhase;
    /** the communicty cards of the game */
    public static ArrayList<PokerCard> communityCards;
@@ -116,9 +117,8 @@ public class PokerGame
    
    public void setButton()
    {
-      if(phase == 0)
+      if(round == 0)
       {
-      
          Random randomer = new Random();
          int randIdx = randomer.nextInt(players.size());
 
@@ -134,20 +134,6 @@ public class PokerGame
          betters[1] = (buttonIdx + 1) % 5;
          betters[2] = (buttonIdx + 2) % 5;
       }
-   }
-   
-   
-   
-   
-   
-   
-   public void finishRound()
-   {
-      phase++;
-      lastBetAmount = 0;
-      moneyOnTable = 0;
-      communityCards = new ArrayList<PokerCard>();
-      deck = new Deck();
    }
    
    public static void main(String[] args)

@@ -12,6 +12,10 @@ public class AIPlayer extends Player
    private int betCount = 0;  //how many times he betted
    private ArrayList<Integer> stackCount;
    
+   private String moveDescript;
+   private int justBetAmt;
+   private int justRaisedAmt;
+   
    PokerGame myGame = new PokerGame();
    
    public AIPlayer()

@@ -73,13 +73,35 @@ public class LobbyScreen extends JPanel
    {
       Graphics2D g2 = (Graphics2D) g;
       
-      g2.drawImage(woodBackgroundImage, 0, 0, null);
-      g2.drawImage(exitCardImage, 1070, 590, null);
-      g2.drawImage(vintageNoteImage, 100, 60, null);
-      g2.drawImage(joker1Image, 650, 500, null);
-      g2.drawImage(joker2Image, 850, 500, null);
-      g2.drawImage(casinoListImage, 630, 70, null);
+      drawImages(g2);
+      drawComponents(g2);
       
+      AttributedString as1 = new AttributedString("Enter");
+      as1.addAttribute(TextAttribute.STRIKETHROUGH, 
+         TextAttribute.STRIKETHROUGH_ON, 0, 4);
+      Font font = new Font("Times New Roman", Font.PLAIN, 20);
+      as1.addAttribute(TextAttribute.FONT, font);
+      
+      for(int idx = 0; idx < 7; idx++)
+      {
+         if(authorizedList[idx] == true)
+         {
+            g2.drawString("Enter", 1050, 145 + idx * 45);
+            g2.drawRect(1045, 125 + idx * 45, 53, 23);
+         }
+         else
+         {
+            g2.setColor(Color.RED);
+            g2.drawString(as1.getIterator(), 1050, 145 + idx * 45);
+            g2.drawRect(1045, 125 + idx * 45, 53, 23);
+            g2.setColor(Color.BLACK);
+         }
+      }
+      writeStory(g2);
+   }
+   
+   public void drawComponents(Graphics2D g2)
+   {
       g2.setFont(new Font("Times New Roman", Font.PLAIN, 20));
       g2.drawString("Finance: ", 950, 100);
       g2.drawString("" + PokerApp.user.getFinance(), 1030, 100);
@@ -101,33 +123,24 @@ public class LobbyScreen extends JPanel
       
       g2.setFont(new Font("Times New Roman", Font.PLAIN, 20));
       g2.setColor(Color.BLACK);
-      
-      AttributedString as1 = new AttributedString("Enter");
-      as1.addAttribute(TextAttribute.STRIKETHROUGH, TextAttribute.STRIKETHROUGH_ON, 0, 4);
-      Font font = new Font("Times New Roman", Font.PLAIN, 20);
-      as1.addAttribute(TextAttribute.FONT, font);
-      
-      for(int idx = 0; idx < 7; idx++)
-      {
-         if(authorizedList[idx] == true)
-         {
-            g2.drawString("Enter", 1050, 145 + idx * 45);
-            g2.drawRect(1045, 125 + idx * 45, 53, 23);
-         }
-         else
-         {
-            g2.setColor(Color.RED);
-            g2.drawString(as1.getIterator(), 1050, 145 + idx * 45);
-            g2.drawRect(1045, 125 + idx * 45, 53, 23);
-            g2.setColor(Color.BLACK);
-         }
-      }
-      
+   }
+   
+   public void drawImages(Graphics2D g2)
+   {
+      g2.drawImage(woodBackgroundImage, 0, 0, null);
+      g2.drawImage(exitCardImage, 1070, 590, null);
+      g2.drawImage(vintageNoteImage, 100, 60, null);
+      g2.drawImage(joker1Image, 650, 500, null);
+      g2.drawImage(joker2Image, 850, 500, null);
+      g2.drawImage(casinoListImage, 630, 70, null);
+   }
+   
+   public void writeStory(Graphics2D g2)
+   {
       g2.setFont(new Font("Times New Roman", Font.PLAIN, 23));
       g2.setColor(Color.WHITE);
       g2.drawString("Instructions", 260, 100);
       g2.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-
       g2.drawString("So this is the story.", 150, 130);
       g2.drawString("We hold your son in ransom. ", 150, 160);
       g2.drawString("And we require money.", 150, 190);
