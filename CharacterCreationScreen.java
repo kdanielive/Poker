@@ -291,7 +291,7 @@ public class CharacterCreationScreen extends JPanel
          int clickY = e.getY();
          Rectangle2D.Double[] icons = setIcons();  
          Rectangle2D.Double nameBox = new Rectangle2D.Double(NAMEBOX_X,
-             NAMEBOX_Y, NAMEBOX_WIDTH, NAMEBOX_WIDTH);
+             NAMEBOX_Y, NAMEBOX_WIDTH, NAMEBOX_HEIGHT);
          Rectangle2D.Double nextBox = new Rectangle2D.Double(CARD_X,
              CARD_Y, CARD_WIDTH, CARD_HEIGHT);
          if(nameBox.contains(clickX, clickY))   {  nameBoxHelper();  }

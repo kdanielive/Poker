@@ -18,27 +18,63 @@ class for the lobby screen of the game
 */
 public class LobbyScreen extends JPanel
 {
+   /** lowest casino limit */
    private final int LOWBAR = 1000;
+   /** second lowest casino limit */
    private final int MEDIUMBAR = 5000;
+   /** highest casino limit */
    private final int HIGHBAR = 10000;
+   /** x-coord of entry text */
    private final int ENTRY_X = 1050;
+   /** y-coord of entry text */
    private final int ENTRY_Y = 145;
+   /** height of entry text */
    private final int ENTRY_HEIGHT = 45;
+   /** x-coord of entry  box */
    private final int ENTRYBOX_X = 1045;
+   /** y-coord of entry  box */
    private final int ENTRYBOX_Y = 125;
+   /** width of entry  box */
    private final int ENTRYBOX_WIDTH = 53;
+   /** height of entry  box */
    private final int ENTRYBOX_HEIGHT = 23;
+   /** spacing between entry  boxes */
    private final int ENTRYBOX_SPACING = 45;
+   /** x-coord of finance text */
    private final int FINANCE_X1 = 950;
+   /** y-coord of finance text */
    private final int FINANCE_Y = 100;
+   /** font size 1 */
    private final int FONT_SIZE1 = 20;
+   /** second x-coord of finance text */
    private final int FINANCE_X2 = 1030;
+   /** font size 2 */
    private final int FONT_SIZE2 = 23;
    private final int CASINO_X = 650;
    private final int CASINO_Y = 145;
    private final int CASINO_H = 45;
    private final int ITINERARY_X = 800;
    private final int ITINERARY_Y = 115;
+   /** font size 3 */
+   private final int FONT_SIZE3 = 35;
+   private final int NAME_X = 125;
+   private final int NAME_Y = 30;
+   private final int CARD_X = 1070;
+   private final int CARD_Y = 540;
+   private final int CARD_W = 130;
+   private final int CARD_H = 260;
+   private final int NOTE_X = 100;
+   private final int NOTE_Y = 60;
+   private final int JKCARD_Y = 500;
+   private final int JKCARD_X1 = 650;
+   private final int JKCARD_X2 = 850;
+   private final int LIST_X = 630;
+   private final int LIST_Y = 70;
+   private final int INSTRUCTION_X = 260;
+   private final int INSTRUCTION_Y = 100;
+   private final int MSG_X = 150;
+   private final int MSG_Y = 130;
+   private final int MSG_H = 30;
    
    /** PokerApp object that controls the screens and part of the program */
    private PokerApp myApp;
@@ -182,11 +218,11 @@ public class LobbyScreen extends JPanel
       g2.drawString("The Casino", CASINO_X, CASINO_Y + 6 * CASINO_H);
       
       myApp.getUser().drawMe(g2, 0, 0);
-      g2.setFont(new Font("Times New Roman", Font.BOLD, 35));
+      g2.setFont(new Font("Times New Roman", Font.BOLD, FONT_SIZE3));
       g2.setColor(Color.RED);
-      g2.drawString(myApp.getUser().getName(),125, 30);
+      g2.drawString(myApp.getUser().getName(),NAME_X, NAME_Y);
       
-      g2.setFont(new Font("Times New Roman", Font.PLAIN, 20));
+      g2.setFont(new Font("Times New Roman", Font.PLAIN, FONT_SIZE1));
       g2.setColor(Color.BLACK);
    }
    
@@ -197,11 +233,11 @@ public class LobbyScreen extends JPanel
    public void drawImages(Graphics2D g2)
    {
       g2.drawImage(woodBackgroundImage, 0, 0, null);
-      g2.drawImage(exitCardImage, 1070, 540, null);
-      g2.drawImage(vintageNoteImage, 100, 60, null);
-      g2.drawImage(joker1Image, 650, 500, null);
-      g2.drawImage(joker2Image, 850, 500, null);
-      g2.drawImage(casinoListImage, 630, 70, null);
+      g2.drawImage(exitCardImage, CARD_X, CARD_Y, null);
+      g2.drawImage(vintageNoteImage, NOTE_X, NOTE_Y, null);
+      g2.drawImage(joker1Image, JKCARD_X1, JKCARD_Y, null);
+      g2.drawImage(joker2Image, JKCARD_X2, JKCARD_Y, null);
+      g2.drawImage(casinoListImage, LIST_X, LIST_Y, null);
    }
    
    /**
@@ -210,26 +246,26 @@ public class LobbyScreen extends JPanel
    */
    public void writeStory(Graphics2D g2)
    {
-      g2.setFont(new Font("Times New Roman", Font.PLAIN, 23));
+      g2.setFont(new Font("Times New Roman", Font.PLAIN, FONT_SIZE2));
       g2.setColor(Color.WHITE);
-      g2.drawString("Instructions", 260, 100);
-      g2.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-      g2.drawString("Never forget.", 150, 130);
-      g2.drawString("Your father died at THE CASINO", 150, 160);
-      g2.drawString("Retrace his steps", 150, 190);
-      g2.drawString("Earn money in these casinos.", 150, 220);
-      g2.drawString("They all play limit Texas Holdem,", 150, 250);
-      g2.drawString(" as is the rule in this area.", 150, 280);
-      g2.drawString("Minimum bet for pre-flop and flop are 20,", 150, 310);
-      g2.drawString("while it's 40 for turn and river rounds.", 150, 340);
-      g2.drawString("You'll find some casinos very selective...", 150, 370);
-      g2.drawString("You'll need more money for such casinos.", 150, 400);
-      g2.drawString("Oh, and you know what the custom is. ", 150, 430);
-      g2.drawString("Run out of money, you get killed.", 150, 460);
-      g2.drawString("", 150, 490);
-      g2.drawString("", 150, 520);
-      g2.drawString("", 150, 550);
-      g2.drawString("To THE CASINO then...", 150, 580); 
+      g2.drawString("Instructions", INSTRUCTION_X, INSTRUCTION_Y);
+      g2.setFont(new Font("Times New Roman", Font.PLAIN, FONT_SIZE1));
+      g2.drawString("Never forget.", MSG_X, MSG_Y);
+      g2.drawString("Your father died at THE CASINO", MSG_X, MSG_Y + MSG_H);
+      g2.drawString("Retrace his steps", MSG_X, MSG_Y + MSG_H * 2);
+      g2.drawString("Earn money in these casinos.", MSG_X, MSG_Y + MSG_H * 3);
+      g2.drawString("They all play limit Texas Holdem,", MSG_X, MSG_Y + MSG_H * 4);
+      g2.drawString(" as is the rule in this area.", MSG_X, MSG_Y + MSG_H * 5);
+      g2.drawString("Minimum bet for pre-flop and flop are 20,", MSG_X, MSG_Y + MSG_H * 6);
+      g2.drawString("while it's 40 for turn and river rounds.", MSG_X, MSG_Y + MSG_H * 7);
+      g2.drawString("You'll find some casinos very selective...", MSG_X, MSG_Y + MSG_H * 8);
+      g2.drawString("You'll need more money for such casinos.", MSG_X, MSG_Y + MSG_H * 9);
+      g2.drawString("Oh, and you know what the custom is. ", MSG_X, MSG_Y + MSG_H * 10);
+      g2.drawString("Run out of money, you get killed.", MSG_X, MSG_Y + MSG_H * 11);
+      g2.drawString("", MSG_X, MSG_Y + MSG_H * 12);
+      g2.drawString("", MSG_X, MSG_Y + MSG_H * 13);
+      g2.drawString("", MSG_X, MSG_Y + MSG_H * 14);
+      g2.drawString("To THE CASINO then...", MSG_X, MSG_Y + MSG_H * 15); 
    }
    
    /**
@@ -260,11 +296,13 @@ public class LobbyScreen extends JPanel
          int clickX = e.getX();
          int clickY = e.getY();
          
-         Rectangle2D.Double exitBox = new Rectangle2D.Double(1070, 540, 130, 260);
+         Rectangle2D.Double exitBox = new Rectangle2D.Double(CARD_X, CARD_Y, CARD_W, CARD_H);
          Rectangle2D.Double[] entryBoxes = new Rectangle2D.Double[7];
          for(int idx = 0; idx < 7; idx++)
          {
-            Rectangle2D.Double tempBox = new Rectangle2D.Double(1045, 125 + idx * 45, 53, 23);
+            Rectangle2D.Double tempBox = new Rectangle2D.Double(
+               ENTRYBOX_X, ENTRYBOX_Y + idx * ENTRY_HEIGHT,
+               ENTRYBOX_WIDTH, ENTRYBOX_HEIGHT);
             entryBoxes[idx] = (tempBox);
          }
          if(exitBox.contains(clickX, clickY))
