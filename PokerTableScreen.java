@@ -514,7 +514,7 @@ public class PokerTableScreen extends JPanel
       clearData();
       round = 0;
       JFrame frame = new JFrame("Message Box");
-      JOptionPane.showConfirmDialog(frame, "Your time's up. Come back later.", "Time Out", -1);
+      JOptionPane.showConfirmDialog(frame, "Enough Poker for today. Get some rest first.", "Time Out", -1);
       myApp.switchScreen("Lobby");
    }
    
