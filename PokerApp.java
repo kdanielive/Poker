@@ -24,6 +24,7 @@ public class PokerApp
    private CharacterCreationScreen myCharacterScreen;
    private MainScreen myMainScreen;
    private LobbyScreen myLobbyScreen;
+   private PokerGame game;
    
    private Player user = new Player();
    private AIPlayer player2 = new AIPlayer("teardrop", "Bill", 100000, "Easy");
@@ -42,6 +43,7 @@ public class PokerApp
    public AIPlayer getAI2()   {  return player3;   }
    public AIPlayer getAI3()   {  return player4;   }
    public AIPlayer getAI4()   {  return player5;   }
+   public void resetUser() {  user = new Player(); }
    
    public void run()
    {

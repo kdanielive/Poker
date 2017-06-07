@@ -92,10 +92,10 @@ public class Player
       return showDownHand;
    }
    
-   public void setShowDownHand()
+   public void setShowDownHand(PokerGame game)
    {
       for(PokerCard card : holeCards)   {  showDownHand.add(card); }
-      for(PokerCard card : PokerGame.communityCards)
+      for(PokerCard card : game.getCommunCards())
       {
          showDownHand.add(card);
       }

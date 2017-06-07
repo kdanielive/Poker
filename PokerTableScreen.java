@@ -39,7 +39,7 @@ public class PokerTableScreen extends JPanel
    private int minBetAmt;
    private Timer myTimer;
    
-   public static PokerGame game = new PokerGame();
+   private PokerGame game = new PokerGame();
    
    public PokerTableScreen(PokerApp app)
    {
@@ -63,6 +63,11 @@ public class PokerTableScreen extends JPanel
          myApp.getAI3(), myApp.getAI4());
       
       requestFocusInWindow();
+   }
+   
+   public PokerGame getPokerGame()
+   {
+      return game;
    }
    
    public void screenInitCheck()
@@ -348,15 +353,15 @@ public class PokerTableScreen extends JPanel
    
    public void setAIKnownCards()
    {
-      myApp.getAI1().setKnownCards(game.getPhase());
-      myApp.getAI2().setKnownCards(game.getPhase());
-      myApp.getAI3().setKnownCards(game.getPhase());
-      myApp.getAI4().setKnownCards(game.getPhase());
+      myApp.getAI1().setKnownCards(game.getPhase(), game);
+      myApp.getAI2().setKnownCards(game.getPhase(), game);
+      myApp.getAI3().setKnownCards(game.getPhase(), game);
+      myApp.getAI4().setKnownCards(game.getPhase(), game);
       
       for(int idx : foldedIndex)
       {
          AIPlayer temp = (AIPlayer)(game.getPlayerList().get(idx));
-         temp.setKnownCards(0);
+         temp.setKnownCards(0, game);
       }
    }
    
@@ -435,15 +440,15 @@ public class PokerTableScreen extends JPanel
       ArrayList<PokerCard> communityCards = game.getCommunCards();
       Boolean[] commCardFlipBool = {false, false, false, false, false};
       
-      if(game.phase == 3)
+      if(game.getPhase() == 3)
       {
          for(int idx = 0; idx < 3; idx++) {  commCardFlipBool[idx] = true; }
       }
-      else if(game.phase == 4)
+      else if(game.getPhase() == 4)
       {
          for(int idx = 0; idx < 4; idx++) {  commCardFlipBool[idx] = true; }
       }
-      else if(game.phase == 5)
+      else if(game.getPhase() == 5)
       {
          for(int idx = 0; idx < 5; idx++) {  commCardFlipBool[idx] = true; }
       }     
@@ -498,7 +503,7 @@ public class PokerTableScreen extends JPanel
          } 
          for(int idx = 1; idx < contenders.size(); idx++)
          {
-            victor = comparier.compareHands(contenders.get(idx), contenders.get(idx - 1));
+            victor = comparier.compareHands(contenders.get(idx), contenders.get(idx - 1), game);
          }
          if(victor == null)   {  consoleMessage = "It's a draw!"; }
          consoleMessage = victor.getName() + " wins! Congratulations, " + victor.getName() + " !";
@@ -809,13 +814,13 @@ public class PokerTableScreen extends JPanel
    public void aiInitBetHelper()
    {
       AIPlayer subject = (AIPlayer) game.getPlayerList().get(turnIndex);
-      if( subject.easyMove().equals("high"))
+      if( subject.easyMove(game).equals("high"))
       {
          bet(0);
          consoleMessage = subject.getName() + " called";
          incrementCounters();
       }
-      else if( subject.easyMove().equals("flat"))
+      else if( subject.easyMove(game).equals("flat"))
       {
          consoleMessage = subject.getName() + " checked";
          subject.setTrinity("Check", 0, 0);
@@ -834,7 +839,7 @@ public class PokerTableScreen extends JPanel
    public void aiTurnHelper()
    {
       AIPlayer subject = (AIPlayer) game.getPlayerList().get(turnIndex);
-      if( subject.easyMove().equals("high"))
+      if( subject.easyMove(game).equals("high"))
       {
          if(freeCounter < 4)
          {
@@ -848,7 +853,7 @@ public class PokerTableScreen extends JPanel
          }
          incrementCounters();
       }
-      else if( subject.easyMove().equals("flat"))
+      else if( subject.easyMove(game).equals("flat"))
       {
          consoleMessage = subject.getName() + " called";
          bet(0);

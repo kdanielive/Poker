@@ -12,11 +12,11 @@ public class PokerGame
    /** the betting money on table */
    private int moneyOnTable;
    /** the phase of the game */
-   public static int phase;
+   private int phase;
    /** the sub-phase of the game */
-   public static String subPhase;
+   private String subPhase;
    /** the communicty cards of the game */
-   public static ArrayList<PokerCard> communityCards;
+   private ArrayList<PokerCard> communityCards;
    public static final int MINBET = 20;
    private int[] betters = new int[3];
    

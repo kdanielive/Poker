@@ -58,27 +58,27 @@ public class LobbyScreen extends JPanel
    {
       authorizedList[0] = true;
       authorizedList[1] = true;
-      if(PokerApp.user.getFinance() > 1000)
+      if(myApp.getUser().getFinance() > 1000)
       {
          authorizedList[2] = true;
          authorizedList[3] = true;
       }
-      if(PokerApp.user.getFinance() > 5000)
+      if(myApp.getUser().getFinance() > 5000)
       {
          authorizedList[4] = true;
          authorizedList[5] = true;
       }
-      if(PokerApp.user.getFinance() > 10000) {  authorizedList[6] = true;  }
+      if(myApp.getUser().getFinance() > 10000) {  authorizedList[6] = true;  }
    }
    
    public void checkDeadOrAlive()
    {
-      if(PokerApp.user.getFinance() < 0)
+      if(myApp.getUser().getFinance() < 0)
       {
          JFrame frame = new JFrame("Message Box");
          JOptionPane.showConfirmDialog(frame, "No more money, that means you're dead.",
              "You're DEAD", -1);
-         PokerApp.user = new Player();
+         myApp.resetUser();
          myApp.switchScreen("Main");
       }
    }
@@ -112,7 +112,7 @@ public class LobbyScreen extends JPanel
    {
       g2.setFont(new Font("Times New Roman", Font.PLAIN, 20));
       g2.drawString("Finance: ", 950, 100);
-      g2.drawString("" + PokerApp.user.getFinance(), 1030, 100);
+      g2.drawString("" + myApp.getUser().getFinance(), 1030, 100);
       g2.setFont(new Font("Times New Roman", Font.PLAIN, 23));
       g2.drawString("Itinerary", 800, 115);
       g2.setFont(new Font("Times New Roman", Font.PLAIN, 20));
@@ -124,10 +124,10 @@ public class LobbyScreen extends JPanel
       g2.drawString("Royale Casino", 650, 370);
       g2.drawString("The Casino", 650, 415);
       
-      PokerApp.user.drawMe(g2, 0, 0);
+      myApp.getUser().drawMe(g2, 0, 0);
       g2.setFont(new Font("Times New Roman", Font.BOLD, 35));
       g2.setColor(Color.RED);
-      g2.drawString(PokerApp.user.getName(),125, 30);
+      g2.drawString(myApp.getUser().getName(),125, 30);
       
       g2.setFont(new Font("Times New Roman", Font.PLAIN, 20));
       g2.setColor(Color.BLACK);
@@ -174,8 +174,7 @@ public class LobbyScreen extends JPanel
       if(choice == 0)   
       {  
          myApp.switchScreen("Main");
-         PokerTableScreen.game = new PokerGame();
-         PokerApp.user = new Player();
+         myApp.resetUser();
       }
    }
    

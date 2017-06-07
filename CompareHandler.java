@@ -212,10 +212,10 @@ public class CompareHandler
    @param player1 the first player of hand comparison
    @param player2 the second player of hand comparison
    */
-   public Player compareHands(Player player1, Player player2)
+   public Player compareHands(Player player1, Player player2, PokerGame game)
    {
-      player1.setShowDownHand();
-      player2.setShowDownHand();
+      player1.setShowDownHand(game);
+      player2.setShowDownHand(game);
       int p1Point = checkCompo(player1.getShowDownHand());
       int p2Point = checkCompo(player2.getShowDownHand());
       

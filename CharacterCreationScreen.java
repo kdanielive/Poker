@@ -61,6 +61,7 @@ public class CharacterCreationScreen extends JPanel
    
    public void screenInitCheck()
    {
+      nameBool = false;
       nameButton = "Click!";
       icon1Selected = false;
       icon2Selected = false;
@@ -106,7 +107,7 @@ public class CharacterCreationScreen extends JPanel
    
    public void mousePressedHelper(String string)
    {
-      PokerApp.user.setIcon(string);
+      myApp.getUser().setIcon(string);
       repaint();
    }
    
@@ -116,8 +117,8 @@ public class CharacterCreationScreen extends JPanel
       nameButton = JOptionPane.showInputDialog(frame, 
          "Enter you name", "Your Name?", JOptionPane.WARNING_MESSAGE);
       repaint();
-      PokerApp.user.setName(nameButton);
-      nameBool = true;
+      myApp.getUser().setName(nameButton);
+      if(nameButton != null)  {  nameBool = true;  }
    }
    
    public void iconSelectedHelper(int num)

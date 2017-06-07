@@ -86,13 +86,13 @@ public class AIPlayer extends Player
    @param communityCards the community cards of the game
    @param holeCards the hole cards of the player
    */
-   public String easyMove()
+   public String easyMove(PokerGame game)
    {
       CompareHandler comparier = new CompareHandler();
       int compoNum = comparier.checkCompo(knownCards);
       int highNum = comparier.getHighCard(knownCards);
       System.out.println(this.getName() + " : " + compoNum);
-      if(PokerGame.phase < 4)
+      if(game.getPhase() < 4)
       {
          if(compoNum == 5) {  return "low"; }
          else if(compoNum > 0 || highNum > 5) {  return "high"; }
@@ -106,7 +106,7 @@ public class AIPlayer extends Player
       }
    }
    
-   public void setKnownCards(int phase)
+   public void setKnownCards(int phase, PokerGame game)
    {
       knownCards.clear();
       for(PokerCard card : this.getHoleCards())
@@ -117,11 +117,11 @@ public class AIPlayer extends Player
       {
          for(int idx = 0; idx < 3; idx++)
          {
-            knownCards.add(PokerGame.communityCards.get(idx));  
+            knownCards.add(game.getCommunCards().get(idx));  
          }
       }
-      if(phase == 4) {  knownCards.add(PokerGame.communityCards.get(3)); };
-      if(phase == 5) {  knownCards.add(PokerGame.communityCards.get(4)); };
+      if(phase == 4) {  knownCards.add(game.getCommunCards().get(3)); };
+      if(phase == 5) {  knownCards.add(game.getCommunCards().get(4)); };
    }
    
    /** 
@@ -130,20 +130,20 @@ public class AIPlayer extends Player
    @param holeCards the hole cards of the player
    */
    public String mediumMove(ArrayList<PokerCard> communityCards, 
-      PokerCard[] holeCards)
+      PokerCard[] holeCards, PokerGame game)
    {
       CompareHandler comparier = new CompareHandler();
       int compoNum = comparier.checkCompo(knownCards);
       int highNum = comparier.getHighCard(knownCards);
       System.out.println(this.getName() + " : " + compoNum);
       
-      if(PokerGame.phase < 2)
+      if(game.getPhase() < 2)
       {
          if(compoNum == 5) {  return "low"; }
          else if(compoNum > 0 || highNum > 5) {  return "high"; }
          else  {  return "flat"; }
       }
-      else if(PokerGame.phase <4)
+      else if(game.getPhase() <4)
       {
          if(highNum + compoNum > 3) {  return "flat"; }
          else if(stackCount.size() < 3)   {  return "low";  }
@@ -163,7 +163,7 @@ public class AIPlayer extends Player
    @param holeCards the hole cards of the player
    */
    public String hardMove(ArrayList<PokerCard> communityCards, 
-      PokerCard[] holeCards)
+      PokerCard[] holeCards, PokerGame game)
    {
       CompareHandler comparier = new CompareHandler();
       int compoNum = comparier.checkCompo(knownCards);
