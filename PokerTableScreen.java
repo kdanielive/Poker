@@ -37,6 +37,7 @@ public class PokerTableScreen extends JPanel
    private ArrayList<Integer> foldedIndex = new ArrayList<Integer>();
    private ArrayList<Integer> betAmtArray= new ArrayList<Integer>();
    private int minBetAmt;
+   private Timer myTimer;
    
    public static PokerGame game = new PokerGame();
    
@@ -66,26 +67,25 @@ public class PokerTableScreen extends JPanel
    
    public void addComponents()
    {
-      button1 = new JButton("Press");
-      button2 = new JButton("Card");
-      button3 = new JButton("on Right");
+      button1 = new JButton("Read");
+      button2 = new JButton("The");
+      button3 = new JButton("Console");
       JButton[] buttons = {button1, button2, button3};
-      endButton = new JButton("Run Away");
+      endButton = new JButton("Exit"); 
       startButton = new JButton("Start");
       
       for(int idx = 0; idx < 3; idx++)
       {
          this.add(buttons[idx]);
          buttons[idx].setSize(150, 40);
-         buttons[idx].setLocation(920, 660 + idx * 40);
+         buttons[idx].setLocation(1050, 610 + idx * 40);
       }
       this.add(startButton);
       startButton.setSize(200, 40);
       startButton.setLocation(580, 50);
-      
       this.add(endButton);
-      endButton.setSize(150, 40);
-      endButton.setLocation(0, 100); 
+      endButton.setSize(200, 40);
+      endButton.setLocation(580, 10); 
       
       button1.addActionListener(new Button1Listener());
       button2.addActionListener(new Button2Listener());
@@ -120,7 +120,7 @@ public class PokerTableScreen extends JPanel
       g2.setColor(Color.BLACK);
       g2.drawRect(0, 0, 800, 90);
       g2.drawString(consoleMessage, 20, 30);
-      g2.drawString(consoleOptionalMsg, 20, 50);
+      g2.drawString(consoleOptionalMsg, 20, 70);
       
       g2.drawString(PokerApp.player3.getName(), 150, 200);
       g2.drawString(PokerApp.player4.getName(), 1025, 200);
@@ -342,8 +342,9 @@ public class PokerTableScreen extends JPanel
       game.setSubPhase("End is beginning");
       foldedIndex.clear();
       game.emptyPot();
-      consoleMessage = "Welcome... Press the card with arrow to proceed...";
-      consoleOptionalMsg = "You will be playing structured limit Texas Holdem. There will be blind bets.";
+      consoleMessage = "Here goes another round.";
+      consoleOptionalMsg = "";
+      myTimer.cancel();
    }
    
    public void endGame()
@@ -386,7 +387,7 @@ public class PokerTableScreen extends JPanel
       */
       public void actionPerformed(ActionEvent e)
       {
-         Timer myTimer = new Timer();
+         myTimer = new Timer();
          myTimer.scheduleAtFixedRate(new UpdateTask(), 0, 2000);  
          startButton.setVisible(false);
       }
@@ -496,7 +497,7 @@ public class PokerTableScreen extends JPanel
          game.setPhase(0);
          round++;
       }
-      else if(game.getPhase() == 6 && game.getSubPhase().equals("Final"))
+      else if(game.getPhase() == 6)
       {
          endGame();
       }
@@ -618,9 +619,14 @@ public class PokerTableScreen extends JPanel
       */
       public void actionPerformed(ActionEvent e)
       {
-         clearData();
-         repaint();
-         myApp.switchScreen("Lobby");
+         JFrame frame = new JFrame("Message Box");
+         int choice = JOptionPane.showConfirmDialog(frame, "Exit casino?");
+         if(choice == 0)
+         {
+            clearData();
+            repaint();
+            myApp.switchScreen("Lobby");
+         }
       }
    }
    

@@ -25,6 +25,8 @@ public class CharacterCreationScreen extends JPanel
    private boolean icon3Selected = false;
    private boolean icon4Selected = false;
    
+   private boolean nameBool = false;
+   
    private PokerApp myApp;
      
    public CharacterCreationScreen(PokerApp app)
@@ -106,6 +108,7 @@ public class CharacterCreationScreen extends JPanel
          "Enter you name", "Your Name?", JOptionPane.WARNING_MESSAGE);
       repaint();
       PokerApp.user.setName(nameButton);
+      nameBool = true;
    }
    
    public void iconSelectedHelper(int num)
@@ -140,6 +143,16 @@ public class CharacterCreationScreen extends JPanel
       }
    }
    
+   public void nextBoxHelper()
+   {
+      if(nameBool)   {  myApp.switchScreen("Lobby");  }
+      else  
+      {    
+         JFrame frame = new JFrame("Message Box");
+         JOptionPane.showConfirmDialog(frame, "Enter your name first!", "Name not entered", -1);
+      }
+   }
+   
    /**
    handles mouse clicks
    */
@@ -162,7 +175,7 @@ public class CharacterCreationScreen extends JPanel
          }
          if(nextBox.contains(clickX, clickY))
          {
-            myApp.switchScreen("Lobby");
+            nextBoxHelper();
          }
          if(icons[0].contains(clickX, clickY))
          {
