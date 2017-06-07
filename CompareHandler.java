@@ -7,6 +7,23 @@ class that handles all comparisons between cards and hand ranks
 */
 public class CompareHandler
 {  
+   /** comparison number for straight flush */
+   public static final int STRAIGHTFLUSH = 8;
+   /** comparison number for four of a kind */
+   public static final int FOUROFAKIND = 7;
+   /** comparison number for full house */
+   public static final int FULLHOUSE = 6;
+   /** comparison number for flush */
+   public static final int FLUSH = 5;
+   /** comparison number for straight */
+   public static final int STRAIGHT = 4;
+   /** comparison number for three of a kind */
+   public static final int THREEOFAKIND = 3;
+   /** comparison number for two pair */
+   public static final int TWOPAIR = 2;
+   /** comparison number for one pair */
+   public static final int ONEPAIR = 1;
+   
    /**
    creates a dictionary of cards in hand
    @param hand the cards used
@@ -95,7 +112,7 @@ public class CompareHandler
          if(hand.get(idx).getNumber() == hand.get(idx - 1).getNumber() + 1)   
          {  
             straightTracker++;
-            if(straightTracker == 4)
+            if(straightTracker == STRAIGHT)
             {
                return true;
             }
@@ -137,7 +154,7 @@ public class CompareHandler
       for(int count : dictionary)
       {
          if(count == 2) {  pairCount++;   }
-         else if(count == 3)  {  tripleCount++;   }
+         else if(count == THREEOFAKIND)  {  tripleCount++;   }
       }
       
       if(pairCount == 1 && tripleCount == 1)   {  return true;   }
@@ -155,7 +172,7 @@ public class CompareHandler
       
       for(int number : dictionary)
       {
-         if(number == 4)   {  return true;   }
+         if(number == STRAIGHT)   {  return true;   }
       }
       return false;
    }
@@ -198,14 +215,14 @@ public class CompareHandler
    */
    public int checkCompo(ArrayList<PokerCard> cards)
    {
-      if(checkForStraightFlush(cards))  {  return 8;   }
-      else if(checkForFourOfAKind(cards))  {  return 7;   }
-      else if(checkForFullHouse(cards)) {  return 6;   }
-      else if(checkForFlush(cards))  {  return 5;   }
-      else if(checkForStraight(cards))  {  return 4;   }
-      else if(checkForThreeOfAKind(cards)) {  return 3;   }
-      else if(checkForTwoPair(cards))   {  return 2;   }
-      else if(checkForOnePair(cards))   {  return 1;   }
+      if(checkForStraightFlush(cards))  {  return STRAIGHTFLUSH;   }
+      else if(checkForFourOfAKind(cards))  {  return FOUROFAKIND;   }
+      else if(checkForFullHouse(cards)) {  return FULLHOUSE;   }
+      else if(checkForFlush(cards))  {  return FLUSH;   }
+      else if(checkForStraight(cards))  {  return STRAIGHT;   }
+      else if(checkForThreeOfAKind(cards)) {  return THREEOFAKIND;   }
+      else if(checkForTwoPair(cards))   {  return TWOPAIR;   }
+      else if(checkForOnePair(cards))   {  return ONEPAIR;   }
       else  {  return 0;   }
    }
    
@@ -239,18 +256,15 @@ public class CompareHandler
    public String compoName(ArrayList<PokerCard> hand)
    {
       int index = checkCompo(hand);
-      switch(index)
-      {
-         case 1: return "One Pair";
-         case 2: return "Two Pair";
-         case 3: return "Three of a Kind";
-         case 4: return "Straight";
-         case 5: return "Flush";
-         case 6: return "Full House";
-         case 7: return "Four of a Kind";
-         case 8: return "Straight Flush";
-         default : return "Full House";
-      }
+      if(index == ONEPAIR) {  return "One Pair";   }
+      else if(index == TWOPAIR)  {  return "Two Pair";   }
+      else if(index == THREEOFAKIND)  {  return "Three of a Kind";  }
+      else if(index == STRAIGHT)  {  return "Straight";   }
+      else if(index == FLUSH)  {  return "Flush";   }
+      else if(index == FULLHOUSE)  {  return "Full House"; }
+      else if(index == FOUROFAKIND)  {  return "Four of a Kind";   }
+      else if(index == STRAIGHTFLUSH)  {  return "Straight Flush";   }
+      else  {  return "High Card";  }
    }
    
    /**
