@@ -124,9 +124,10 @@ public class PokerTableScreen extends JPanel
    }
    
    public void drawFinance(Graphics2D g2)
-   {
+   {  
+      g2.setColor(Color.BLACK);
       g2.drawString("My Finance: ", 950, 30);
-      g2.drawString("" + PokerApp.user.getFinance(), 1070, 30);
+      g2.drawString("" + game.getPlayerList().get(0).getFinance(), 1070, 30);
    }
    
    public void drawAI1Status(Graphics2D g2)
@@ -134,15 +135,80 @@ public class PokerTableScreen extends JPanel
       AIPlayer subject = (AIPlayer) (game.getPlayerList().get(1));
       if(subject.getMoveDescript() != null)
       {
-         g2.drawString(subject.getMoveDescript(), 200, 600);
+         g2.drawString(subject.getMoveDescript(), 150, 640);
       }
       if(subject.getJustBetAmt() != 0)
       {
-         g2.drawString("" + subject.getJustBetAmt(), 200, 620);
+         g2.drawString("Bet: " + subject.getJustBetAmt(), 150, 660);
       }
       if(subject.getJustRaisedAmt() != 0)
       {
-         g2.drawString("" + subject.getJustRaisedAmt(), 200, 640);
+         g2.drawString("Raised: " + subject.getJustRaisedAmt(), 150, 680);
+      }
+   }
+   public void drawAI2Status(Graphics2D g2)
+   {
+      AIPlayer subject = (AIPlayer) (game.getPlayerList().get(2));
+      if(subject.getMoveDescript() != null)
+      {
+         g2.drawString(subject.getMoveDescript(), 160, 260);
+      }
+      if(subject.getJustBetAmt() != 0)
+      {
+         g2.drawString("Bet: " + subject.getJustBetAmt(), 160, 280);
+      }
+      if(subject.getJustRaisedAmt() != 0)
+      {
+         g2.drawString("Raised: " + subject.getJustRaisedAmt(), 160, 300);
+      }
+   }
+   public void drawAI3Status(Graphics2D g2)
+   {
+      AIPlayer subject = (AIPlayer) (game.getPlayerList().get(3));
+      if(subject.getMoveDescript() != null)
+      {
+         g2.drawString(subject.getMoveDescript(), 1000, 240);
+      }
+      if(subject.getJustBetAmt() != 0)
+      {
+         g2.drawString("Bet: " + subject.getJustBetAmt(), 1000, 260);
+      }
+      if(subject.getJustRaisedAmt() != 0)
+      {
+         g2.drawString("Raised: " + subject.getJustRaisedAmt(), 1000, 280);
+      }
+   }
+   public void drawAI4Status(Graphics2D g2)
+   {
+      AIPlayer subject = (AIPlayer) (game.getPlayerList().get(4));
+      if(subject.getMoveDescript() != null)
+      {
+         g2.drawString(subject.getMoveDescript(), 1050, 500);
+      }
+      if(subject.getJustBetAmt() != 0)
+      {
+         g2.drawString("Bet: " + subject.getJustBetAmt(), 1050, 520);
+      }
+      if(subject.getJustRaisedAmt() != 0)
+      {
+         g2.drawString("Raised: " + subject.getJustRaisedAmt(), 1050, 540);
+      }
+   }
+   
+   public void drawAIStatus(Graphics2D g2)
+   {
+      drawAI1Status(g2);
+      drawAI2Status(g2);
+      drawAI3Status(g2);
+      drawAI4Status(g2);
+   }
+   
+   public void initAIStatus()
+   {
+      for(int idx = 1; idx < 5; idx++)
+      {
+         AIPlayer subject = (AIPlayer) (game.getPlayerList().get(idx));
+         subject.setTrinity(null, 0, 0);
       }
    }
 
@@ -163,6 +229,8 @@ public class PokerTableScreen extends JPanel
       drawMoneyOnTable(g);
       drawButtons(g);
       drawFinance(g2);
+      g2.setFont(new Font("Times New Roman", Font.BOLD, 20));
+      drawAIStatus(g2);
    }
    
    public void bet(int raiseAmt)
@@ -176,8 +244,13 @@ public class PokerTableScreen extends JPanel
          }
          else
          {
-            subject.setTrinity("Raise", minBetAmt - betAmtArray.get(turnIndex), raiseAmt);
+            subject.setTrinity("Raise", 0, raiseAmt);
          }
+      }
+      
+      if(turnIndex == 0)
+      {
+         System.out.println("" + minBetAmt + " - " + betAmtArray.get(turnIndex));
       }
       minBetAmt += raiseAmt;
       game.getPlayerList().get(turnIndex).minusFinance(minBetAmt - betAmtArray.get(turnIndex));
@@ -188,6 +261,7 @@ public class PokerTableScreen extends JPanel
    public boolean checkRoundFinished()
    {
       if(expCounter < 5)   {  return false;  }
+      if(expCounter == 12) {  return true;   }
       ArrayList<Integer> tempSubject = new ArrayList<Integer>();
       for(int num : betAmtArray)
       {
@@ -202,7 +276,8 @@ public class PokerTableScreen extends JPanel
       {
          if(num != -1)  {  compareSubject.add(num);   }
       }
-      if(compareSubject.size() == 1)   {
+      if(compareSubject.size() == 1)   
+      {
          game.setPhase(-2);
          return true;
       }
@@ -381,9 +456,9 @@ public class PokerTableScreen extends JPanel
       game.setSubPhase("End is beginning");
       foldedIndex.clear();
       game.emptyPot();
-      consoleMessage = "Here goes another round.";
-      consoleOptionalMsg = "";
+      consoleOptionalMsg = "Another Round?";
       startButton.setVisible(true);
+      initAIStatus();
       if(myTimer != null)  {  myTimer.cancel(); }
    }
    
@@ -480,6 +555,7 @@ public class PokerTableScreen extends JPanel
    
    public void gameEntraHelper()
    {
+      game.setRound(round);
       game.setButton();
       game.shuffleDeck();
       initializeTurnIndex();
@@ -624,7 +700,8 @@ public class PokerTableScreen extends JPanel
          else if(button2.getText().equals("Raise") && game.getSubPhase().equals("user"))
          {
             consoleMessage = "You raised";
-            bet(minBetAmt);
+            if(game.getPhase() < 5) {  bet(20); }
+            else  {  bet(40); }
             turnIndex = (turnIndex + 1) % 5;
             game.setSubPhase(freeString);
             freeStringCount = 0;
@@ -685,6 +762,7 @@ public class PokerTableScreen extends JPanel
       }
       freeCounter = 0;
       expCounter = 0;
+      initAIStatus();
       repaint();
    }
    

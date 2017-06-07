@@ -81,6 +81,8 @@ public class PokerGame
    
    public void shuffleDeck()  {  deck.mix(); }
    
+   public void setRound(int num) {  round = num;   }
+   
    public ArrayList<Player> getPlayerList()
    {
       return players;

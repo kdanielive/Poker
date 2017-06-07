@@ -67,7 +67,7 @@ public class CharacterCreationScreen extends JPanel
       
       g2.drawString("Enter Your Name: ", 100, 100);
       g2.drawRect(220, 80, 300, 35);
-      g2.drawString(nameButton, 240, 100);
+      if(nameButton != null)  {  g2.drawString(nameButton, 240, 100);   }
       g2.drawString("Choose Your Icon: ", 100, 250);
       g2.drawImage(icon1, 150, 300, null);
       g2.drawImage(icon2, 300, 300, null);
