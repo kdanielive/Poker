@@ -2,11 +2,6 @@ import java.util.*;
 
 public class CompareHandler
 {
-   public CompareHandler()
-   {
-   
-   }
-
    public int[] createDictionary(ArrayList<PokerCard> hand)
    {
       int[] dictionary = new int[13];
@@ -222,7 +217,7 @@ public class CompareHandler
       if(p1Point > p2Point)   {  return player1;   }
       else if(p1Point == p2Point)
       {
-         if(p1Point == 5)  {  return null;   }
+         if(p1Point == AIPlayer.COMPO_MARK)  {  return null;   }
          else
          {
             int p1Num = getHighCard(player1.getShowDownHand());

@@ -14,6 +14,10 @@ import java.util.TimerTask;
 public class PokerTableScreen extends JPanel
 {  
    private BufferedImage pokerTableImage;
+   
+   public static final int FLOP = 3;
+   public static final int TURN = 4;
+   public static final int RIVER = 5;
       
    private PokerApp myApp;
    
