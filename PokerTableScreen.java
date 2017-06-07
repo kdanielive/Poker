@@ -62,8 +62,6 @@ public class PokerTableScreen extends JPanel
       }
       game.listPlayers(PokerApp.user, PokerApp.player2, PokerApp.player3, 
          PokerApp.player4, PokerApp.player5);
-      Timer myTimer = new Timer();
-      myTimer.scheduleAtFixedRate(new UpdateTask(), 0, 2000);
       
       requestFocusInWindow();
    }
@@ -85,7 +83,7 @@ public class PokerTableScreen extends JPanel
       }
       this.add(turnButton);
       turnButton.setSize(128, 186);
-      turnButton.setLocation(1070, 590);
+      turnButton.setLocation(1070, 540);
       
       this.add(endButton);
       endButton.setSize(150, 40);
@@ -129,8 +127,8 @@ public class PokerTableScreen extends JPanel
       g2.drawString(PokerApp.player3.getName(), 150, 200);
       g2.drawString(PokerApp.player4.getName(), 1025, 200);
       g2.drawString(PokerApp.player2.getName(), 150, 600);
-      g2.drawString(PokerApp.player5.getName(), 1025, 550);
-      g2.drawString(PokerApp.user.getName(), 350, 750);
+      g2.drawString(PokerApp.player5.getName(), 975, 525);
+      g2.drawString(PokerApp.user.getName(), 300, 710);
       drawHoleCards(g);
       drawCommunityCards(g);
       drawMoneyOnTable(g);
@@ -275,7 +273,7 @@ public class PokerTableScreen extends JPanel
                      g2.drawImage(buttonImages[idx], 975, 75, null);
                      break;
                   case 4:
-                     g2.drawImage(buttonImages[idx], 975, 450, null);
+                     g2.drawImage(buttonImages[idx], 975, 425, null);
                      break;
                   default:
                      System.out.println("Wrong dude");
@@ -309,8 +307,6 @@ public class PokerTableScreen extends JPanel
          {
             g2.drawImage(holeCards[0].getImage(), 500, 570, null);
             g2.drawImage(holeCards[1].getImage(), 600, 570, null);
-            g2.drawString(holeCards[0].getName(), 500, 730);
-            g2.drawString(holeCards[1].getName(), 600, 730);
          }
       }
    }
@@ -340,7 +336,6 @@ public class PokerTableScreen extends JPanel
          {
             g2.drawImage(communityCards.get(idx).getImage(), 350 + idx * 100, 300, null);
             g2.setColor(Color.RED);
-            g2.drawString(communityCards.get(idx).getName(), 350 + idx * 100, 460);
          }
       }
    }
@@ -400,7 +395,8 @@ public class PokerTableScreen extends JPanel
       */
       public void actionPerformed(ActionEvent e)
       {
-         
+         Timer myTimer = new Timer();
+         myTimer.scheduleAtFixedRate(new UpdateTask(), 0, 2000);  
       }
    }
    

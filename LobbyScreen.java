@@ -128,7 +128,7 @@ public class LobbyScreen extends JPanel
    public void drawImages(Graphics2D g2)
    {
       g2.drawImage(woodBackgroundImage, 0, 0, null);
-      g2.drawImage(exitCardImage, 1070, 590, null);
+      g2.drawImage(exitCardImage, 1070, 540, null);
       g2.drawImage(vintageNoteImage, 100, 60, null);
       g2.drawImage(joker1Image, 650, 500, null);
       g2.drawImage(joker2Image, 850, 500, null);
@@ -173,7 +173,7 @@ public class LobbyScreen extends JPanel
          int clickX = e.getX();
          int clickY = e.getY();
          
-         Rectangle2D.Double exitBox = new Rectangle2D.Double(1070, 590, 128, 128);
+         Rectangle2D.Double exitBox = new Rectangle2D.Double(1070, 540, 128, 128);
          
          Rectangle2D.Double[] entryBoxes = new Rectangle2D.Double[7];
          for(int idx = 0; idx < 7; idx++)

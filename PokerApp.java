@@ -12,7 +12,7 @@ public class PokerApp
    public static final int WINDOW_WIDTH = 1200;
    
    /** height of the game window */
-   public static final int WINDOW_HEIGHT = 800;
+   public static final int WINDOW_HEIGHT = 750;
 
    /** the app window */
    private JFrame myApp;

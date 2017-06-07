@@ -71,7 +71,7 @@ public class CharacterCreationScreen extends JPanel
       g2.drawImage(icon2, 300, 300, null);
       g2.drawImage(icon3, 450, 300, null);
       g2.drawImage(icon4, 600, 300, null);
-      g2.drawImage(nextCardImage, 1070, 590, null);
+      g2.drawImage(nextCardImage, 1070, 540, null);
       
       int height = icon1.getHeight();
       int width = icon1.getWidth();
@@ -104,7 +104,7 @@ public class CharacterCreationScreen extends JPanel
          icons[3] = new Rectangle2D.Double(600, 300, 128, 128);
                  
          Rectangle2D.Double nameBox = new Rectangle2D.Double(220, 80, 300, 35);
-         Rectangle2D.Double nextBox = new Rectangle2D.Double(1070, 590, 128, 128);
+         Rectangle2D.Double nextBox = new Rectangle2D.Double(1070, 540, 128, 128);
          
          if(nameBox.contains(clickX, clickY))
          {
