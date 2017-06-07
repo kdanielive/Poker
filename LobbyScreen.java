@@ -182,7 +182,8 @@ public class LobbyScreen extends JPanel
       if(myApp.getUser().getFinance() < 0)
       {
          JFrame frame = new JFrame("Message Box");
-         JOptionPane.showConfirmDialog(frame, "No more money, that means you're dead.",
+         JOptionPane.showConfirmDialog(frame, 
+            "No more money, that means you're dead.",
              "You're DEAD", -1);
          myApp.resetUser();
          myApp.switchScreen("Main");
@@ -274,17 +275,28 @@ public class LobbyScreen extends JPanel
       g2.drawString("Instructions", INSTRUCTION_X, INSTRUCTION_Y);
       g2.setFont(new Font("Times New Roman", Font.PLAIN, FONT_SIZE1));
       g2.drawString("Never forget.", MSG_X, MSG_Y);
-      g2.drawString("Your father died at THE CASINO", MSG_X, MSG_Y + MSG_H);
-      g2.drawString("Retrace his steps", MSG_X, MSG_Y + MSG_H * 2);
-      g2.drawString("Earn money in these casinos.", MSG_X, MSG_Y + MSG_H * 3);
-      g2.drawString("They all play limit Texas Holdem,", MSG_X, MSG_Y + MSG_H * 4);
-      g2.drawString(" as is the rule in this area.", MSG_X, MSG_Y + MSG_H * 5);
-      g2.drawString("Minimum bet for pre-flop and flop are 20,", MSG_X, MSG_Y + MSG_H * 6);
-      g2.drawString("while it's 40 for turn and river rounds.", MSG_X, MSG_Y + MSG_H * 7);
-      g2.drawString("You'll find some casinos very selective...", MSG_X, MSG_Y + MSG_H * 8);
-      g2.drawString("You'll need more money for such casinos.", MSG_X, MSG_Y + MSG_H * 9);
-      g2.drawString("Oh, and you know what the custom is. ", MSG_X, MSG_Y + MSG_H * 10);
-      g2.drawString("Run out of money, you get killed.", MSG_X, MSG_Y + MSG_H * 11);
+      g2.drawString("Your father died at THE CASINO",
+          MSG_X, MSG_Y + MSG_H);
+      g2.drawString("Retrace his steps", MSG_X,
+          MSG_Y + MSG_H * 2);
+      g2.drawString("Earn money in these casinos.", MSG_X,
+          MSG_Y + MSG_H * 3);
+      g2.drawString("They all play limit Texas Holdem,", MSG_X, 
+         MSG_Y + MSG_H * 4);
+      g2.drawString(" as is the rule in this area.", MSG_X, 
+         MSG_Y + MSG_H * 5);
+      g2.drawString("Minimum bet for pre-flop and flop are 20,"
+         , MSG_X, MSG_Y + MSG_H * 6);
+      g2.drawString("while it's 40 for turn and river rounds.",
+          MSG_X, MSG_Y + MSG_H * 7);
+      g2.drawString("You'll find some casinos very selective...",
+          MSG_X, MSG_Y + MSG_H * 8);
+      g2.drawString("You'll need more money for such casinos.",
+          MSG_X, MSG_Y + MSG_H * 9);
+      g2.drawString("Oh, and you know what the custom is. ",
+          MSG_X, MSG_Y + MSG_H * 10);
+      g2.drawString("Run out of money, you get killed.",
+          MSG_X, MSG_Y + MSG_H * 11);
       g2.drawString("", MSG_X, MSG_Y + MSG_H * 12);
       g2.drawString("", MSG_X, MSG_Y + MSG_H * 13);
       g2.drawString("", MSG_X, MSG_Y + MSG_H * 14);
@@ -319,7 +331,8 @@ public class LobbyScreen extends JPanel
          int clickX = e.getX();
          int clickY = e.getY();
          
-         Rectangle2D.Double exitBox = new Rectangle2D.Double(CARD_X, CARD_Y, CARD_W, CARD_H);
+         Rectangle2D.Double exitBox = new Rectangle2D.Double(CARD_X,
+             CARD_Y, CARD_W, CARD_H);
          Rectangle2D.Double[] entryBoxes = new Rectangle2D.Double[7];
          for(int idx = 0; idx < 7; idx++)
          {
@@ -342,7 +355,8 @@ public class LobbyScreen extends JPanel
             else if(entryBoxes[idx].contains(clickX, clickY))
             {
                JFrame frame = new JFrame("Message Box");
-               JOptionPane.showConfirmDialog(frame, "Not enough money", "Lacking Finance", -1);
+               JOptionPane.showConfirmDialog(frame,
+                   "Not enough money", "Lacking Finance", -1);
             }
          }
       }
