@@ -8,21 +8,21 @@ class that handles all comparisons between cards and hand ranks
 public class CompareHandler
 {  
    /** comparison number for straight flush */
-   public static final int STRAIGHTFLUSH = 8;
+   private final int STRAIGHTFLUSH = 8;
    /** comparison number for four of a kind */
-   public static final int FOUROFAKIND = 7;
+   private final int FOUROFAKIND = 7;
    /** comparison number for full house */
-   public static final int FULLHOUSE = 6;
+   private final int FULLHOUSE = 6;
    /** comparison number for flush */
-   public static final int FLUSH = 5;
+   private final int FLUSH = 5;
    /** comparison number for straight */
-   public static final int STRAIGHT = 4;
+   private final int STRAIGHT = 4;
    /** comparison number for three of a kind */
-   public static final int THREEOFAKIND = 3;
+   private final int THREEOFAKIND = 3;
    /** comparison number for two pair */
-   public static final int TWOPAIR = 2;
+   private final int TWOPAIR = 2;
    /** comparison number for one pair */
-   public static final int ONEPAIR = 1;
+   private final int ONEPAIR = 1;
    
    /**
    creates a dictionary of cards in hand

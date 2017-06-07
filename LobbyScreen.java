@@ -18,9 +18,30 @@ class for the lobby screen of the game
 */
 public class LobbyScreen extends JPanel
 {
+   private final int LOWBAR = 1000;
+   private final int MEDIUMBAR = 5000;
+   private final int HIGHBAR = 10000;
+   private final int ENTRY_X = 1050;
+   private final int ENTRY_Y = 145;
+   private final int ENTRY_HEIGHT = 45;
+   private final int ENTRYBOX_X = 1045;
+   private final int ENTRYBOX_Y = 125;
+   private final int ENTRYBOX_WIDTH = 53;
+   private final int ENTRYBOX_HEIGHT = 23;
+   private final int ENTRYBOX_SPACING = 45;
+   private final int FINANCE_X1 = 950;
+   private final int FINANCE_Y = 100;
+   private final int FONT_SIZE1 = 20;
+   private final int FINANCE_X2 = 1030;
+   private final int FONT_SIZE2 = 23;
+   private final int CASINO_X = 650;
+   private final int CASINO_Y = 145;
+   private final int CASINO_H = 45;
+   private final int ITINERARY_X = 800;
+   private final int ITINERARY_Y = 115;
+   
    /** PokerApp object that controls the screens and part of the program */
    private PokerApp myApp;
-   
    /** background image */
    private BufferedImage woodBackgroundImage;
    /** exit card image */
@@ -81,17 +102,17 @@ public class LobbyScreen extends JPanel
    {
       authorizedList[0] = true;
       authorizedList[1] = true;
-      if(myApp.getUser().getFinance() > 1000)
+      if(myApp.getUser().getFinance() > LOWBAR)
       {
          authorizedList[2] = true;
          authorizedList[3] = true;
       }
-      if(myApp.getUser().getFinance() > 5000)
+      if(myApp.getUser().getFinance() > MEDIUMBAR)
       {
          authorizedList[4] = true;
          authorizedList[5] = true;
       }
-      if(myApp.getUser().getFinance() > 10000) {  authorizedList[6] = true;  }
+      if(myApp.getUser().getFinance() > HIGHBAR) {  authorizedList[6] = true;  }
    }
    
    /**
@@ -124,14 +145,16 @@ public class LobbyScreen extends JPanel
       {
          if(authorizedList[idx] == true)
          {
-            g2.drawString("Enter", 1050, 145 + idx * 45);
-            g2.drawRect(1045, 125 + idx * 45, 53, 23);
+            g2.drawString("Enter", ENTRY_X, ENTRY_Y + idx * ENTRY_HEIGHT);
+            g2.drawRect(ENTRYBOX_X, ENTRYBOX_Y + idx * ENTRYBOX_SPACING
+               , ENTRYBOX_WIDTH, ENTRYBOX_HEIGHT);
          }
          else
          {
             g2.setColor(Color.RED);
-            g2.drawString("Enter", 1050, 145 + idx * 45);
-            g2.drawRect(1045, 125 + idx * 45, 53, 23);
+            g2.drawString("Enter", ENTRY_X, ENTRY_Y + idx * ENTRY_HEIGHT);
+            g2.drawRect(ENTRYBOX_X, ENTRYBOX_Y + idx * ENTRYBOX_SPACING
+               , ENTRYBOX_WIDTH, ENTRYBOX_HEIGHT);
             g2.setColor(Color.BLACK);
          }
       }
@@ -144,19 +167,19 @@ public class LobbyScreen extends JPanel
    */
    public void drawComponents(Graphics2D g2)
    {
-      g2.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-      g2.drawString("Finance: ", 950, 100);
-      g2.drawString("" + myApp.getUser().getFinance(), 1030, 100);
-      g2.setFont(new Font("Times New Roman", Font.PLAIN, 23));
-      g2.drawString("Itinerary", 800, 115);
-      g2.setFont(new Font("Times New Roman", Font.PLAIN, 20));
-      g2.drawString("Gaunt Casino", 650, 145);
-      g2.drawString("Lotus Casino", 650, 190);
-      g2.drawString("Hallowed Casino", 650, 235);
-      g2.drawString("Mourn Casino", 650, 280);
-      g2.drawString("Low Casino", 650, 325);
-      g2.drawString("Royale Casino", 650, 370);
-      g2.drawString("The Casino", 650, 415);
+      g2.setFont(new Font("Times New Roman", Font.PLAIN, FONT_SIZE1));
+      g2.drawString("Finance: ", FINANCE_X1, FINANCE_Y);
+      g2.drawString("" + myApp.getUser().getFinance(), FINANCE_X2, FINANCE_Y);
+      g2.setFont(new Font("Times New Roman", Font.PLAIN, FONT_SIZE2));
+      g2.drawString("Itinerary", ITINERARY_X, ITINERARY_Y);
+      g2.setFont(new Font("Times New Roman", Font.PLAIN, FONT_SIZE1));
+      g2.drawString("Gaunt Casino", CASINO_X, CASINO_Y);
+      g2.drawString("Lotus Casino", CASINO_X, CASINO_Y + CASINO_H);
+      g2.drawString("Hallowed Casino", CASINO_X, CASINO_Y + 2 * CASINO_H);
+      g2.drawString("Mourn Casino", CASINO_X, CASINO_Y + 3 * CASINO_H);
+      g2.drawString("Low Casino", CASINO_X, CASINO_Y + 4 * CASINO_H);
+      g2.drawString("Royale Casino", CASINO_X, CASINO_Y + 5 * CASINO_H);
+      g2.drawString("The Casino", CASINO_X, CASINO_Y + 6 * CASINO_H);
       
       myApp.getUser().drawMe(g2, 0, 0);
       g2.setFont(new Font("Times New Roman", Font.BOLD, 35));

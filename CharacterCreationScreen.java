@@ -40,7 +40,18 @@ public class CharacterCreationScreen extends JPanel
    private final int CARD_X = 1070;
    /** the length and width of the icons */
    private final int ICON_DIM = 128;
-   
+   /** x-coordinate of name text box */
+   private final int NAMEBOX_X = 220;
+   /** y-coordinate of name text box */
+   private final int NAMEBOX_Y = 80;
+   /** width of name text box */
+   private final int NAMEBOX_WIDTH = 300;
+   /** height of name text box */
+   private final int NAMEBOX_HEIGHT = 35;
+   /** width of turning card*/
+   private final int CARD_WIDTH = 130;
+   /** height of turning card */
+   private final int CARD_HEIGHT = 260;
    /** the first icon */
    private BufferedImage icon1;
    /** the second icon */
@@ -158,7 +169,7 @@ public class CharacterCreationScreen extends JPanel
       g2.drawImage(backgroundImage, 0, 0, null);
       
       g2.drawString("Enter Your Name: ", LABEL_X, NAME_Y);
-      g2.drawRect(NAME_BUTTON_X, NAME_Y, NAME_RECT_X, NAME_RECT_Y);
+      g2.drawRect(NAMEBOX_X, NAMEBOX_Y, NAMEBOX_WIDTH, NAMEBOX_HEIGHT);
       if(nameButton != null)  
       {  
          g2.drawString(nameButton, NAME_BUTTON_X, NAME_Y);   
@@ -189,7 +200,7 @@ public class CharacterCreationScreen extends JPanel
       icons[2] = new Rectangle2D.Double(ICON_X 
          + ICON_LENGTH * 2, ICON_Y, ICON_DIM, ICON_DIM);
       icons[3] = new Rectangle2D.Double(ICON_X 
-         + ICON_LENGTH * 2, ICON_Y, ICON_DIM, ICON_DIM);
+         + ICON_LENGTH * 3, ICON_Y, ICON_DIM, ICON_DIM);
       return icons;
    }
    
@@ -279,16 +290,12 @@ public class CharacterCreationScreen extends JPanel
          int clickX = e.getX();
          int clickY = e.getY();
          Rectangle2D.Double[] icons = setIcons();  
-         Rectangle2D.Double nameBox = new Rectangle2D.Double(220, 80, 300, 35);
-         Rectangle2D.Double nextBox = new Rectangle2D.Double(1070, 540, 130, 260);
-         if(nameBox.contains(clickX, clickY))
-         {
-            nameBoxHelper();
-         }
-         if(nextBox.contains(clickX, clickY))
-         {
-            nextBoxHelper();
-         }
+         Rectangle2D.Double nameBox = new Rectangle2D.Double(NAMEBOX_X,
+             NAMEBOX_Y, NAMEBOX_WIDTH, NAMEBOX_WIDTH);
+         Rectangle2D.Double nextBox = new Rectangle2D.Double(CARD_X,
+             CARD_Y, CARD_WIDTH, CARD_HEIGHT);
+         if(nameBox.contains(clickX, clickY))   {  nameBoxHelper();  }
+         if(nextBox.contains(clickX, clickY))   {  nextBoxHelper();  }
          if(icons[0].contains(clickX, clickY))
          {
             iconSelectedHelper(0);
