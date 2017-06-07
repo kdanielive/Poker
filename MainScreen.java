@@ -14,7 +14,22 @@ class for the starting main screen of the program
 @version 04/11/2017
 */
 public class MainScreen extends JPanel
-{
+{  
+   /** x-coord of text box */
+   private final int BOX_X = 570;
+   /** y-coord of text box */
+   private final int BOX_Y = 340;
+   /** width of text box */
+   private final int BOX_W = 330;
+   /** height of text box */
+   private final int BOX_H = 60;
+   /** x-coord of text */
+   private final int TEXT_X = 630;
+   /** y-coord of text */
+   private final int TEXT_Y = 380;
+   /** stroke thickness */
+   private final int STROKE = 3;
+
    /** background image */
    private BufferedImage backgroundImage;
    /** turning card image */
@@ -55,16 +70,14 @@ public class MainScreen extends JPanel
       
       g2.drawImage(backgroundImage, 0, 0, null);
       
-      g2.setColor(Color.RED);
+      g2.setColor(Color.WHITE);
       Stroke oldStroke = g2.getStroke();
-      g2.setStroke(new BasicStroke(2));      
-      g2.drawRect(570, 340, 330, 60);
-      //g2.drawRect(570, 380, 350, 50);
+      g2.setStroke(new BasicStroke(STROKE));      
+      g2.drawRect(BOX_X, BOX_Y, BOX_W, BOX_H);
       
       g2.setFont(new Font("Times New Roman", Font.PLAIN, 35));
       g2.setColor(Color.WHITE);
-      g2.drawString("Start Game", 630, 380);
-      //g2.drawString("Instructions", 630, 420);
+      g2.drawString("Start Game", TEXT_X, TEXT_Y);
    }
    
    /**
