@@ -640,26 +640,7 @@ public class PokerTableScreen extends JPanel
       }
       clearData();
    }
-   
-   /**
-   listener for the start button
-   @author Daniel Kim
-   @version 06/01/2017
-   */
-   private class TurnButtonListener implements ActionListener
-   {
-      /**
-      what to do when action is recognized
-      @param e an action event
-      */
-      public void actionPerformed(ActionEvent e)
-      {
-         myTimer = new Timer();
-         myTimer.scheduleAtFixedRate(new UpdateTask(), 0, 2000);  
-         startButton.setVisible(false);
-      }
-   }
-   
+      
    /**
    helper method to help reset the game before ending
    */
@@ -821,120 +802,6 @@ public class PokerTableScreen extends JPanel
          else if(freeCounter == 1)  {  bigBlindHelper(); }
       }
       else  {  manageMainTurn(game.getPhase()); }
-   }
-
-   /**
-   inner class for the first button action listener
-   */
-   private class Button1Listener implements ActionListener
-   {
-      /**
-      what to do when action is recognized
-      @param e an action event
-      */ 
-      public void actionPerformed(ActionEvent e)
-      {
-         if(button1.getText().equals("Call") && game.getSubPhase().equals("user"))
-         {
-            consoleMessage = "You called";
-            bet(0);
-            turnIndex = (turnIndex + 1) % 5;
-            game.setSubPhase(freeString);
-            freeStringCount = 0;
-            freeCounter++;
-            expCounter++;
-            repaint();
-         }
-         else if(button1.getText().equals("Check") && game.getSubPhase().equals("user"))
-         {
-            consoleMessage = "You checked";
-            turnIndex = (turnIndex + 1) % 5;
-            game.setSubPhase(freeString);
-            freeStringCount = 0;
-            freeCounter++;
-            expCounter++;
-            repaint();
-         }
-      }
-   }
-
-   /**
-   inner class for the second button action listener
-   */
-   private class Button2Listener implements ActionListener
-   {
-      /**
-      what to do when action is recognized
-      @param e an action event
-      */
-      public void actionPerformed(ActionEvent e)
-      {
-         if(button2.getText().equals("Call") && game.getSubPhase().equals("user"))
-         {
-            consoleMessage = "You called";
-            bet(0);
-            turnIndex = (turnIndex + 1) % 5;
-            game.setSubPhase(freeString);
-            freeStringCount = 0;
-            freeCounter++;
-            expCounter++;
-            repaint();
-         }
-         else if(button2.getText().equals("Raise") && game.getSubPhase().equals("user"))
-         {
-            consoleMessage = "You raised";
-            if(game.getPhase() < 5) {  bet(20); }
-            else  {  bet(40); }
-            turnIndex = (turnIndex + 1) % 5;
-            game.setSubPhase(freeString);
-            freeStringCount = 0;
-            freeCounter++;
-            expCounter++;
-            repaint();
-         }
-      }
-   }
-
-   /**
-   inner class for the third button action listener
-   */
-   private class Button3Listener implements ActionListener
-   {
-      /**
-      what to do when action is recognized
-      @param e an action event
-      */
-      public void actionPerformed(ActionEvent e)
-      {
-         if(button3.getText().equals("Fold") && game.getSubPhase().equals("user"))
-         {
-            clearData();
-            consoleMessage = "You folded...";
-            repaint();
-         }
-      }
-   }
-   
-   /**
-   inner class for the end button action listener
-   */
-   private class RunListener implements ActionListener
-   {
-      /**
-      what to do when action is recognized
-      @param e an action event
-      */
-      public void actionPerformed(ActionEvent e)
-      {
-         JFrame frame = new JFrame("Message Box");
-         int choice = JOptionPane.showConfirmDialog(frame, "Exit casino?");
-         if(choice == 0)
-         {
-            clearData();
-            repaint();
-            myApp.switchScreen("Lobby");
-         }
-      }
    }
    
    /**
@@ -1108,4 +975,138 @@ public class PokerTableScreen extends JPanel
          repaint();
       }
    }
+   
+   /**
+   listener for the start button
+   @author Daniel Kim
+   @version 06/01/2017
+   */
+   private class TurnButtonListener implements ActionListener
+   {
+      /**
+      what to do when action is recognized
+      @param e an action event
+      */
+      public void actionPerformed(ActionEvent e)
+      {
+         myTimer = new Timer();
+         myTimer.scheduleAtFixedRate(new UpdateTask(), 0, 2000);  
+         startButton.setVisible(false);
+      }
+   }
+   
+   /**
+   inner class for the first button action listener
+   */
+   private class Button1Listener implements ActionListener
+   {
+      /**
+      what to do when action is recognized
+      @param e an action event
+      */ 
+      public void actionPerformed(ActionEvent e)
+      {
+         if(button1.getText().equals("Call") && game.getSubPhase().equals("user"))
+         {
+            consoleMessage = "You called";
+            bet(0);
+            turnIndex = (turnIndex + 1) % 5;
+            game.setSubPhase(freeString);
+            freeStringCount = 0;
+            freeCounter++;
+            expCounter++;
+            repaint();
+         }
+         else if(button1.getText().equals("Check") && game.getSubPhase().equals("user"))
+         {
+            consoleMessage = "You checked";
+            turnIndex = (turnIndex + 1) % 5;
+            game.setSubPhase(freeString);
+            freeStringCount = 0;
+            freeCounter++;
+            expCounter++;
+            repaint();
+         }
+      }
+   }
+   
+   /**
+   inner class for the second button action listener
+   */
+   private class Button2Listener implements ActionListener
+   {
+      /**
+      what to do when action is recognized
+      @param e an action event
+      */
+      public void actionPerformed(ActionEvent e)
+      {
+         if(button2.getText().equals("Call") && game.getSubPhase().equals("user"))
+         {
+            consoleMessage = "You called";
+            bet(0);
+            turnIndex = (turnIndex + 1) % 5;
+            game.setSubPhase(freeString);
+            freeStringCount = 0;
+            freeCounter++;
+            expCounter++;
+            repaint();
+         }
+         else if(button2.getText().equals("Raise") && game.getSubPhase().equals("user"))
+         {
+            consoleMessage = "You raised";
+            if(game.getPhase() < 5) {  bet(20); }
+            else  {  bet(40); }
+            turnIndex = (turnIndex + 1) % 5;
+            game.setSubPhase(freeString);
+            freeStringCount = 0;
+            freeCounter++;
+            expCounter++;
+            repaint();
+         }
+      }
+   }
+
+   /**
+   inner class for the third button action listener
+   */
+   private class Button3Listener implements ActionListener
+   {
+      /**
+      what to do when action is recognized
+      @param e an action event
+      */
+      public void actionPerformed(ActionEvent e)
+      {
+         if(button3.getText().equals("Fold") && game.getSubPhase().equals("user"))
+         {
+            clearData();
+            consoleMessage = "You folded...";
+            repaint();
+         }
+      }
+   }
+   
+   /**
+   inner class for the end button action listener
+   */
+   private class RunListener implements ActionListener
+   {
+      /**
+      what to do when action is recognized
+      @param e an action event
+      */
+      public void actionPerformed(ActionEvent e)
+      {
+         JFrame frame = new JFrame("Message Box");
+         int choice = JOptionPane.showConfirmDialog(frame, "Exit casino?");
+         if(choice == 0)
+         {
+            clearData();
+            repaint();
+            myApp.switchScreen("Lobby");
+         }
+      }
+   }
+
 }

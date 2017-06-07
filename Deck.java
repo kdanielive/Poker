@@ -6,15 +6,15 @@ class for a deck of poker cards
 */
 public class Deck
 {
-   /** the deck of poker cards */
-   private PokerCard[] pokerDeck;
-   /** the index of the topmost card in deck */
-   private int lastCardIdx;
-   
    /** number of cards with the same suit in a deck */
    public static final int numPerSuit = 13;
    /** total number of cards in deck */
    public static final int cardNum = 52;
+   
+   /** the deck of poker cards */
+   private PokerCard[] pokerDeck;
+   /** the index of the topmost card in deck */
+   private int lastCardIdx;
 
    /**
    default constructor of Deck class
