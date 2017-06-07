@@ -10,41 +10,71 @@ import java.util.*;
 import java.lang.Object;
 import java.util.Timer;
 import java.util.TimerTask;
-//limit holdem
+/**
+the screen where the poker game is played
+@author Daniel Kim
+@version 06/01/2017
+*/
 public class PokerTableScreen extends JPanel
 {  
+   /** phase number of flop */
+   public static final int FLOP = 3;
+   /** phase number of turn */
+   public static final int TURN = 4;
+   /** phase number of river */
+   public static final int RIVER = 5;
+   
+   /** image of poker table */
    private BufferedImage pokerTableImage;
    
-   public static final int FLOP = 3;
-   public static final int TURN = 4;
-   public static final int RIVER = 5;
-      
+   /** PokerApp object the controls the screen */
    private PokerApp myApp;
    
+   /** marks how many rounds have passed */
    private int round = 0;
    
+   /** first button */
    private JButton button1;
+   /** second button */
    private JButton button2;
+   /** third button */
    private JButton button3;
+   /** end button */
    private JButton endButton;
+   /** start button */
    private JButton startButton;
    
+   /** initial console message */
    private String consoleMessage = "Welcome. You will be playing structured limit Texas Holdem.";
+   /**  second line of initial console message */
    private String consoleOptionalMsg = "There will be blind bets.";
    
+   /** number of players participated in round */
    private int expCounter = 0;
-   
+   /** counter for various situations */
    private int freeCounter = 0;
+   /** string holding variable for various situations */
    private String freeString;
+   /** increments with change in freeString variable */
    private int freeStringCount = 0;
+   /** index of whose turn it is */
    private int turnIndex = 0;
+   /** index of every player who folded */
    private ArrayList<Integer> foldedIndex = new ArrayList<Integer>();
+   /** array keeping track of everyone's betted amount */
    private ArrayList<Integer> betAmtArray= new ArrayList<Integer>();
+   /** minimum required bet */
    private int minBetAmt;
+   /** timer object for running game smoothly */
    private Timer myTimer;
    
+   /** PokerGame object that holds all essential data */
    private PokerGame game = new PokerGame();
    
+   /**
+   default constructor of PokerTableScreen class
+   @param app PokerApp object that controls the screen
+   */
    public PokerTableScreen(PokerApp app)
    {
       myApp = app;
@@ -69,11 +99,18 @@ public class PokerTableScreen extends JPanel
       requestFocusInWindow();
    }
    
+   /**
+   gets the PokerGame object
+   @return the PokerGame object
+   */
    public PokerGame getPokerGame()
    {
       return game;
    }
    
+   /**
+   method to initialize the screen when entered
+   */
    public void screenInitCheck()
    {
       game = new PokerGame();
@@ -86,6 +123,9 @@ public class PokerTableScreen extends JPanel
       consoleOptionalMsg = "There will be blind bets.";
    }
    
+   /**
+   helper method that adds various components of the screen like buttons
+   */
    public void addComponents()
    {
       button1 = new JButton("Read");
@@ -115,6 +155,10 @@ public class PokerTableScreen extends JPanel
       endButton.addActionListener(new RunListener());
    }
    
+   /**
+   helper method that draws players on screen
+   @param g2 graphics object
+   */
    public void drawPlayers(Graphics2D g2)
    {
       game.getPlayerList().get(2).drawMe(g2, 200, 100);
@@ -124,6 +168,10 @@ public class PokerTableScreen extends JPanel
       game.getPlayerList().get(0).drawMe(g2, 375, 600);
    }
    
+   /**
+   helper method that draws the console on screen
+   @param g2 graphics object
+   */
    public void drawConsole(Graphics2D g2)
    {
       g2.setColor(Color.WHITE);
@@ -134,6 +182,10 @@ public class PokerTableScreen extends JPanel
       g2.drawString(consoleOptionalMsg, 20, 70);
    }
    
+   /**
+   draws the name of all players
+   @param g2 graphics object
+   */
    public void drawNames(Graphics2D g2)
    {
       g2.setFont(new Font("Times New Roman", Font.PLAIN, 20));
@@ -144,6 +196,10 @@ public class PokerTableScreen extends JPanel
       g2.drawString(myApp.getUser().getName(), 300, 710);
    }
    
+   /**
+   draws the financial situation on screen
+   @param g2 graphics object
+   */
    public void drawFinance(Graphics2D g2)
    {  
       g2.setColor(Color.BLACK);
@@ -151,6 +207,10 @@ public class PokerTableScreen extends JPanel
       g2.drawString("" + game.getPlayerList().get(0).getFinance(), 1070, 30);
    }
    
+   /**
+   draws what first AI did last turn
+   @param g2 graphics object
+   */
    public void drawAI1Status(Graphics2D g2)
    {
       AIPlayer subject = (AIPlayer) (game.getPlayerList().get(1));
@@ -167,6 +227,11 @@ public class PokerTableScreen extends JPanel
          g2.drawString("Raised: " + subject.getJustRaisedAmt(), 150, 680);
       }
    }
+   
+   /**
+   draws what second AI did last turn
+   @param g2 graphics object
+   */
    public void drawAI2Status(Graphics2D g2)
    {
       AIPlayer subject = (AIPlayer) (game.getPlayerList().get(2));
@@ -183,6 +248,11 @@ public class PokerTableScreen extends JPanel
          g2.drawString("Raised: " + subject.getJustRaisedAmt(), 160, 300);
       }
    }
+   
+   /**
+   draws what third AI did last turn
+   @param g2 graphics object
+   */
    public void drawAI3Status(Graphics2D g2)
    {
       AIPlayer subject = (AIPlayer) (game.getPlayerList().get(3));
@@ -199,6 +269,11 @@ public class PokerTableScreen extends JPanel
          g2.drawString("Raised: " + subject.getJustRaisedAmt(), 1000, 280);
       }
    }
+   
+   /**
+   draws what fourth AI did last turn
+   @param g2 graphics object
+   */
    public void drawAI4Status(Graphics2D g2)
    {
       AIPlayer subject = (AIPlayer) (game.getPlayerList().get(4));
@@ -216,6 +291,10 @@ public class PokerTableScreen extends JPanel
       }
    }
    
+   /**
+   draws what first AI did last turn
+   @param g2 graphics object
+   */
    public void drawAIStatus(Graphics2D g2)
    {
       drawAI1Status(g2);
@@ -224,6 +303,9 @@ public class PokerTableScreen extends JPanel
       drawAI4Status(g2);
    }
    
+   /**
+   initializes all AI status records
+   */
    public void initAIStatus()
    {
       for(int idx = 1; idx < 5; idx++)
@@ -254,6 +336,10 @@ public class PokerTableScreen extends JPanel
       drawAIStatus(g2);
    }
    
+   /**
+   method for managaing betting activities of players
+   @param raiseAmt amount of money raised, not bet
+   */
    public void bet(int raiseAmt)
    {
       if(turnIndex != 0)
@@ -279,6 +365,10 @@ public class PokerTableScreen extends JPanel
       betAmtArray.set(turnIndex, minBetAmt);
    }
    
+   /**
+   checks if the round has come to an end
+   @return returns whether the round has ended
+   */
    public boolean checkRoundFinished()
    {
       if(expCounter < 5)   {  return false;  }
@@ -312,6 +402,9 @@ public class PokerTableScreen extends JPanel
       return true;
    }
    
+   /**
+   initializes the turn index
+   */
    public void initializeTurnIndex()
    {
       if(game.getPlayerList().get(game.getBetters()[0]).equals(myApp.getAI1()))
@@ -336,6 +429,12 @@ public class PokerTableScreen extends JPanel
       }
    }
    
+   /**
+   helper method to set the button text
+   @param one text for first button
+   @param two text for second button
+   @param three text for third button
+   */
    public void setButtonStrings(String one, String two, String three)
    {
       button1.setText(one);
@@ -343,6 +442,10 @@ public class PokerTableScreen extends JPanel
       button3.setText(three);
    }
    
+   /**
+   draws money in pot
+   @param g graphics object
+   */
    public void drawMoneyOnTable(Graphics g)
    {
       Graphics2D g2 = (Graphics2D) g;
@@ -355,6 +458,9 @@ public class PokerTableScreen extends JPanel
       }
    }
    
+   /**
+   sets the known cards of all AI
+   */
    public void setAIKnownCards()
    {
       myApp.getAI1().setKnownCards(game.getPhase(), game);
@@ -369,6 +475,10 @@ public class PokerTableScreen extends JPanel
       }
    }
    
+   /**
+   draws buttons on screen
+   @param g graphics object
+   */
    public void drawButtons(Graphics g)
    {
       Graphics2D g2 = (Graphics2D) g;
@@ -411,6 +521,10 @@ public class PokerTableScreen extends JPanel
       }
    }
 
+   /**
+   draws the hold cards of the player
+   @param g graphics object
+   */
    public void drawHoleCards(Graphics g)
    {
       Graphics2D g2 = (Graphics2D) g;
@@ -437,6 +551,10 @@ public class PokerTableScreen extends JPanel
       }
    }
    
+   /**
+   draws the community cards on screen
+   @param g graphics object
+   */
    public void drawCommunityCards(Graphics g)
    {
       Graphics2D g2 = (Graphics2D) g;
@@ -466,6 +584,9 @@ public class PokerTableScreen extends JPanel
       }
    }
    
+   /**
+   initializes all variables of the class object
+   */
    public void clearData()
    {
       freeCounter = 0;
@@ -484,6 +605,9 @@ public class PokerTableScreen extends JPanel
       if(myTimer != null)  {  myTimer.cancel(); }
    }
    
+   /**
+   ends the game
+   */
    public void endGame()
    {
       if(foldedIndex.size() == 4)  
@@ -517,6 +641,11 @@ public class PokerTableScreen extends JPanel
       clearData();
    }
    
+   /**
+   listener for the start button
+   @author Daniel Kim
+   @version 06/01/2017
+   */
    private class TurnButtonListener implements ActionListener
    {
       /**
@@ -531,6 +660,9 @@ public class PokerTableScreen extends JPanel
       }
    }
    
+   /**
+   helper method to help reset the game before ending
+   */
    public void endInitHelper()
    {
       clearData();
@@ -540,6 +672,9 @@ public class PokerTableScreen extends JPanel
       myApp.switchScreen("Lobby");
    }
    
+   /**
+   helper method to help prepare game phase before flop
+   */
    public void flopEntraHelper()
    {
       setAIKnownCards();
@@ -552,6 +687,9 @@ public class PokerTableScreen extends JPanel
       repaint();
    }
    
+   /**
+   helper method to help prepare game phase before turn
+   */
    public void turnEntraHelper()
    {
       setAIKnownCards();
@@ -564,6 +702,9 @@ public class PokerTableScreen extends JPanel
       repaint();
    }
    
+   /**
+   helper method to help prepare game phase before river
+   */
    public void riverEntraHelper()
    {
       setAIKnownCards();
@@ -576,6 +717,9 @@ public class PokerTableScreen extends JPanel
       repaint();
    }
    
+   /**
+   helps the prepare game phase before blind
+   */
    public void gameEntraHelper()
    {
       game.setRound(round);
@@ -590,6 +734,9 @@ public class PokerTableScreen extends JPanel
       repaint();
    }
    
+   /**
+   helps prepare gamephase before pre-flop betting round
+   */
    public void afterBlindsHelper()
    {
       game.incrementPhase();
@@ -601,6 +748,9 @@ public class PokerTableScreen extends JPanel
       repaint();
    }
    
+   /**
+   executes the small blind bet
+   */
    public void smallBlindHelper()
    {
       game.addToPot(PokerGame.MINBET / 2);
@@ -613,6 +763,9 @@ public class PokerTableScreen extends JPanel
       repaint();
    }
    
+   /**
+   executes the big blind bet
+   */
    public void bigBlindHelper()
    {
       game.addToPot(PokerGame.MINBET);
@@ -626,6 +779,9 @@ public class PokerTableScreen extends JPanel
       repaint();
    }
    
+   /**
+   handles all cases excluding blinds, beginning of game, and end of game
+   */
    public void processTurn()
    {
       if(game.getPhase() == -10 && game.getSubPhase().equals("End is beginning") && round == 5)
@@ -667,7 +823,9 @@ public class PokerTableScreen extends JPanel
       else  {  manageMainTurn(game.getPhase()); }
    }
 
-   
+   /**
+   inner class for the first button action listener
+   */
    private class Button1Listener implements ActionListener
    {
       /**
@@ -700,6 +858,9 @@ public class PokerTableScreen extends JPanel
       }
    }
 
+   /**
+   inner class for the second button action listener
+   */
    private class Button2Listener implements ActionListener
    {
       /**
@@ -734,6 +895,9 @@ public class PokerTableScreen extends JPanel
       }
    }
 
+   /**
+   inner class for the third button action listener
+   */
    private class Button3Listener implements ActionListener
    {
       /**
@@ -751,6 +915,9 @@ public class PokerTableScreen extends JPanel
       }
    }
    
+   /**
+   inner class for the end button action listener
+   */
    private class RunListener implements ActionListener
    {
       /**
@@ -770,6 +937,9 @@ public class PokerTableScreen extends JPanel
       }
    }
    
+   /**
+   prepares game before the start of next betting round
+   */
    public void initNextTurn()
    {
       game.incrementPhase();
@@ -788,6 +958,9 @@ public class PokerTableScreen extends JPanel
       repaint();
    }
    
+   /**
+   helps prepare game before the user makes the first bet of the betting round
+   */
    public void userInitBetHelper()
    {
       setButtonStrings("Check", "Call", "Fold");
@@ -801,6 +974,9 @@ public class PokerTableScreen extends JPanel
       repaint();
    }
    
+   /**
+   helps prepare game before the user makes any bet of the betting round
+   */
    public void userTurnHelper()
    {
       setButtonStrings("Call", "Raise", "Fold");
@@ -815,6 +991,9 @@ public class PokerTableScreen extends JPanel
       repaint();
    }
 
+   /**
+   helps prepare game before AI makes the first bet of the betting round
+   */
    public void aiInitBetHelper()
    {
       AIPlayer subject = (AIPlayer) game.getPlayerList().get(turnIndex);
@@ -840,6 +1019,9 @@ public class PokerTableScreen extends JPanel
       }
    }
    
+   /**
+   helps prepare game before the AI plays any turn in the betting round
+   */
    public void aiTurnHelper()
    {
       AIPlayer subject = (AIPlayer) game.getPlayerList().get(turnIndex);
@@ -873,6 +1055,10 @@ public class PokerTableScreen extends JPanel
       }
    }
    
+   /**
+   controls all betting rounds of the poker game
+   @param phase phase of the game
+   */
    public void manageMainTurn(int phase)
    {
       if(checkRoundFinished())
@@ -897,6 +1083,9 @@ public class PokerTableScreen extends JPanel
       }
    }
    
+   /**
+   increments all essential counters of game
+   */
    public void incrementCounters()
    {
       turnIndex = (turnIndex + 1) % 5;
@@ -905,8 +1094,14 @@ public class PokerTableScreen extends JPanel
       repaint();
    }
    
+   /**
+   inner class that handles the timer task
+   */
    private class UpdateTask extends TimerTask
    {
+      /**
+      runs the poker game according to the timer
+      */
       public void run()
       {  
          processTurn();
