@@ -13,6 +13,8 @@ public class PokerApp
    
    /** height of the game window */
    public static final int WINDOW_HEIGHT = 750;
+   
+   public static final int AI_MONEY = 1000000;
 
    /** the app window */
    private JFrame myApp;
@@ -27,10 +29,10 @@ public class PokerApp
    private PokerGame game;
    
    private Player user = new Player();
-   private AIPlayer player2 = new AIPlayer("teardrop", "Bill", 100000, "Easy");
-   private AIPlayer player3 = new AIPlayer("eyeball", "Jack", 100000, "Easy");
-   private AIPlayer player4 = new AIPlayer("jokerhat", "Jason", 100000, "Easy");
-   private AIPlayer player5 = new AIPlayer("death", "Lohan", 100000, "Easy");
+   private AIPlayer player2 = new AIPlayer("teardrop", "Bill", AI_MONEY, "Easy");
+   private AIPlayer player3 = new AIPlayer("eyeball", "Jack", AI_MONEY, "Easy");
+   private AIPlayer player4 = new AIPlayer("jokerhat", "Jason", AI_MONEY, "Easy");
+   private AIPlayer player5 = new AIPlayer("death", "Lohan", AI_MONEY, "Easy");
    
    public static void main(String[] args)
    {
@@ -48,6 +50,7 @@ public class PokerApp
    public void run()
    {
       myApp = new JFrame();
+      myApp.setResizable(false);
       
       myTableScreen = new PokerTableScreen(this);
       myCharacterScreen = new CharacterCreationScreen(this);
