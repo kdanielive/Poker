@@ -16,6 +16,9 @@ public class Deck
    /** total number of cards in deck */
    public static final int cardNum = 52;
 
+   /**
+   default constructor of Deck class
+   */
    public Deck()
    {
       pokerDeck = new PokerCard[cardNum];

@@ -8,12 +8,24 @@ import javax.imageio.*;
 import java.io.*;
 import java.util.*;
 
+/**
+class for the starting main screen of the program
+@author Daniel Kim
+@version 04/11/2017
+*/
 public class MainScreen extends JPanel
 {
+   /** background image */
    private BufferedImage backgroundImage;
+   /** turning card image */
    private BufferedImage nextCardImage;
+   /** PokerApp object that controls the screens and part of the program */
    private PokerApp myApp;
    
+   /**
+   default constructor of MainScreen class
+   @param app the PokerApp object using the screen
+   */
    public MainScreen(PokerApp app)
    {
       myApp = app;
@@ -33,6 +45,10 @@ public class MainScreen extends JPanel
       requestFocusInWindow();
    }
    
+   /**
+   draws the major components of the screen
+   @param g graphics object
+   */
    public void paintComponent(Graphics g)
    {
       Graphics2D g2 = (Graphics2D) g;
@@ -74,12 +90,28 @@ public class MainScreen extends JPanel
          }
       }
       
+      /**
+      handles mouse button releases
+      @param e info about the mouse event
+      */
       public void mouseReleased(MouseEvent e) { }
       
+      /**
+      handles mouse button clicks
+      @param e info about the mouse event
+      */
       public void mouseClicked(MouseEvent e) { }
       
+      /**
+      handles mouse button enters
+      @param e info about the mouse event
+      */
       public void mouseEntered(MouseEvent e) { }
       
+      /**
+      handles mouse button exits
+      @param e info about the mouse event
+      */
       public void mouseExited(MouseEvent e) { }
    }
    

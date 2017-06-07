@@ -13,17 +13,29 @@ import java.awt.Font;
 
 public class LobbyScreen extends JPanel
 {
+   /** PokerApp object that controls the screens and part of the program */
    private PokerApp myApp;
    
-   BufferedImage woodBackgroundImage;
-   BufferedImage exitCardImage;
-   BufferedImage vintageNoteImage;
-   BufferedImage joker1Image;
-   BufferedImage joker2Image;
-   BufferedImage casinoListImage;
+   /** background image */
+   private BufferedImage woodBackgroundImage;
+   /** exit card image */
+   private BufferedImage exitCardImage;
+   /** image of a vintage paper */
+   private BufferedImage vintageNoteImage;
+   /** first joker card image */
+   private BufferedImage joker1Image;
+   /** second joker card image */
+   private BufferedImage joker2Image;
+   /** image to contain a list of casinos */
+   private BufferedImage casinoListImage;
    
+   /** list indicating authorized casinos */
    boolean[] authorizedList = {false, false, false, false, false, false, false};
    
+   /**
+   default constuctor of LobbyScreen class
+   @param app the PokerApp object using the screen
+   */
    public LobbyScreen(PokerApp app)
    {
       myApp = app;
@@ -48,12 +60,18 @@ public class LobbyScreen extends JPanel
       requestFocusInWindow();
    }
    
+   /**
+   method to initialize the screen when entered
+   */
    public void screenInitCheck()
    {
       setAuthorizedList();
       checkDeadOrAlive();
    }
    
+   /**
+   sets the authorized list of casinos
+   */
    public void setAuthorizedList()
    {
       authorizedList[0] = true;
@@ -71,6 +89,9 @@ public class LobbyScreen extends JPanel
       if(myApp.getUser().getFinance() > 10000) {  authorizedList[6] = true;  }
    }
    
+   /**
+   checks whether the user is dead or alive
+   */
    public void checkDeadOrAlive()
    {
       if(myApp.getUser().getFinance() < 0)
@@ -83,6 +104,10 @@ public class LobbyScreen extends JPanel
       }
    }
    
+   /**
+   paints the major components of the screen
+   @param g graphics object
+   */
    public void paintComponent(Graphics g)
    {
       Graphics2D g2 = (Graphics2D) g;
@@ -108,6 +133,10 @@ public class LobbyScreen extends JPanel
       writeStory(g2);
    }
    
+   /**
+   draws other components of the screen
+   @param g2 graphics object
+   */
    public void drawComponents(Graphics2D g2)
    {
       g2.setFont(new Font("Times New Roman", Font.PLAIN, 20));
@@ -133,6 +162,10 @@ public class LobbyScreen extends JPanel
       g2.setColor(Color.BLACK);
    }
    
+   /**
+   draws buffered images
+   @param g2 graphics object
+   */
    public void drawImages(Graphics2D g2)
    {
       g2.drawImage(woodBackgroundImage, 0, 0, null);
@@ -143,6 +176,10 @@ public class LobbyScreen extends JPanel
       g2.drawImage(casinoListImage, 630, 70, null);
    }
    
+   /**
+   writes instructions and story of the game
+   @param g2 graphics object
+   */
    public void writeStory(Graphics2D g2)
    {
       g2.setFont(new Font("Times New Roman", Font.PLAIN, 23));
@@ -167,6 +204,9 @@ public class LobbyScreen extends JPanel
       g2.drawString("To THE CASINO then...", 150, 580); 
    }
    
+   /**
+   helper method that handles exiting to main screen
+   */
    public void exitBoxHelper()
    {
       JFrame frame = new JFrame("Message Box");
@@ -218,12 +258,28 @@ public class LobbyScreen extends JPanel
          }
       }
       
+      /**
+      handles mouse button releases
+      @param e info about the mouse event
+      */
       public void mouseReleased(MouseEvent e) { }
       
+      /**
+      handles mouse button clicks
+      @param e info about the mouse event
+      */
       public void mouseClicked(MouseEvent e) { }
       
+      /**
+      handles mouse button enters
+      @param e info about the mouse event
+      */
       public void mouseEntered(MouseEvent e) { }
       
+      /**
+      handles mouse button exits
+      @param e info about the mouse event
+      */
       public void mouseExited(MouseEvent e) { }
    }
 }

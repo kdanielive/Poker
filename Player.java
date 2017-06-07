@@ -4,6 +4,7 @@ import javax.imageio.*;
 import java.awt.image.*;
 import java.awt.*;
 import java.awt.geom.*; 
+
 /**
 a class for a player in poker game
 @author Daniel Kim
@@ -21,16 +22,18 @@ public class Player
    private PokerCard[] holeCards = new PokerCard[2];
    /** indicator of whether the player is alive or dead */
    private boolean isAlive;
-   
+   /** array of card used for Show Down phase of poker game */
    ArrayList<PokerCard> showDownHand = new ArrayList<PokerCard>();
-   
+   /** how much the player betted */
    private int bettedAmount = 0;
-   
+   /** image of player icon */
    private BufferedImage iconImage;
-   
+   /** indicates whether the player is the first better */
    private boolean isFirstBetter = false;
    
+   /**
    
+   */
    public Player()
    {
       isAlive = true;
